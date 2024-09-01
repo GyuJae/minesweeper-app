@@ -16,4 +16,15 @@ describe("Board", () => {
     expect(board.getColumnSize()).toBe(9);
     expect(board.getCandiateMineCount()).toBe(10);
   });
+
+  test("처음 생성된 보드는 모든 칸이 닫힌 상태입니다.", () => {
+    // given
+    const gameLevel = GameLevel.EASY;
+
+    // when
+    const board = DefaultBoard.of(gameLevel);
+
+    // then
+    expect(board.isAllClosed()).toBeTruthy();
+  });
 });
