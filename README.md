@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### **기능적 요구사항 (Functional Requirements)**
 
-## Getting Started
+#### **1. 게임 보드 생성**
 
-First, run the development server:
+- **보드 크기**: 사용자는 게임 시작 시 보드의 크기를 선택할 수 있어야 합니다. 일반적으로 다음과 같은 난이도에 따른 보드 크기를 제공합니다:
+  - 쉬움(Easy): 9x9
+  - 중간(Medium): 16x16
+  - 어려움(Hard): 24x24
+- **지뢰 수**: 보드의 크기에 따라 고정된 개수의 지뢰가 무작위로 배치됩니다.
+  - 쉬움(Easy): 10개의 지뢰
+  - 중간(Medium): 40개의 지뢰
+  - 어려움(Hard): 99개의 지뢰
+- **빈 셀**: 지뢰가 아닌 나머지 셀은 모두 빈 셀로 초기화되며, 지뢰와 무관하게 클릭할 수 있는 상태여야 합니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+#### **2. 지뢰 배치**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **무작위 배치**: 지뢰는 보드 상에서 무작위로 배치됩니다. 지뢰는 같은 셀에 중복으로 배치되지 않습니다.
+- **첫 클릭 보호**: 사용자가 첫 번째로 클릭한 셀에는 지뢰가 배치되지 않아야 합니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### **3. 셀 클릭**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **셀 열기**: 사용자가 셀을 클릭하면 셀이 열리고, 다음과 같은 동작이 발생합니다:
+  - **지뢰일 경우**: 지뢰를 클릭하면 게임이 종료됩니다. 모든 지뢰가 보드에 표시되며, 게임 오버 메시지가 출력됩니다.
+  - **지뢰가 아닐 경우**: 클릭한 셀 주변에 인접한 지뢰의 수가 표시됩니다.
+  - **인접한 지뢰가 없을 경우**: 인접한 지뢰가 0개인 경우, 주변의 모든 빈 셀이 자동으로 열립니다(재귀적으로).
 
-## Learn More
+#### **4. 게임 상태 관리**
 
-To learn more about Next.js, take a look at the following resources:
+- **승리 조건**: 사용자가 지뢰가 아닌 모든 셀을 열면 게임에서 승리합니다. 승리 메시지가 출력됩니다.
+- **패배 조건**: 사용자가 지뢰를 클릭하면 게임이 종료되고 패배 메시지가 출력됩니다.
+- **게임 재시작**: 사용자는 게임 종료 후 새 게임을 시작할 수 있어야 합니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### **5. 사용자 인터페이스**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **보드 표시**: 게임 보드는 직관적으로 표시되며, 닫힌 셀, 열린 셀, 지뢰, 플래그가 명확하게 구분되어야 합니다.
+- **플래그 기능**: 사용자는 셀을 마우스 오른쪽 버튼으로 클릭하여 플래그를 꽂을 수 있습니다. 플래그는 지뢰가 있다고 의심되는 셀에 표시됩니다.
+- **남은 지뢰 수 표시**: 게임 화면에 남은 지뢰의 수를 표시해야 합니다.
 
-## Deploy on Vercel
+### **비기능적 요구사항 (Non-Functional Requirements)**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### **1. 성능**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **반응성**: 게임 보드의 셀 클릭 및 지뢰 배치 동작은 즉각적으로 반응해야 합니다.
+- **확장성**: 추가적인 난이도나 기능을 쉽게 추가할 수 있도록 코드 구조가 설계되어야 합니다.
+
+#### **2. 사용성**
+
+- **직관적인 인터페이스**: 게임 인터페이스는 직관적이어야 하며, 사용자가 쉽게 이해하고 조작할 수 있어야 합니다.
+- **반응형 디자인**: 게임은 다양한 화면 크기(예: 데스크탑, 태블릿, 모바일)에서 적절히 표시되어야 합니다.
+
+#### **3. 신뢰성**
+
+- **오류 처리**: 예상치 못한 오류가 발생했을 때, 게임은 예외 상황을 잘 처리하고 적절한 오류 메시지를 표시해야 합니다.
+- **데이터 보존**: 브라우저가 새로 고침되거나 창이 닫혔다가 열릴 경우 게임이 다시 시작될 수 있도록 처리할 수 있습니다. (Optional)
+
+#### **4. 접근성**
+
+- **키보드 지원**: 마우스뿐만 아니라 키보드로도 게임을 조작할 수 있도록 해야 합니다.
+- **화면 읽기 프로그램 호환**: 시각 장애인을 위한 화면 읽기 프로그램과의 호환성을 고려할 수 있습니다.
+
+### **추가 고려사항**
+
+- **사운드 및 애니메이션**: 사용자가 셀을 클릭하거나 게임에서 승리/패배할 때 간단한 사운드 효과나 애니메이션을 추가할 수 있습니다. (Optional)
+- **기록 기능**: 사용자에게 게임의 최고 기록을 보여주거나, 게임이 얼마나 빨리 완료되었는지를 기록할 수 있는 기능을 제공할 수 있습니다. (Optional)
+- **다국어 지원**: 여러 언어를 지원하는 인터페이스를 고려할 수 있습니다. (Optional)
+
+### **학습 목표**
+
+- 객체 지향 설계 원칙
+- TDD
+- NextJS app directory 학습
