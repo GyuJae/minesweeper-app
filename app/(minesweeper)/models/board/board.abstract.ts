@@ -3,4 +3,5 @@ export abstract class Board {
   abstract getColumnSize(): number;
   abstract getRowSize(): number;
   abstract isAllClosed(): boolean;
+  abstract hasUnopenedMines(): boolean;
 }

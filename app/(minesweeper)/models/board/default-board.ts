@@ -30,4 +30,8 @@ export class DefaultBoard extends Board {
   isAllClosed(): boolean {
     return this._cells.isAllClosed();
   }
+
+  hasUnopenedMines(): boolean {
+    return this._cells.hasUnopenedMines();
+  }
 }
