@@ -27,4 +27,15 @@ describe("Board", () => {
     // then
     expect(board.isAllClosed()).toBeTruthy();
   });
+
+  test("처음 열림 상태가 아무것도 없는 경우 지뢰가 배치되지 않습니다.", () => {
+    // given
+    const gameLevel = GameLevel.EASY;
+
+    // when
+    const board = DefaultBoard.of(gameLevel);
+
+    // then
+    expect(board.hasUnopenedMines()).toBeFalsy();
+  });
 });
