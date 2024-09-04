@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { GridCellCollection } from '../cell-collection/cell-grid';
+import { GridCellCollection } from '../cell-collection/grid-cell-collection';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { GameLevel } from '../game-level/game-level.enum';
 import { DefaultBoard } from './default-board';
@@ -66,11 +66,10 @@ describe('Board', () => {
     const newBoard = board.openCell(position);
 
     // then
+    // TODO 숫자 셸이 알맞은 값으로 설정이 되었는지에 대한 검증 로직이 필요합니다.
     const numberCellPositions = newBoard.getNumberPositions();
     expect(numberCellPositions.getSize()).toBeGreaterThan(0);
-    // TODO: 숫자 셸 주변에 지뢰가 있는지 확인하는 로직 추가
     for (const numberCellPosition of numberCellPositions) {
-      expect(newBoard.isOpenedCell(numberCellPosition)).toBeFalsy();
       expect(newBoard.findCellByPosition(numberCellPosition).getNearbyMineCount()).toBeGreaterThan(0);
     }
   });

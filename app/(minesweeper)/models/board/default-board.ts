@@ -1,5 +1,7 @@
+import { Cell } from '../cell/cell.abstract';
 import { CellCollection } from '../cell-collection/cell-collections.abstract';
 import { CellPosition } from '../cell-position/cell-position.abstract';
+import { CellPositionCollection } from '../cell-position-collection/cell-position-collection.abstract';
 import { GameLevel } from '../game-level/game-level.enum';
 import { Board } from './board.abstract';
 
@@ -12,35 +14,43 @@ export class DefaultBoard extends Board {
     return new DefaultBoard(gameLevel, cells);
   }
 
-  getCandidateMineCount(): number {
+  override getCandidateMineCount(): number {
     return this._gameLevel.getMineCount();
   }
 
-  getColumnSize(): number {
+  override getColumnSize(): number {
     return this._gameLevel.getColumnSize();
   }
 
-  getRowSize(): number {
+  override getRowSize(): number {
     return this._gameLevel.getRowSize();
   }
 
-  isAllClosed(): boolean {
+  override isAllClosed(): boolean {
     return this._cells.isAllClosed();
   }
 
-  hasUnopenedMines(): boolean {
+  override hasUnopenedMines(): boolean {
     return this._cells.hasUnopenedMines();
   }
 
-  openCell(position: CellPosition): Board {
+  override openCell(position: CellPosition): Board {
     return DefaultBoard.of(this._gameLevel, this._cells.openCell(position));
   }
 
-  isOpenedCell(position: CellPosition): boolean {
+  override isOpenedCell(position: CellPosition): boolean {
     return this._cells.isOpenedCell(position);
   }
 
-  getUnOpenedMineCount(): number {
+  override getUnOpenedMineCount(): number {
     return this._cells.getUnOpenedMineCount();
+  }
+
+  override getNumberPositions(): CellPositionCollection {
+    return this._cells.getNumberPositions();
+  }
+
+  override findCellByPosition(cellPosition: CellPosition): Cell {
+    return this._cells.findCellByPosition(cellPosition);
   }
 }

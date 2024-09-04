@@ -1,34 +1,55 @@
+import { CellPosition } from '../cell-position/cell-position.abstract';
 import { CellState } from '../cell-state/cell-state.enum';
 import { CellType } from '../cell-type/cell-type.abstract';
 import { MineCellType } from '../cell-type/mine-cell-type';
 import { Cell } from './cell.abstract';
 
 export class DefaultCell extends Cell {
-  private constructor(private readonly _cellState: CellState, private _cellType: CellType) {
+  private constructor(
+    private readonly _cellState: CellState,
+    private _cellType: CellType,
+    private readonly _position: CellPosition,
+  ) {
     super();
   }
 
-  static of(cellState: CellState, cellType: CellType): Cell {
-    return new DefaultCell(cellState, cellType);
+  static of(cellState: CellState, cellType: CellType, position: CellPosition): Cell {
+    return new DefaultCell(cellState, cellType, position);
   }
 
-  isClosed(): boolean {
+  override isClosed(): boolean {
     return this._cellState === CellState.CLOSED;
   }
 
-  isMine(): boolean {
+  override isMine(): boolean {
     return this._cellType.isMine();
   }
 
-  isOpened(): boolean {
+  override isOpened(): boolean {
     return this._cellState === CellState.OPENED;
   }
 
-  open(): Cell {
-    return DefaultCell.of(CellState.OPENED, this._cellType);
+  override isNumber(): boolean {
+    return this._cellType.isNumber();
   }
 
-  updatedToMine(): Cell {
-    return DefaultCell.of(this._cellState, MineCellType.of());
+  override open(): Cell {
+    return DefaultCell.of(CellState.OPENED, this._cellType, this._position);
+  }
+
+  override updatedToMine(): Cell {
+    return DefaultCell.of(this._cellState, MineCellType.of(), this._position);
+  }
+
+  override getPosition(): CellPosition {
+    return this._position;
+  }
+
+  override getState(): CellState {
+    return this._cellState;
+  }
+
+  override getNearbyMineCount(): number {
+    return this._cellType.getNearbyMineCount();
   }
 }

@@ -7,12 +7,11 @@ export class GridCellPositionCollection extends CellPositionCollection {
     super();
   }
 
-  static of(positions: GridCellPosition[]): CellPositionCollection {
+  static of(positions: GridCellPosition[]): GridCellPositionCollection {
     return new GridCellPositionCollection(positions);
   }
 
-  override add(position: GridCellPosition): CellPositionCollection {
-    this._positions.push(position);
+  override add(position: GridCellPosition): GridCellPositionCollection {
     return GridCellPositionCollection.of([...this._positions, position as GridCellPosition]);
   }
 
@@ -26,5 +25,23 @@ export class GridCellPositionCollection extends CellPositionCollection {
 
   override toList(): CellPosition[] {
     return this._positions;
+  }
+
+  override filter(predicate: (_position: GridCellPosition) => boolean): GridCellPositionCollection {
+    return GridCellPositionCollection.of(this._positions.filter((position) => predicate(position)));
+  }
+
+  override [Symbol.iterator](): Iterator<CellPosition> {
+    let index = 0;
+
+    return {
+      next: () => {
+        if (index < this._positions.length) {
+          return { value: this._positions[index++], done: false };
+        }
+
+        return { value: undefined, done: true };
+      },
+    };
   }
 }
