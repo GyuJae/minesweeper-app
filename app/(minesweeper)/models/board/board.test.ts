@@ -55,4 +55,23 @@ describe('Board', () => {
     expect(newBoard.hasUnopenedMines()).toBeTruthy();
     expect(newBoard.getUnOpenedMineCount()).toBe(gameLevel.getMineCount());
   });
+
+  test('지뢰가 무작위로 배치된 이후 규칙에 따라 숫자 셸이 배치됩니다.', () => {
+    // given
+    const gameLevel = GameLevel.EASY;
+    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+    const position = GridCellPosition.of(0, 0);
+
+    // when
+    const newBoard = board.openCell(position);
+
+    // then
+    const numberCellPositions = newBoard.getNumberPositions();
+    expect(numberCellPositions.getSize()).toBeGreaterThan(0);
+    // TODO: 숫자 셸 주변에 지뢰가 있는지 확인하는 로직 추가
+    for (const numberCellPosition of numberCellPositions) {
+      expect(newBoard.isOpenedCell(numberCellPosition)).toBeFalsy();
+      expect(newBoard.findCellByPosition(numberCellPosition).getNearbyMineCount()).toBeGreaterThan(0);
+    }
+  });
 });
