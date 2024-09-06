@@ -1,4 +1,4 @@
-import { CellPosition } from '../cell-position/cell-position.abstract';
+import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { CellState } from '../cell-state/cell-state.enum';
 import { CellType } from '../cell-type/cell-type.abstract';
 import { MineCellType } from '../cell-type/mine-cell-type';
@@ -8,12 +8,12 @@ export class GridCell extends Cell {
   private constructor(
     private readonly _cellState: CellState,
     private _cellType: CellType,
-    private readonly _position: CellPosition,
+    private readonly _position: GridCellPosition,
   ) {
     super();
   }
 
-  static of(cellState: CellState, cellType: CellType, position: CellPosition): GridCell {
+  static of(cellState: CellState, cellType: CellType, position: GridCellPosition): GridCell {
     return new GridCell(cellState, cellType, position);
   }
 
@@ -33,15 +33,15 @@ export class GridCell extends Cell {
     return this._cellType.isNumber();
   }
 
-  override open(): Cell {
+  override open(): GridCell {
     return GridCell.of(CellState.OPENED, this._cellType, this._position);
   }
 
-  override updatedToMine(): Cell {
+  override updatedToMine(): GridCell {
     return GridCell.of(this._cellState, MineCellType.of(), this._position);
   }
 
-  override getPosition(): CellPosition {
+  override getPosition(): GridCellPosition {
     return this._position;
   }
 

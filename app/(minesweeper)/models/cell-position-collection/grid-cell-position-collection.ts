@@ -12,7 +12,7 @@ export class GridCellPositionCollection extends CellPositionCollection {
     return new GridCellPositionCollection(positions);
   }
 
-  static fromGameLevel(gameLevel: GameLevel): GridCellPositionCollection {
+  static gameLevelOf(gameLevel: GameLevel): GridCellPositionCollection {
     const gridPositions = Array.from({ length: gameLevel.getRowSize() }, (_, row) =>
       Array.from({ length: gameLevel.getColumnSize() }, (_, col) => GridCellPosition.of(row, col)),
     );
@@ -36,11 +36,11 @@ export class GridCellPositionCollection extends CellPositionCollection {
     return this._positions;
   }
 
-  override filter(predicate: (_position: GridCellPosition) => boolean): GridCellPositionCollection {
+  filter(predicate: (_position: GridCellPosition) => boolean): GridCellPositionCollection {
     return GridCellPositionCollection.of(this._positions.filter((position) => predicate(position)));
   }
 
-  override [Symbol.iterator](): Iterator<CellPosition> {
+  override [Symbol.iterator](): Iterator<GridCellPosition> {
     let index = 0;
 
     return {
