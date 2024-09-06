@@ -1,5 +1,5 @@
 import { Cell } from '../cell/cell.abstract';
-import { DefaultCell } from '../cell/default-cell';
+import { GridCell } from '../cell/grid-cell';
 import { CellPosition } from '../cell-position/cell-position.abstract';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { CellPositionCollection } from '../cell-position-collection/cell-position-collection.abstract';
@@ -20,7 +20,7 @@ export class GridCellCollection extends CellCollection {
     gameLevel: GameLevel,
     cells: Cell[][] = Array.from({ length: gameLevel.getRowSize() }, (_, row) =>
       Array.from({ length: gameLevel.getColumnSize() }, (_, col) =>
-        DefaultCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(row, col)),
+        GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(row, col)),
       ),
     ),
   ): GridCellCollection {
@@ -57,7 +57,7 @@ export class GridCellCollection extends CellCollection {
         if (nearbyMineCount > 0) {
           updatedToNumberCellCollection = updatedToNumberCellCollection._updatedCell(
             cell.getPosition(),
-            DefaultCell.of(cell.getState(), NumberCellType.of(nearbyMineCount), cell.getPosition()),
+            GridCell.of(cell.getState(), NumberCellType.of(nearbyMineCount), cell.getPosition()),
           );
         }
       }
@@ -128,7 +128,7 @@ export class GridCellCollection extends CellCollection {
   private _updatedMineCellsByPositions(positions: CellPositionCollection): GridCellCollection {
     const newCells = this._cells.map((row) => [...row]);
     for (const position of positions.toList()) {
-      newCells[position.getRow()][position.getColumn()] = DefaultCell.of(CellState.CLOSED, MineCellType.of(), position);
+      newCells[position.getRow()][position.getColumn()] = GridCell.of(CellState.CLOSED, MineCellType.of(), position);
     }
     return new GridCellCollection(this._gameLevel, newCells);
   }

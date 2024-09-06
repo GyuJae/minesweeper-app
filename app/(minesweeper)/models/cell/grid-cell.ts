@@ -4,7 +4,7 @@ import { CellType } from '../cell-type/cell-type.abstract';
 import { MineCellType } from '../cell-type/mine-cell-type';
 import { Cell } from './cell.abstract';
 
-export class DefaultCell extends Cell {
+export class GridCell extends Cell {
   private constructor(
     private readonly _cellState: CellState,
     private _cellType: CellType,
@@ -13,8 +13,8 @@ export class DefaultCell extends Cell {
     super();
   }
 
-  static of(cellState: CellState, cellType: CellType, position: CellPosition): Cell {
-    return new DefaultCell(cellState, cellType, position);
+  static of(cellState: CellState, cellType: CellType, position: CellPosition): GridCell {
+    return new GridCell(cellState, cellType, position);
   }
 
   override isClosed(): boolean {
@@ -34,11 +34,11 @@ export class DefaultCell extends Cell {
   }
 
   override open(): Cell {
-    return DefaultCell.of(CellState.OPENED, this._cellType, this._position);
+    return GridCell.of(CellState.OPENED, this._cellType, this._position);
   }
 
   override updatedToMine(): Cell {
-    return DefaultCell.of(this._cellState, MineCellType.of(), this._position);
+    return GridCell.of(this._cellState, MineCellType.of(), this._position);
   }
 
   override getPosition(): CellPosition {
