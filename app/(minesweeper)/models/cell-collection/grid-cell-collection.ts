@@ -77,20 +77,8 @@ export class GridCellCollection extends CellCollection {
   }
 
   override getNumberPositions(): CellPositionCollection {
-    let numberPositions = GridCellPositionCollection.of([]);
-
-    for (let row = 0; row < this._gameLevel.getRowSize(); row++) {
-      for (let column = 0; column < this._gameLevel.getColumnSize(); column++) {
-        const position = GridCellPosition.of(row, column);
-        const cell = this.findCellByPosition(position);
-
-        if (cell.isNumber()) {
-          numberPositions = numberPositions.add(position);
-        }
-      }
-    }
-
-    return numberPositions;
+    const allPositions = GridCellPositionCollection.fromGameLevel(this._gameLevel);
+    return allPositions.filter((position) => this.findCellByPosition(position).isNumber());
   }
 
   override getRowSize(): number {

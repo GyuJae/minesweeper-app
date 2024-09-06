@@ -1,5 +1,6 @@
 import { CellPosition } from '../cell-position/cell-position.abstract';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
+import { GameLevel } from '../game-level/game-level.enum';
 import { CellPositionCollection } from './cell-position-collection.abstract';
 
 export class GridCellPositionCollection extends CellPositionCollection {
@@ -9,6 +10,14 @@ export class GridCellPositionCollection extends CellPositionCollection {
 
   static of(positions: GridCellPosition[]): GridCellPositionCollection {
     return new GridCellPositionCollection(positions);
+  }
+
+  static fromGameLevel(gameLevel: GameLevel): GridCellPositionCollection {
+    const gridPositions = Array.from({ length: gameLevel.getRowSize() }, (_, row) =>
+      Array.from({ length: gameLevel.getColumnSize() }, (_, col) => GridCellPosition.of(row, col)),
+    );
+
+    return GridCellPositionCollection.of(gridPositions.flat());
   }
 
   override add(position: GridCellPosition): GridCellPositionCollection {
