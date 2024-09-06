@@ -40,29 +40,21 @@ export class GridCellCollection extends CellCollection {
         this._initMinePositions(),
       );
 
-      let updatedToNumberCellCollection: GridCellCollection = GridCellCollection.of(
-        this._gameLevel,
-        updatedToMineCellCollection._cells,
-      );
+      return this._openCell(position)
+        ._updatedMineCellsByPositions(this._initMinePositions())
+        ._map((cell) => {
+          if (cell.isMine()) return cell;
 
-      for (const cell of updatedToMineCellCollection) {
-        if (cell.isMine()) continue;
+          const recalculatedMineCount: number = cell
+            .getPosition()
+            .getAdjacentPositions(this._gameLevel)
+            .filter((p) => updatedToMineCellCollection.findCellByPosition(p).isMine())
+            .getSize();
 
-        const recalculatedMineCount: number = cell
-          .getPosition()
-          .getAdjacentPositions(this._gameLevel)
-          .filter((p) => updatedToMineCellCollection.findCellByPosition(p).isMine())
-          .getSize();
+          if (recalculatedMineCount <= 0) return cell;
 
-        if (recalculatedMineCount > 0) {
-          updatedToNumberCellCollection = updatedToNumberCellCollection._updatedCell(
-            cell.getPosition(),
-            GridCell.of(cell.getState(), NumberCellType.of(recalculatedMineCount), cell.getPosition()),
-          );
-        }
-      }
-
-      return updatedToNumberCellCollection;
+          return GridCell.of(cell.getState(), NumberCellType.of(recalculatedMineCount), cell.getPosition());
+        });
     }
 
     return this._openCell(position);
@@ -129,6 +121,11 @@ export class GridCellCollection extends CellCollection {
     newCells[position.getRow()][position.getColumn()] = cell.open();
 
     return new GridCellCollection(this._gameLevel, newCells);
+  }
+
+  private _map(mapper: (_cell: GridCell) => GridCell): GridCellCollection {
+    const mappedCells = this._cells.map((row) => row.map(mapper));
+    return GridCellCollection.of(this._gameLevel, mappedCells);
   }
 
   override *[Symbol.iterator](): Iterator<GridCell> {
