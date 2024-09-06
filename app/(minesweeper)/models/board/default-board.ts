@@ -10,7 +10,7 @@ export class DefaultBoard extends Board {
     super();
   }
 
-  static of(gameLevel: GameLevel, cells: CellCollection): Board {
+  static of(gameLevel: GameLevel, cells: CellCollection): DefaultBoard {
     return new DefaultBoard(gameLevel, cells);
   }
 
