@@ -48,16 +48,16 @@ export class GridCellCollection extends CellCollection {
       for (const cell of updatedToMineCellCollection) {
         if (cell.isMine()) continue;
 
-        const nearbyMineCount: number = cell
+        const recalculatedMineCount: number = cell
           .getPosition()
           .getAdjacentPositions(this._gameLevel)
           .filter((p) => updatedToMineCellCollection.findCellByPosition(p).isMine())
           .getSize();
 
-        if (nearbyMineCount > 0) {
+        if (recalculatedMineCount > 0) {
           updatedToNumberCellCollection = updatedToNumberCellCollection._updatedCell(
             cell.getPosition(),
-            GridCell.of(cell.getState(), NumberCellType.of(nearbyMineCount), cell.getPosition()),
+            GridCell.of(cell.getState(), NumberCellType.of(recalculatedMineCount), cell.getPosition()),
           );
         }
       }
