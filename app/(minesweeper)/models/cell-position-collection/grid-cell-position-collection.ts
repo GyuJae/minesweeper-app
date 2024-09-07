@@ -11,6 +11,24 @@ export class GridCellPositionCollection extends CellPositionCollection {
     return new GridCellPositionCollection(positions);
   }
 
+  static initialMinesOf(gameLevel: GameLevel, selectPosition: GridCellPosition): GridCellPositionCollection {
+    const mineCount = gameLevel.getMineCount();
+    const minePositions: GridCellPosition[] = [];
+    while (minePositions.length < mineCount) {
+      const randomPosition = GridCellPosition.of(
+        Math.floor(Math.random() * gameLevel.getRowSize()),
+        Math.floor(Math.random() * gameLevel.getColumnSize()),
+      );
+
+      if (randomPosition.equals(selectPosition)) continue;
+      if (minePositions.some((position) => position.equals(randomPosition))) continue;
+
+      minePositions.push(randomPosition);
+    }
+
+    return GridCellPositionCollection.of(minePositions);
+  }
+
   static gameLevelOf(gameLevel: GameLevel): GridCellPositionCollection {
     const gridPositions = Array.from({ length: gameLevel.getRowSize() }, (_, row) =>
       Array.from({ length: gameLevel.getColumnSize() }, (_, col) => GridCellPosition.of(row, col)),

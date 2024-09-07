@@ -36,24 +36,21 @@ export class GridCellCollection extends CellCollection {
   override openCell(position: GridCellPosition): CellCollection {
     if (this.isAllClosed()) {
       const updatedToMineCellCollection = this._openCell(position)._updatedMineCellsByPositions(
-        this._initMinePositions(),
+        GridCellPositionCollection.initialMinesOf(this._gameLevel, position),
       );
 
-      return this._openCell(position)
-        ._updatedMineCellsByPositions(this._initMinePositions())
-        ._map((cell) => {
-          if (cell.isMine()) return cell;
+      return updatedToMineCellCollection._map((cell) => {
+        if (cell.isMine()) return cell;
+        const recalculatedMineCount: number = cell
+          .getPosition()
+          .getAdjacentPositions(this._gameLevel)
+          .filter((p) => updatedToMineCellCollection.findCellByPosition(p).isMine())
+          .getSize();
 
-          const recalculatedMineCount: number = cell
-            .getPosition()
-            .getAdjacentPositions(this._gameLevel)
-            .filter((p) => updatedToMineCellCollection.findCellByPosition(p).isMine())
-            .getSize();
+        if (recalculatedMineCount <= 0) return cell;
 
-          if (recalculatedMineCount <= 0) return cell;
-
-          return GridCell.of(cell.getState(), NumberCellType.of(recalculatedMineCount), cell.getPosition());
-        });
+        return GridCell.of(cell.getState(), NumberCellType.of(recalculatedMineCount), cell.getPosition());
+      });
     }
 
     return this._openCell(position);
@@ -90,21 +87,6 @@ export class GridCellCollection extends CellCollection {
       newCells[position.getRow()][position.getColumn()] = GridCell.of(CellState.CLOSED, MineCellType.of(), position);
     }
     return new GridCellCollection(this._gameLevel, newCells);
-  }
-
-  private _initMinePositions(): GridCellPositionCollection {
-    const mineCount = this._gameLevel.getMineCount();
-    let minePositions = GridCellPositionCollection.of([]);
-
-    while (minePositions.getSize() < mineCount) {
-      const randomRow = Math.floor(Math.random() * this._gameLevel.getRowSize());
-      const randomColumn = Math.floor(Math.random() * this._gameLevel.getColumnSize());
-      const newPosition = GridCellPosition.of(randomRow, randomColumn);
-      if (minePositions.has(newPosition)) continue;
-      minePositions = minePositions.add(newPosition);
-    }
-
-    return minePositions;
   }
 
   private _openCell(position: GridCellPosition): GridCellCollection {
