@@ -1,4 +1,3 @@
-import { CellPosition } from '../cell-position/cell-position.abstract';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { GameLevel } from '../game-level/game-level.enum';
 import { CellPositionCollection } from './cell-position-collection.abstract';
@@ -30,10 +29,6 @@ export class GridCellPositionCollection extends CellPositionCollection {
 
   override getSize(): number {
     return this._positions.length;
-  }
-
-  override toList(): CellPosition[] {
-    return this._positions;
   }
 
   filter(predicate: (_position: GridCellPosition) => boolean): GridCellPositionCollection {

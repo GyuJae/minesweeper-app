@@ -1,5 +1,4 @@
 import { GridCell } from '../cell/grid-cell';
-import { CellPosition } from '../cell-position/cell-position.abstract';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { CellPositionCollection } from '../cell-position-collection/cell-position-collection.abstract';
 import { GridCellPositionCollection } from '../cell-position-collection/grid-cell-position-collection';
@@ -83,12 +82,6 @@ export class GridCellCollection extends CellCollection {
 
   override findCellByPosition(position: GridCellPosition): GridCell {
     return this._cells[position.getRow()][position.getColumn()];
-  }
-
-  private _updatedCell(position: CellPosition, newCell: GridCell): GridCellCollection {
-    const newCells = this._cells.map((row) => [...row]);
-    newCells[position.getRow()][position.getColumn()] = newCell;
-    return new GridCellCollection(this._gameLevel, newCells);
   }
 
   private _updatedMineCellsByPositions(positions: GridCellPositionCollection): GridCellCollection {
