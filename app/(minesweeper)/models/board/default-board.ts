@@ -1,6 +1,7 @@
 import { Cell } from '../cell/cell.abstract';
 import { CellCollection } from '../cell-collection/cell-collections.abstract';
 import { CellPosition } from '../cell-position/cell-position.abstract';
+import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { GameLevel } from '../game-level/game-level.enum';
 import { Board } from './board.abstract';
 
@@ -59,5 +60,9 @@ export class DefaultBoard extends Board {
 
   override isGameClear(): boolean {
     return this._cells.areAllSafeCellsOpened();
+  }
+
+  override flag(position: GridCellPosition): DefaultBoard {
+    return DefaultBoard.of(this._gameLevel, this._cells.flag(position));
   }
 }

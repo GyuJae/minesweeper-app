@@ -78,6 +78,14 @@ export class GridCellCollection extends CellCollection {
     return this._cells.flat().find(_predicate);
   }
 
+  override flag(position: GridCellPosition): GridCellCollection {
+    const cell = this.findCellByPosition(position);
+    if (cell.isOpened()) return this;
+
+    const updatedCell = cell.flag();
+    return GridCellCollection._updatedCellByPosition(this, position, updatedCell);
+  }
+
   private _every(predicate: (_cell: Cell) => boolean): boolean {
     return this._cells.every((row) => row.every(predicate));
   }

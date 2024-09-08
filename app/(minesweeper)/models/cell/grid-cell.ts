@@ -9,7 +9,7 @@ import { Cell } from './cell.abstract';
 export class GridCell extends Cell {
   private constructor(
     private readonly _cellState: CellState,
-    private _cellType: CellType,
+    private readonly _cellType: CellType,
     private readonly _position: GridCellPosition,
   ) {
     super();
@@ -55,8 +55,12 @@ export class GridCell extends Cell {
     return this._cellType.getNearbyMineCount();
   }
 
-  isEmpty(): boolean {
-    return this._cellType.isEmpty();
+  override isFlagged(): boolean {
+    return this._cellState === CellState.FLAGGED;
+  }
+
+  override flag(): GridCell {
+    return GridCell.of(CellState.FLAGGED, this._cellType, this._position);
   }
 
   getAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): number {
