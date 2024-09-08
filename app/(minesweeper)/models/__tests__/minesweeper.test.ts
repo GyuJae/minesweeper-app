@@ -300,6 +300,17 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isFlagged()).toBeTruthy();
   });
 
+  test('열려 있는 셀에 깃발을 꽂을 수 없습니다.', () => {
+    // given
+    const gameLevel = GameLevel.VERY_EASY;
+    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+    const openedBoard = board.openCell(GridCellPosition.of(0, 0));
+
+    // when
+    // then
+    expect(() => openedBoard.flag(GridCellPosition.of(0, 0))).toThrowError();
+  });
+
   test('깃발을 꽂은 셸의 깃발을 다시 제거하고 닫혀 있는 상태로 복구됩니다.', () => {
     // given
     const gameLevel = GameLevel.VERY_EASY;
@@ -311,5 +322,15 @@ describe('지뢰찾기 게임 규칙', () => {
     // then
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isFlagged()).toBeFalsy();
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isClosed()).toBeTruthy();
+  });
+
+  test('깃발이 꽂힌 셀이 아닌 경우 깃발을 제거할 수 없습니다.', () => {
+    // given
+    const gameLevel = GameLevel.VERY_EASY;
+    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+
+    // when
+    // then
+    expect(() => board.unflag(GridCellPosition.of(0, 0))).toThrowError();
   });
 });
