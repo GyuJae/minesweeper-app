@@ -78,6 +78,14 @@ export class GridCellCollection extends CellCollection {
     return this._cells.flat().find(_predicate);
   }
 
+  private _every(predicate: (_cell: Cell) => boolean): boolean {
+    return this._cells.every((row) => row.every(predicate));
+  }
+
+  override areAllSafeCellsOpened(): boolean {
+    return this.filter((cell) => cell.isSafeCell())._every((cell) => cell.isOpened());
+  }
+
   private static _updateAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): GridCellCollection {
     return cells._map((cell) => {
       if (cell.isMine()) return cell;
@@ -138,7 +146,7 @@ export class GridCellCollection extends CellCollection {
     );
   }
 
-  override filter(_predicate: (_cell: Cell) => boolean): CellCollection {
+  override filter(_predicate: (_cell: Cell) => boolean): GridCellCollection {
     return GridCellCollection.of(
       this._gameLevel,
       this._cells.map((row) => row.filter(_predicate)),

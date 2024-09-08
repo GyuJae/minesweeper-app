@@ -15,5 +15,6 @@ export abstract class CellCollection {
   abstract getColumnSize(): number;
   abstract filter(_predicate: (_cell: Cell) => boolean): CellCollection;
   abstract hasOpenedMineCell(): boolean;
+  abstract areAllSafeCellsOpened(): boolean;
   abstract [Symbol.iterator](): Iterator<Cell>;
 }

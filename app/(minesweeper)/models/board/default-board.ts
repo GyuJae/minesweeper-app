@@ -56,4 +56,8 @@ export class DefaultBoard extends Board {
   override isGameOver(): boolean {
     return this._cells.hasOpenedMineCell();
   }
+
+  override isGameClear(): boolean {
+    return this._cells.areAllSafeCellsOpened();
+  }
 }

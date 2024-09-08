@@ -11,4 +11,8 @@ export abstract class Cell {
   abstract isMine(): boolean;
   abstract isClosed(): boolean;
   abstract updatedToMine(): Cell;
+
+  isSafeCell(): boolean {
+    return !this.isMine();
+  }
 }

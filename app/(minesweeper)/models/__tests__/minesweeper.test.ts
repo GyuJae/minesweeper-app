@@ -209,4 +209,42 @@ describe('Board', () => {
     // then
     expect(board.isGameClear()).toBeTruthy();
   });
+
+  test('열지 않은 지뢰가 아닌 셸이 있는 경우 승리가 아닙니다', () => {
+    // given
+    // when
+    const gameLevel = GameLevel.VERY_EASY;
+    const board = DefaultBoard.of(
+      gameLevel,
+      GridCellCollection.of(gameLevel, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.OPENED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // then
+    expect(board.isGameClear()).toBeFalsy();
+  });
 });
