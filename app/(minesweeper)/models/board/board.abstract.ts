@@ -13,4 +13,5 @@ export abstract class Board {
   abstract hasUnopenedMines(): boolean;
   abstract getUnOpenedMineCount(): number;
   abstract getCells(): CellCollection;
+  abstract isGameOver(): boolean;
 }

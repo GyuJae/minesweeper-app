@@ -70,6 +70,14 @@ export class GridCellCollection extends CellCollection {
     return this._cells[position.getRow()][position.getColumn()];
   }
 
+  override hasOpenedMineCell(): boolean {
+    return this._cells.flat().some((cell) => cell.isMine() && cell.isOpened());
+  }
+
+  override find(_predicate: (_cell: Cell) => boolean): Cell | undefined {
+    return this._cells.flat().find(_predicate);
+  }
+
   private static _updateAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): GridCellCollection {
     return cells._map((cell) => {
       if (cell.isMine()) return cell;

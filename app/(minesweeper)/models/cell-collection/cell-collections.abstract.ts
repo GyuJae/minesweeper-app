@@ -3,6 +3,7 @@ import { CellPosition } from '../cell-position/cell-position.abstract';
 import { CellPositionCollection } from '../cell-position-collection/cell-position-collection.abstract';
 
 export abstract class CellCollection {
+  abstract find(_predicate: (_cell: Cell) => boolean): Cell | undefined;
   abstract findCellByPosition(_cellPosition: CellPosition): Cell;
   abstract getNumberPositions(): CellPositionCollection;
   abstract isOpenedCell(_position: CellPosition): boolean;
@@ -13,5 +14,6 @@ export abstract class CellCollection {
   abstract getRowSize(): number;
   abstract getColumnSize(): number;
   abstract filter(_predicate: (_cell: Cell) => boolean): CellCollection;
+  abstract hasOpenedMineCell(): boolean;
   abstract [Symbol.iterator](): Iterator<Cell>;
 }

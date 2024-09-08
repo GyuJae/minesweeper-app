@@ -52,4 +52,8 @@ export class DefaultBoard extends Board {
   override getCells(): CellCollection {
     return this._cells;
   }
+
+  override isGameOver(): boolean {
+    return this._cells.hasOpenedMineCell();
+  }
 }

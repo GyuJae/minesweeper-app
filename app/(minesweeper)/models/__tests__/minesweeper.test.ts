@@ -77,13 +77,14 @@ describe('Board', () => {
     // given
     const gameLevel = GameLevel.EASY;
     const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
-    const minePosition = board
+    const opendBoard = board.openCell(GridCellPosition.of(0, 0));
+    const minePosition = opendBoard
       .getCells()
-      .find((cell) => cell.isMine())
+      .find((cell) => cell.isMine())!
       .getPosition();
 
-    // when
-    const newBoard = board.openCell(minePosition);
+    // when2
+    const newBoard = opendBoard.openCell(minePosition);
 
     // then
     expect(newBoard.isGameOver()).toBeTruthy();
