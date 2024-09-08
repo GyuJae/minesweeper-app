@@ -69,4 +69,8 @@ export class DefaultBoard extends Board {
   override unflag(position: GridCellPosition): DefaultBoard {
     return DefaultBoard.of(this._gameLevel, this._cells.unflag(position));
   }
+
+  override getRemainingFlagCount(): number {
+    return this._gameLevel.getMineCount() - this._cells.getFlagCount();
+  }
 }

@@ -95,13 +95,19 @@ export class GridCellCollection extends CellCollection {
 
     return GridCellCollection._updatedCellByPosition(this, position, cell.unflag());
   }
+  override areAllSafeCellsOpened(): boolean {
+    return this.filter((cell) => cell.isSafeCell())._every((cell) => cell.isOpened());
+  }
+
+  override getFlagCount(): number {
+    return this.filter((cell) => cell.isFlagged())._getSize();
+  }
+  private _getSize(): number {
+    return this._cells.flat().length;
+  }
 
   private _every(predicate: (_cell: Cell) => boolean): boolean {
     return this._cells.every((row) => row.every(predicate));
-  }
-
-  override areAllSafeCellsOpened(): boolean {
-    return this.filter((cell) => cell.isSafeCell())._every((cell) => cell.isOpened());
   }
 
   private static _updateAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): GridCellCollection {
