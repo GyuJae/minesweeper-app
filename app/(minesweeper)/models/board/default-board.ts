@@ -1,7 +1,6 @@
 import { Cell } from '../cell/cell.abstract';
 import { CellCollection } from '../cell-collection/cell-collections.abstract';
 import { CellPosition } from '../cell-position/cell-position.abstract';
-import { CellPositionCollection } from '../cell-position-collection/cell-position-collection.abstract';
 import { GameLevel } from '../game-level/game-level.enum';
 import { Board } from './board.abstract';
 
@@ -46,11 +45,11 @@ export class DefaultBoard extends Board {
     return this._cells.getUnOpenedMineCount();
   }
 
-  override getNumberPositions(): CellPositionCollection {
-    return this._cells.getNumberPositions();
-  }
-
   override findCellByPosition(cellPosition: CellPosition): Cell {
     return this._cells.findCellByPosition(cellPosition);
+  }
+
+  override getCells(): CellCollection {
+    return this._cells;
   }
 }

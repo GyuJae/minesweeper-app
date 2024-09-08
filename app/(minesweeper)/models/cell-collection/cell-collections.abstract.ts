@@ -12,4 +12,6 @@ export abstract class CellCollection {
   abstract getUnOpenedMineCount(): number;
   abstract getRowSize(): number;
   abstract getColumnSize(): number;
+  abstract filter(_predicate: (_cell: Cell) => boolean): CellCollection;
+  abstract [Symbol.iterator](): Iterator<Cell>;
 }

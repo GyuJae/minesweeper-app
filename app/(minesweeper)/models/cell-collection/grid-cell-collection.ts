@@ -1,3 +1,4 @@
+import { Cell } from '../cell/cell.abstract';
 import { GridCell } from '../cell/grid-cell';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { CellPositionCollection } from '../cell-position-collection/cell-position-collection.abstract';
@@ -44,15 +45,6 @@ export class GridCellCollection extends CellCollection {
     return GridCellCollection._updateAdjacentMineCount(updatedToMineCellCollection, cells._gameLevel);
   }
 
-  private static _updateAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): GridCellCollection {
-    return cells._map((cell) => {
-      if (cell.isMine()) return cell;
-      const adjacentMineCount = cell.getAdjacentMineCount(cells, gameLevel);
-      if (adjacentMineCount <= 0) return cell;
-      return GridCell.of(cell.getState(), NumberCellType.of(adjacentMineCount), cell.getPosition());
-    });
-  }
-
   override isOpenedCell(position: GridCellPosition): boolean {
     return this.findCellByPosition(position).isOpened();
   }
@@ -78,6 +70,25 @@ export class GridCellCollection extends CellCollection {
     return this._cells[position.getRow()][position.getColumn()];
   }
 
+  private static _updateAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): GridCellCollection {
+    return cells._map((cell) => {
+      if (cell.isMine()) return cell;
+      const adjacentMineCount = cell.getAdjacentMineCount(cells, gameLevel);
+      if (adjacentMineCount <= 0) return cell;
+      return GridCell.of(cell.getState(), NumberCellType.of(adjacentMineCount), cell.getPosition());
+    });
+  }
+
+  private static _updatedCellByPosition(
+    cells: GridCellCollection,
+    position: GridCellPosition,
+    newCell: GridCell,
+  ): GridCellCollection {
+    const newCells = cells._cells.map((row) => [...row]);
+    newCells[position.getRow()][position.getColumn()] = newCell;
+    return new GridCellCollection(cells._gameLevel, newCells);
+  }
+
   private _updatedMineCellsByPositions(positions: GridCellPositionCollection): GridCellCollection {
     let updatedCells = new GridCellCollection(
       this._gameLevel,
@@ -95,20 +106,17 @@ export class GridCellCollection extends CellCollection {
     return GridCellCollection._updatedCellByPosition(this, position, cell.open());
   }
 
-  private static _updatedCellByPosition(
-    cells: GridCellCollection,
-    position: GridCellPosition,
-    newCell: GridCell,
-  ): GridCellCollection {
-    const newCells = cells._cells.map((row) => [...row]);
-    newCells[position.getRow()][position.getColumn()] = newCell;
-    return new GridCellCollection(cells._gameLevel, newCells);
-  }
-
   private _map(mapper: (_cell: GridCell) => GridCell): GridCellCollection {
     return GridCellCollection.of(
       this._gameLevel,
       this._cells.map((row) => row.map(mapper)),
+    );
+  }
+
+  override filter(_predicate: (_cell: Cell) => boolean): CellCollection {
+    return GridCellCollection.of(
+      this._gameLevel,
+      this._cells.map((row) => row.filter(_predicate)),
     );
   }
 

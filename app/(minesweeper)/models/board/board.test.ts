@@ -66,11 +66,10 @@ describe('Board', () => {
     const newBoard = board.openCell(position);
 
     // then
-    // TODO 숫자 셸이 알맞은 값으로 설정이 되었는지에 대한 검증 로직이 필요합니다.
-    const numberCellPositions = newBoard.getNumberPositions();
-    expect(numberCellPositions.getSize()).toBeGreaterThan(0);
-    for (const numberCellPosition of numberCellPositions) {
-      expect(newBoard.findCellByPosition(numberCellPosition).getNearbyMineCount()).toBeGreaterThan(0);
+    expect(newBoard.findCellByPosition(position).isOpened()).toBeTruthy();
+    const numberCells = newBoard.getCells().filter((cell) => cell.isNumber());
+    for (const cell of numberCells) {
+      expect(cell.getNearbyMineCount()).toBeGreaterThan(0);
     }
   });
 });
