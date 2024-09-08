@@ -34,26 +34,31 @@ export class GridCellCollection extends CellCollection {
   }
 
   override openCell(position: GridCellPosition): CellCollection {
-    if (this.isAllClosed()) {
-      const updatedToMineCellCollection = this._openCell(position)._updatedMineCellsByPositions(
-        GridCellPositionCollection.initialMinesOf(this._gameLevel, position),
-      );
-
-      return updatedToMineCellCollection._map((cell) => {
-        if (cell.isMine()) return cell;
-        const recalculatedMineCount: number = cell
-          .getPosition()
-          .getAdjacentPositions(this._gameLevel)
-          .filter((p) => updatedToMineCellCollection.findCellByPosition(p).isMine())
-          .getSize();
-
-        if (recalculatedMineCount <= 0) return cell;
-
-        return GridCell.of(cell.getState(), NumberCellType.of(recalculatedMineCount), cell.getPosition());
-      });
-    }
-
+    if (this.isAllClosed()) return GridCellCollection._updateInitialMineCells(this, position)._openCell(position);
     return this._openCell(position);
+  }
+
+  private static _updateInitialMineCells(cells: GridCellCollection, position: GridCellPosition): GridCellCollection {
+    const updatedToMineCellCollection = cells._updatedMineCellsByPositions(
+      GridCellPositionCollection.initialMinesOf(cells._gameLevel, position),
+    );
+    return GridCellCollection._updateAdjacentMineCount(updatedToMineCellCollection, cells._gameLevel);
+  }
+
+  private static _updateAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): GridCellCollection {
+    return cells._map((cell) => {
+      if (cell.isMine()) return cell;
+
+      const recalculatedMineCount: number = cell
+        .getPosition()
+        .getAdjacentPositions(gameLevel)
+        .filter((p) => cells.findCellByPosition(p).isMine())
+        .getSize();
+
+      if (recalculatedMineCount <= 0) return cell;
+
+      return GridCell.of(cell.getState(), NumberCellType.of(recalculatedMineCount), cell.getPosition());
+    });
   }
 
   override isOpenedCell(position: GridCellPosition): boolean {
@@ -99,8 +104,10 @@ export class GridCellCollection extends CellCollection {
   }
 
   private _map(mapper: (_cell: GridCell) => GridCell): GridCellCollection {
-    const mappedCells = this._cells.map((row) => row.map(mapper));
-    return GridCellCollection.of(this._gameLevel, mappedCells);
+    return GridCellCollection.of(
+      this._gameLevel,
+      this._cells.map((row) => row.map(mapper)),
+    );
   }
 
   override *[Symbol.iterator](): Iterator<GridCell> {
