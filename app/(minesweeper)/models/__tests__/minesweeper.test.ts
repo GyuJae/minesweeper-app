@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 
+import { DefaultBoard } from '../board/default-board';
 import { GridCellCollection } from '../cell-collection/grid-cell-collection';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { GameLevel } from '../game-level/game-level.enum';
-import { DefaultBoard } from './default-board';
 
 describe('Board', () => {
   test('게임 시작 시 설정한 난이도에 맞게 보드 크기가 정해집니다.', () => {
