@@ -1,8 +1,13 @@
 import { describe, expect, test } from 'vitest';
 
 import { DefaultBoard } from '../board/default-board';
+import { GridCell } from '../cell/grid-cell';
 import { GridCellCollection } from '../cell-collection/grid-cell-collection';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
+import { CellState } from '../cell-state/cell-state.enum';
+import { EmptyCellType } from '../cell-type/empty-cell-type';
+import { MineCellType } from '../cell-type/mine-cell-type';
+import { NumberCellType } from '../cell-type/number-cell-type';
 import { GameLevel } from '../game-level/game-level.enum';
 
 describe('Board', () => {
@@ -107,5 +112,56 @@ describe('Board', () => {
     const opendCell = newBoard.findCellByPosition(numberCellPosition);
     expect(opendCell.isOpened()).toBeTruthy();
     expect(opendCell.getNearbyMineCount()).toBeGreaterThan(0);
+  });
+
+  test('셀을 클릭 시 인접 지뢰가 없을 경우, 빈 셀이 모두 열리고 숫자 셀을 만날 때까지 자동으로 열림.', () => {
+    // given
+    const gameLevel = GameLevel.VERY_EASY;
+    const board = DefaultBoard.of(
+      gameLevel,
+      GridCellCollection.of(gameLevel, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // when
+    const newBoard = board.openCell(GridCellPosition.of(3, 3));
+
+    // then
+    // 1. 클릭한 셀 (3, 3)과 주변 빈 셀 및 숫자 셀들이 열려야 한다.
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 3)).isOpened()).toBeTruthy(); // 빈 셀 (3, 3)
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 2)).isOpened()).toBeTruthy(); // 숫자 셀 (3, 2)
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 3)).isOpened()).toBeTruthy(); // 숫자 셀 (2, 3)
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 2)).isOpened()).toBeTruthy(); // 숫자 셀 (2, 2)
+
+    // 2. 지뢰가 있는 셀은 열리지 않아야 한다.
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isOpened()).toBeFalsy(); // 지뢰 셀 (3, 1)
+
+    // 3. 빈 셀과 직접적으로 인접하지 않은 숫자 셀은 열리지 않아야 한다.
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 1)).isOpened()).toBeFalsy(); // 숫자 셀 (1, 1)
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 2)).isOpened()).toBeFalsy(); // 숫자 셀 (1, 2)
   });
 });
