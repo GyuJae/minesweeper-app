@@ -1,3 +1,4 @@
+import { GameException } from '../../exceptions/game-exception';
 import { Cell } from '../cell/cell.abstract';
 import { GridCell } from '../cell/grid-cell';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
@@ -80,7 +81,7 @@ export class GridCellCollection extends CellCollection {
 
   override flag(position: GridCellPosition): GridCellCollection {
     const cell = this.findCellByPosition(position);
-    if (cell.isOpened()) return this;
+    if (cell.isOpened()) throw GameException.of('열려 있는 셀에 깃발을 꽂을 수 없습니다.');
 
     const updatedCell = cell.flag();
     return GridCellCollection._updatedCellByPosition(this, position, updatedCell);
@@ -88,7 +89,9 @@ export class GridCellCollection extends CellCollection {
 
   override unflag(position: GridCellPosition): GridCellCollection {
     const cell = this.findCellByPosition(position);
-    if (!cell.isFlagged()) return this;
+    if (!cell.isFlagged()) {
+      throw GameException.of('깃발이 꽂힌 셀이 아닙니다.');
+    }
 
     return GridCellCollection._updatedCellByPosition(this, position, cell.unflag());
   }
