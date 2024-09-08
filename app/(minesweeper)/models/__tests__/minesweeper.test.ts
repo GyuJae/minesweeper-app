@@ -89,4 +89,23 @@ describe('Board', () => {
     // then
     expect(newBoard.isGameOver()).toBeTruthy();
   });
+
+  test('셸을 클릭 시 지뢰가 아니며 인접한 지뢰가 있을 경우 인접한 지뢰의 개수가 표시됩니다.', () => {
+    // given
+    const gameLevel = GameLevel.EASY;
+    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+    const opendBoard = board.openCell(GridCellPosition.of(0, 0));
+    const numberCellPosition = opendBoard
+      .getCells()
+      .find((cell) => cell.isNumber())!
+      .getPosition();
+
+    // when
+    const newBoard = opendBoard.openCell(numberCellPosition);
+
+    // then
+    const opendCell = newBoard.findCellByPosition(numberCellPosition);
+    expect(opendCell.isOpened()).toBeTruthy();
+    expect(opendCell.getNearbyMineCount()).toBeGreaterThan(0);
+  });
 });
