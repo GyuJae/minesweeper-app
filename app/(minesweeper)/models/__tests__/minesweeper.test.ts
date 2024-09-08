@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from '@/libs/test';
 
 import { DefaultBoard } from '../board/default-board';
 import { GridCell } from '../cell/grid-cell';
