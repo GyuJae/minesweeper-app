@@ -72,4 +72,20 @@ describe('Board', () => {
       expect(cell.getNearbyMineCount()).toBeGreaterThan(0);
     }
   });
+
+  test('섈을 클릭 시 지뢰일 경우 게임이 종료됩니다.', () => {
+    // given
+    const gameLevel = GameLevel.EASY;
+    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+    const minePosition = board
+      .getCells()
+      .find((cell) => cell.isMine())
+      .getPosition();
+
+    // when
+    const newBoard = board.openCell(minePosition);
+
+    // then
+    expect(newBoard.isGameOver()).toBeTruthy();
+  });
 });
