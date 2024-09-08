@@ -287,4 +287,16 @@ describe('지뢰찾기 게임 규칙', () => {
     // then
     expect(newBoard.isGameOver()).toBeTruthy();
   });
+
+  test('닫혀 있는 셸 중에서 깃발을 꽂을 수 있습니다.', () => {
+    // given
+    const gameLevel = GameLevel.VERY_EASY;
+    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+
+    // when
+    const newBoard = board.flag(GridCellPosition.of(0, 0));
+
+    // then
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isFlagged()).toBeTruthy();
+  });
 });
