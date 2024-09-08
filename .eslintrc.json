@@ -1,5 +1,5 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:unicorn/recommended"],
+  "extends": ["next/core-web-vitals", "plugin:unicorn/recommended", "plugin:tailwindcss/recommended"],
   "plugins": ["unused-imports", "simple-import-sort"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "off",
