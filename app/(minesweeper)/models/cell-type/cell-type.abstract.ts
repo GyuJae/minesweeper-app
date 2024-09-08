@@ -4,4 +4,6 @@ export abstract class CellType {
   abstract isMine(): boolean;
 
   abstract isNumber(): boolean;
+
+  abstract isEmpty(): boolean;
 }

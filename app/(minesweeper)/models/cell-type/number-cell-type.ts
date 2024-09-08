@@ -20,4 +20,8 @@ export class NumberCellType extends CellType {
   override getNearbyMineCount(): number {
     return this._number;
   }
+
+  override isEmpty(): boolean {
+    return false;
+  }
 }

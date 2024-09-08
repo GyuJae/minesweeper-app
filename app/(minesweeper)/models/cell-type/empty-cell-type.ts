@@ -13,6 +13,10 @@ export class EmptyCellType extends CellType {
     return false;
   }
 
+  override isEmpty(): boolean {
+    return true;
+  }
+
   override getNearbyMineCount(): number {
     return 0;
   }

@@ -151,17 +151,24 @@ describe('Board', () => {
     const newBoard = board.openCell(GridCellPosition.of(3, 3));
 
     // then
-    // 1. 클릭한 셀 (3, 3)과 주변 빈 셀 및 숫자 셀들이 열려야 한다.
-    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 3)).isOpened()).toBeTruthy(); // 빈 셀 (3, 3)
-    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 2)).isOpened()).toBeTruthy(); // 숫자 셀 (3, 2)
-    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 3)).isOpened()).toBeTruthy(); // 숫자 셀 (2, 3)
-    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 2)).isOpened()).toBeTruthy(); // 숫자 셀 (2, 2)
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isOpened()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 2)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 3)).isOpened()).toBeFalsy();
 
-    // 2. 지뢰가 있는 셀은 열리지 않아야 한다.
-    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isOpened()).toBeFalsy(); // 지뢰 셀 (3, 1)
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 0)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 1)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 2)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 3)).isOpened()).toBeFalsy();
 
-    // 3. 빈 셀과 직접적으로 인접하지 않은 숫자 셀은 열리지 않아야 한다.
-    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 1)).isOpened()).toBeFalsy(); // 숫자 셀 (1, 1)
-    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 2)).isOpened()).toBeFalsy(); // 숫자 셀 (1, 2)
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 0)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 1)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 2)).isOpened()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 3)).isOpened()).toBeTruthy();
+
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 0)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 2)).isOpened()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 3)).isOpened()).toBeTruthy();
   });
 });

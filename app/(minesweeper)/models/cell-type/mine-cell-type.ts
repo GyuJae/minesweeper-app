@@ -17,6 +17,10 @@ export class MineCellType extends CellType {
     return false;
   }
 
+  override isEmpty(): boolean {
+    return false;
+  }
+
   override getNearbyMineCount(): number {
     throw new Error('지뢰 타입은 주변 지뢰 개수를 가지고 있지 않습니다.');
   }

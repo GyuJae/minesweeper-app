@@ -111,7 +111,24 @@ export class GridCellCollection extends CellCollection {
 
   private _openCell(position: GridCellPosition): GridCellCollection {
     const cell = this.findCellByPosition(position);
-    return GridCellCollection._updatedCellByPosition(this, position, cell.open());
+    if (cell.isOpened()) return this;
+
+    const opendCell = cell.open();
+    let updatedCollection = GridCellCollection._updatedCellByPosition(this, position, opendCell);
+
+    if (opendCell.isNumber()) return updatedCollection;
+
+    const adjacentPositions = cell.getPosition().getAdjacentPositions(this._gameLevel);
+
+    for (const adjacentPosition of adjacentPositions) {
+      const adjacentCell = this.findCellByPosition(adjacentPosition);
+      if (adjacentCell.isMine()) continue;
+      if (adjacentCell.isOpened()) continue;
+
+      updatedCollection = updatedCollection._openCell(adjacentPosition);
+    }
+
+    return updatedCollection;
   }
 
   private _map(mapper: (_cell: GridCell) => GridCell): GridCellCollection {
