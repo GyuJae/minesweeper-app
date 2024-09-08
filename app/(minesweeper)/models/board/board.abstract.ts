@@ -16,4 +16,5 @@ export abstract class Board {
   abstract isGameOver(): boolean;
   abstract isGameClear(): boolean;
   abstract flag(_position: CellPosition): Board;
+  abstract unflag(_position: CellPosition): Board;
 }

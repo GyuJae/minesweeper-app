@@ -13,7 +13,7 @@ export abstract class Cell {
   abstract isClosed(): boolean;
   abstract updatedToMine(): Cell;
   abstract flag(): Cell;
-
+  abstract unflag(): Cell;
   isSafeCell(): boolean {
     return !this.isMine();
   }

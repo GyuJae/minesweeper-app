@@ -300,13 +300,13 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isFlagged()).toBeTruthy();
   });
 
-  test('깃발을 꽂은 셸의 깃발을 다시 제거하고 깃발 꽂기 전 상태로 복구됩니다.', () => {
+  test('깃발을 꽂은 셸의 깃발을 다시 제거하고 닫혀 있는 상태로 복구됩니다.', () => {
     // given
     const gameLevel = GameLevel.VERY_EASY;
     const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
 
     // when
-    const newBoard = board.flag(GridCellPosition.of(0, 0)).flag(GridCellPosition.of(0, 0));
+    const newBoard = board.flag(GridCellPosition.of(0, 0)).unflag(GridCellPosition.of(0, 0));
 
     // then
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isFlagged()).toBeFalsy();

@@ -65,4 +65,8 @@ export class DefaultBoard extends Board {
   override flag(position: GridCellPosition): DefaultBoard {
     return DefaultBoard.of(this._gameLevel, this._cells.flag(position));
   }
+
+  override unflag(position: GridCellPosition): DefaultBoard {
+    return DefaultBoard.of(this._gameLevel, this._cells.unflag(position));
+  }
 }
