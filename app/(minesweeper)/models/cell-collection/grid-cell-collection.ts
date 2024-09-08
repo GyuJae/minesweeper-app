@@ -102,6 +102,11 @@ export class GridCellCollection extends CellCollection {
   override getFlagCount(): number {
     return this.filter((cell) => cell.isFlagged())._getSize();
   }
+
+  override toList(): Cell[] {
+    return this._cells.flat();
+  }
+
   private _getSize(): number {
     return this._cells.flat().length;
   }

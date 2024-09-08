@@ -23,6 +23,10 @@ export class GridCellPosition extends CellPosition {
     return this._row === other.getRow() && this._column === other.getColumn();
   }
 
+  override toString(): string {
+    return `${this._row}-${this._column}`;
+  }
+
   getAdjacentPositions(gameLevel: GameLevel): GridCellPositionCollection {
     return GridCellPositionCollection.of([
       GridCellPosition.of(this._row - 1, this._column - 1),
