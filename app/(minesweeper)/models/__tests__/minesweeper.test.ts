@@ -333,4 +333,16 @@ describe('지뢰찾기 게임 규칙', () => {
     // then
     expect(() => board.unflag(GridCellPosition.of(0, 0))).toThrowError();
   });
+
+  test("남은 깃발의 개수는 '지뢰 개수 - 깃발 개수' 입니다.", () => {
+    // given
+    const gameLevel = GameLevel.VERY_EASY;
+    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+
+    // when
+    const newBoard = board.flag(GridCellPosition.of(0, 0)).flag(GridCellPosition.of(0, 1));
+
+    // then
+    expect(newBoard.getRemainingFlagCount()).toBe(gameLevel.getMineCount() - 2);
+  });
 });
