@@ -10,7 +10,7 @@ import { MineCellType } from '../cell-type/mine-cell-type';
 import { NumberCellType } from '../cell-type/number-cell-type';
 import { GameLevel } from '../game-level/game-level.enum';
 
-describe('Board', () => {
+describe('지뢰찾기 게임 규칙', () => {
   test('게임 시작 시 설정한 난이도에 맞게 보드 크기가 정해집니다.', () => {
     // given
     const gameLevel = GameLevel.EASY;
