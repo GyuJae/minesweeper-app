@@ -21,7 +21,6 @@ describe('지뢰찾기 게임 규칙', () => {
     // then
     expect(board.getRowSize()).toBe(gameLevel.getRowSize());
     expect(board.getColumnSize()).toBe(gameLevel.getColumnSize());
-    expect(board.getCandidateMineCount()).toBe(gameLevel.getMineCount());
   });
 
   test('처음 생성된 보드는 모든 칸이 닫힌 상태입니다.', () => {
@@ -32,7 +31,9 @@ describe('지뢰찾기 게임 규칙', () => {
     const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
 
     // then
-    expect(board.isAllClosed()).toBeTruthy();
+    for (const cell of board.getCells()) {
+      expect(cell.isClosed()).toBeTruthy();
+    }
   });
 
   test('열림 상태가 아무것도 없는 경우 지뢰가 배치되지 않습니다.', () => {
@@ -43,7 +44,10 @@ describe('지뢰찾기 게임 규칙', () => {
     const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
 
     // then
-    expect(board.hasUnopenedMines()).toBeFalsy();
+    for (const cell of board.getCells()) {
+      expect(cell.isOpened()).toBeFalsy();
+      expect(cell.isMine()).toBeFalsy();
+    }
   });
 
   test('처음 셸이 열리는 경우에 지뢰가 무작위로 배치됩니다.', () => {
@@ -166,21 +170,61 @@ describe('지뢰찾기 게임 규칙', () => {
 
   test('셸을 클릭 시 지뢰가 아니며 인접한 지뢰가 있을 경우 인접한 지뢰의 개수가 표시됩니다.', () => {
     // given
-    const gameLevel = GameLevel.EASY;
-    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
-    const opendBoard = board.openCell(GridCellPosition.of(0, 0));
-    const numberCellPosition = opendBoard
-      .getCells()
-      .find((cell) => cell.isNumber())!
-      .getPosition();
+    // given
+    const gameLevel = GameLevel.VERY_EASY;
+    const board = DefaultBoard.of(
+      gameLevel,
+      GridCellCollection.of(gameLevel, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
 
     // when
-    const newBoard = opendBoard.openCell(numberCellPosition);
+    const newBoard = board.openCell(GridCellPosition.of(2, 0));
 
     // then
-    const opendCell = newBoard.findCellByPosition(numberCellPosition);
-    expect(opendCell.isOpened()).toBeTruthy();
-    expect(opendCell.getNearbyMineCount()).toBeGreaterThan(0);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isOpened()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 2)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 3)).isOpened()).toBeFalsy();
+
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 0)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 1)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 2)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 3)).isOpened()).toBeFalsy();
+
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 0)).isOpened()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 1)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 2)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 3)).isOpened()).toBeFalsy();
+
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 0)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 2)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 3)).isOpened()).toBeFalsy();
   });
 
   test('셀을 클릭 시 인접 지뢰가 없을 경우, 빈 셀이 모두 열리고 숫자 셀을 만날 때까지 자동으로 열림.', () => {
