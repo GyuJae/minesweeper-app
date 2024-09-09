@@ -67,6 +67,10 @@ export class GridCell extends Cell {
     return GridCell.of(CellState.CLOSED, this._cellType, this._position);
   }
 
+  override toString(): string {
+    return this.isNumber() ? this.getNearbyMineCount().toString() : '';
+  }
+
   getAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): number {
     return this._position
       .getAdjacentPositions(gameLevel)

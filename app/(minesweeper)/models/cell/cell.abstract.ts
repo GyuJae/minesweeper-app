@@ -17,4 +17,6 @@ export abstract class Cell {
   isSafeCell(): boolean {
     return !this.isMine();
   }
+
+  abstract toString(): string;
 }

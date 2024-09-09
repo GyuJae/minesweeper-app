@@ -7,16 +7,25 @@ interface Properties {
   board: BoardModel;
 }
 
+// TODO GameLevel에 맞게 grid 설정 필요
 const Board: FC<Properties> = ({ board }) => {
   return (
-    <div>
-      {board
-        .getCells()
-        .toList()
-        .map((cell) => (
-          <Cell key={cell.getPosition().toString()} cell={cell} />
-        ))}
-    </div>
+    <table>
+      <tbody className='grid size-96 grid-cols-1 grid-rows-4'>
+        {board
+          .getCells()
+          .getRows()
+          .map((row) => (
+            <tr key={row[0].getPosition().getRow()} className='grid grid-cols-4'>
+              {row.map((cell) => (
+                <td key={cell.getPosition().toString()} className='p-0'>
+                  <Cell cell={cell} />
+                </td>
+              ))}
+            </tr>
+          ))}
+      </tbody>
+    </table>
   );
 };
 

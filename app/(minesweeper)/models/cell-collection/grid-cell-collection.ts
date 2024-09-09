@@ -26,6 +26,10 @@ export class GridCellCollection extends CellCollection {
     return new GridCellCollection(gameLevel, cells);
   }
 
+  override getRows(): GridCell[][] {
+    return this._cells;
+  }
+
   override isAllClosed(): boolean {
     return this._cells.every((row) => row.every((cell) => cell.isClosed()));
   }
@@ -101,10 +105,6 @@ export class GridCellCollection extends CellCollection {
 
   override getFlagCount(): number {
     return this.filter((cell) => cell.isFlagged())._getSize();
-  }
-
-  override toList(): Cell[] {
-    return this._cells.flat();
   }
 
   private _getSize(): number {
