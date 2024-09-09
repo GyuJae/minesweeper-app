@@ -149,11 +149,12 @@ export class GridCellCollection extends CellCollection {
   private _openCell(position: GridCellPosition): GridCellCollection {
     const cell = this.findCellByPosition(position);
     if (cell.isOpened()) return this;
+    if (cell.isMine()) return this._updatedMineCellAllOpened();
 
-    const opendCell = cell.open();
-    let updatedCollection = GridCellCollection._updatedCellByPosition(this, position, opendCell);
+    const openedCell = cell.open();
+    let updatedCollection = GridCellCollection._updatedCellByPosition(this, position, openedCell);
 
-    if (opendCell.isNumber()) return updatedCollection;
+    if (openedCell.isNumber()) return updatedCollection;
 
     const adjacentPositions = cell.getPosition().getAdjacentPositions(this._gameLevel);
 
@@ -166,6 +167,13 @@ export class GridCellCollection extends CellCollection {
     }
 
     return updatedCollection;
+  }
+
+  private _updatedMineCellAllOpened(): GridCellCollection {
+    return this._map((cell) => {
+      if (cell.isMine()) return cell.open();
+      return cell;
+    });
   }
 
   private _map(mapper: (_cell: GridCell) => GridCell): GridCellCollection {
