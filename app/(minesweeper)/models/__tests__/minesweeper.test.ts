@@ -61,6 +61,7 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(newBoard.getUnOpenedMineCount()).toBe(gameLevel.getMineCount());
   });
 
+  // TODO 테스트 수정 필요
   test('지뢰가 무작위로 배치된 이후 규칙에 따라 숫자 셸이 배치됩니다.', () => {
     // given
     const gameLevel = GameLevel.EASY;
@@ -78,21 +79,89 @@ describe('지뢰찾기 게임 규칙', () => {
     }
   });
 
-  test('섈을 클릭 시 지뢰일 경우 게임이 종료됩니다.', () => {
+  test('섈을 클릭 시 지뢰일 경우 게임이 종료됩니다. ', () => {
     // given
-    const gameLevel = GameLevel.EASY;
-    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
-    const opendBoard = board.openCell(GridCellPosition.of(0, 0));
-    const minePosition = opendBoard
-      .getCells()
-      .find((cell) => cell.isMine())!
-      .getPosition();
+    const gameLevel = GameLevel.VERY_EASY;
+    const board = DefaultBoard.of(
+      gameLevel,
+      GridCellCollection.of(gameLevel, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
 
     // when2
-    const newBoard = opendBoard.openCell(minePosition);
+    const newBoard = board.openCell(GridCellPosition.of(0, 1));
+
+    // then
+    const cell = newBoard.findCellByPosition(GridCellPosition.of(0, 1));
+    expect(newBoard.isGameOver()).toBeTruthy();
+    expect(cell.isOpened()).toBeTruthy();
+  });
+
+  test('셸 클릭 시 지뢰일 경우 게임이 종료되며 보드에 나와 있는 모든 지뢰 셸이 열립니다.', () => {
+    // given
+    const gameLevel = GameLevel.VERY_EASY;
+    const board = DefaultBoard.of(
+      gameLevel,
+      GridCellCollection.of(gameLevel, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // when
+    const newBoard = board.openCell(GridCellPosition.of(0, 1));
 
     // then
     expect(newBoard.isGameOver()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isOpened()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 2)).isOpened()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isOpened()).toBeTruthy();
   });
 
   test('셸을 클릭 시 지뢰가 아니며 인접한 지뢰가 있을 경우 인접한 지뢰의 개수가 표시됩니다.', () => {
