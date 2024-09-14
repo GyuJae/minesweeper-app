@@ -105,7 +105,7 @@ describe('지뢰찾기 게임 규칙', () => {
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
-          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(2, 3)),
         ],
         [
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
@@ -147,7 +147,7 @@ describe('지뢰찾기 게임 규칙', () => {
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
-          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(2, 3)),
         ],
         [
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
@@ -191,7 +191,7 @@ describe('지뢰찾기 게임 규칙', () => {
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
-          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(2, 3)),
         ],
         [
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
@@ -249,7 +249,7 @@ describe('지뢰찾기 게임 규칙', () => {
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
-          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(2, 3)),
         ],
         [
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
@@ -271,8 +271,8 @@ describe('지뢰찾기 게임 규칙', () => {
 
     expect(newBoard.findCellByPosition(GridCellPosition.of(1, 0)).isOpened()).toBeFalsy();
     expect(newBoard.findCellByPosition(GridCellPosition.of(1, 1)).isOpened()).toBeFalsy();
-    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 2)).isOpened()).toBeFalsy();
-    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 3)).isOpened()).toBeFalsy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 2)).isOpened()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 3)).isOpened()).toBeTruthy();
 
     expect(newBoard.findCellByPosition(GridCellPosition.of(2, 0)).isOpened()).toBeFalsy();
     expect(newBoard.findCellByPosition(GridCellPosition.of(2, 1)).isOpened()).toBeFalsy();
@@ -383,7 +383,7 @@ describe('지뢰찾기 게임 규칙', () => {
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
-          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(2, 3)),
         ],
         [
           GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
