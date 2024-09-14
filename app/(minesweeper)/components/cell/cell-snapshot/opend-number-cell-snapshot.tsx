@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 
 import { cn } from '@/libs/utils';
 
-import { Cell } from '../cell/cell.abstract';
-import { CellPosition } from '../cell-position/cell-position.abstract';
+import { Cell } from '../../../models/cell/cell.abstract';
+import { CellPosition } from '../../../models/cell-position/cell-position.abstract';
 import { CellSnapshot } from './cell-snapshot.interface';
 import { DefaultOpendCellSnapshot } from './default-opend-cell-snapshot';
 
@@ -14,12 +14,12 @@ export class OpendNumberCellSnapshot implements CellSnapshot {
     return new OpendNumberCellSnapshot(cell, position);
   }
 
-  private get _defaultSnapshot(): CellSnapshot {
+  private get _defaultOpendSnapshot(): CellSnapshot {
     return DefaultOpendCellSnapshot.of(this._position);
   }
 
   getClassname(): string {
-    return cn(this._defaultSnapshot.getClassname(), {
+    return cn(this._defaultOpendSnapshot.getClassname(), {
       'text-blue-600': this._cell.getNearbyMineCount() === 1,
       'text-green-600': this._cell.getNearbyMineCount() === 2,
       'text-red-600': this._cell.getNearbyMineCount() === 3,

@@ -1,10 +1,10 @@
 import { GridCellCollection } from '../cell-collection/grid-cell-collection';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
-import { CellSnapshot } from '../cell-snapshot/cell-snapshot.interface';
-import { ClosedCellSnapshot } from '../cell-snapshot/closed-cell-snapshot';
-import { OpendEmptyCellSnapshot } from '../cell-snapshot/opend-empty-cell-snapshot';
-import { OpendMineCellSnapshot } from '../cell-snapshot/opend-mine-cell-snapshot';
-import { OpendNumberCellSnapshot } from '../cell-snapshot/opend-number-cell-snapshot';
+import { CellSnapshot } from '../../components/cell/cell-snapshot/cell-snapshot.interface';
+import { ClosedCellSnapshot } from '../../components/cell/cell-snapshot/closed-cell-snapshot';
+import { OpendEmptyCellSnapshot } from '../../components/cell/cell-snapshot/opend-empty-cell-snapshot';
+import { OpendMineCellSnapshot } from '../../components/cell/cell-snapshot/opend-mine-cell-snapshot';
+import { OpendNumberCellSnapshot } from '../../components/cell/cell-snapshot/opend-number-cell-snapshot';
 import { CellState } from '../cell-state/cell-state.enum';
 import { CellType } from '../cell-type/cell-type.abstract';
 import { MineCellType } from '../cell-type/mine-cell-type';

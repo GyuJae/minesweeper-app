@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
-import { Cell } from '../cell/cell.abstract';
-import { CellPosition } from '../cell-position/cell-position.abstract';
+import { Cell } from '../../../models/cell/cell.abstract';
+import { CellPosition } from '../../../models/cell-position/cell-position.abstract';
 import { CellSnapshot } from './cell-snapshot.interface';
 import { DefaultOpendCellSnapshot } from './default-opend-cell-snapshot';
 
@@ -12,12 +12,12 @@ export class OpendMineCellSnapshot implements CellSnapshot {
     return new OpendMineCellSnapshot(cell, position);
   }
 
-  private get _defaultSnapshot(): CellSnapshot {
+  private get _defaultOpendSnapshot(): CellSnapshot {
     return DefaultOpendCellSnapshot.of(this._position);
   }
 
   getClassname(): string {
-    return this._defaultSnapshot.getClassname();
+    return this._defaultOpendSnapshot.getClassname();
   }
 
   getContent(): ReactNode {

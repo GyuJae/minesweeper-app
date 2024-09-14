@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 
-import { CellPosition } from '../cell-position/cell-position.abstract';
+import { cn } from '@/libs/utils';
+
+import { CellPosition } from '../../../models/cell-position/cell-position.abstract';
 import { CellSnapshot } from './cell-snapshot.interface';
 
 export class ClosedCellSnapshot implements CellSnapshot {
@@ -11,15 +13,14 @@ export class ClosedCellSnapshot implements CellSnapshot {
   }
 
   getClassname(): string {
-    return this._getClassnameByPosition();
+    return cn('size-full text-5xl font-semibold', {
+      'bg-green-500': this._isOddPosition(),
+      'bg-green-400': !this._isOddPosition(),
+    });
   }
 
   getContent(): ReactNode {
     return null;
-  }
-
-  private _getClassnameByPosition(): string {
-    return this._isOddPosition() ? 'bg-green-500' : 'bg-green-400';
   }
 
   private _isOddPosition(): boolean {

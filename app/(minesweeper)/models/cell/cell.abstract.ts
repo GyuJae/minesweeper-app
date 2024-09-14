@@ -1,5 +1,5 @@
 import { CellPosition } from '../cell-position/cell-position.abstract';
-import { CellSnapshot } from '../cell-snapshot/cell-snapshot.interface';
+import { CellSnapshot } from '../../components/cell/cell-snapshot/cell-snapshot.interface';
 import { CellState } from '../cell-state/cell-state.enum';
 
 export abstract class Cell {

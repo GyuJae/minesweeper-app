@@ -33,8 +33,7 @@ const Cell = ({ cell, onClick }: Properties) => {
         'text-slate-700': !cell.isMine() && cell.getNearbyMineCount() >= 4,
       })}
     >
-      {cell.isOpened() ? cell.toString() : ''}
-      {cell.isOpened() && cell.isMine() ? '💣' : ''}
+      {cell.getSnapshot().getContent()}
     </motion.button>
   );
 };

@@ -2,10 +2,10 @@ import { describe, expect, test } from 'vitest';
 
 import { GridCell } from '../cell/grid-cell';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
-import { ClosedCellSnapshot } from '../cell-snapshot/closed-cell-snapshot';
-import { OpendEmptyCellSnapshot } from '../cell-snapshot/opend-empty-cell-snapshot';
-import { OpendMineCellSnapshot } from '../cell-snapshot/opend-mine-cell-snapshot';
-import { OpendNumberCellSnapshot } from '../cell-snapshot/opend-number-cell-snapshot';
+import { ClosedCellSnapshot } from '../../components/cell/cell-snapshot/closed-cell-snapshot';
+import { OpendEmptyCellSnapshot } from '../../components/cell/cell-snapshot/opend-empty-cell-snapshot';
+import { OpendMineCellSnapshot } from '../../components/cell/cell-snapshot/opend-mine-cell-snapshot';
+import { OpendNumberCellSnapshot } from '../../components/cell/cell-snapshot/opend-number-cell-snapshot';
 import { CellState } from '../cell-state/cell-state.enum';
 import { EmptyCellType } from '../cell-type/empty-cell-type';
 import { MineCellType } from '../cell-type/mine-cell-type';
