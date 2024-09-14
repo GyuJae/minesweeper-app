@@ -1,4 +1,5 @@
 import { CellPosition } from '../cell-position/cell-position.abstract';
+import { CellSnapshot } from '../cell-snapshot/cell-snapshot.interface';
 import { CellState } from '../cell-state/cell-state.enum';
 
 export abstract class Cell {
@@ -14,6 +15,7 @@ export abstract class Cell {
   abstract updatedToMine(): Cell;
   abstract flag(): Cell;
   abstract unflag(): Cell;
+  abstract getSnapshot(): CellSnapshot;
   isSafeCell(): boolean {
     return !this.isMine();
   }

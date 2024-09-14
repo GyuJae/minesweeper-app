@@ -7,6 +7,7 @@ import { OpendEmptyCellSnapshot } from '../cell-snapshot/opend-empty-cell-snapsh
 import { OpendMineCellSnapshot } from '../cell-snapshot/opend-mine-cell-snapshot';
 import { OpendNumberCellSnapshot } from '../cell-snapshot/opend-number-cell-snapshot';
 import { CellState } from '../cell-state/cell-state.enum';
+import { EmptyCellType } from '../cell-type/empty-cell-type';
 import { MineCellType } from '../cell-type/mine-cell-type';
 import { NumberCellType } from '../cell-type/number-cell-type';
 
@@ -46,7 +47,7 @@ describe('Cell - CellSnapshot', () => {
 
   test('주변에 지뢰가 없는 열린 셀은 비어 있는 상태로 표시된다.', () => {
     // given
-    const cell = GridCell.of(CellState.OPENED, NumberCellType.of(0), GridCellPosition.of(0, 0));
+    const cell = GridCell.of(CellState.OPENED, EmptyCellType.of(), GridCellPosition.of(0, 0));
 
     // when
     const snapshot = cell.getSnapshot();

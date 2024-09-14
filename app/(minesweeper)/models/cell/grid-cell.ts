@@ -1,5 +1,10 @@
 import { GridCellCollection } from '../cell-collection/grid-cell-collection';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
+import { CellSnapshot } from '../cell-snapshot/cell-snapshot.interface';
+import { ClosedCellSnapshot } from '../cell-snapshot/closed-cell-snapshot';
+import { OpendEmptyCellSnapshot } from '../cell-snapshot/opend-empty-cell-snapshot';
+import { OpendMineCellSnapshot } from '../cell-snapshot/opend-mine-cell-snapshot';
+import { OpendNumberCellSnapshot } from '../cell-snapshot/opend-number-cell-snapshot';
 import { CellState } from '../cell-state/cell-state.enum';
 import { CellType } from '../cell-type/cell-type.abstract';
 import { MineCellType } from '../cell-type/mine-cell-type';
@@ -69,6 +74,13 @@ export class GridCell extends Cell {
 
   override toString(): string {
     return this.isNumber() ? this.getNearbyMineCount().toString() : '';
+  }
+
+  override getSnapshot(): CellSnapshot {
+    if (this.isClosed()) return ClosedCellSnapshot.of(this._position);
+    if (this.isMine()) return OpendMineCellSnapshot.of(this, this._position);
+    if (this.isNumber()) return OpendNumberCellSnapshot.of(this, this._position);
+    return OpendEmptyCellSnapshot.of(this._position);
   }
 
   getAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): number {
