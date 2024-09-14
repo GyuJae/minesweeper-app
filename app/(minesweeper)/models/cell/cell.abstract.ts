@@ -1,5 +1,7 @@
-import { CellPosition } from '../cell-position/cell-position.abstract';
+import { ReactNode } from 'react';
+
 import { CellSnapshot } from '../../components/cell/cell-snapshot/cell-snapshot.interface';
+import { CellPosition } from '../cell-position/cell-position.abstract';
 import { CellState } from '../cell-state/cell-state.enum';
 
 export abstract class Cell {
@@ -16,9 +18,14 @@ export abstract class Cell {
   abstract flag(): Cell;
   abstract unflag(): Cell;
   abstract getSnapshot(): CellSnapshot;
+
+  abstract getContent(): ReactNode;
+
+  abstract getClassname(): string;
+
+  abstract toString(): string;
+
   isSafeCell(): boolean {
     return !this.isMine();
   }
-
-  abstract toString(): string;
 }

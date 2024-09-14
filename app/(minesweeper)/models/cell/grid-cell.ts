@@ -1,10 +1,12 @@
-import { GridCellCollection } from '../cell-collection/grid-cell-collection';
-import { GridCellPosition } from '../cell-position/grid-cell-position';
+import { ReactNode } from 'react';
+
 import { CellSnapshot } from '../../components/cell/cell-snapshot/cell-snapshot.interface';
 import { ClosedCellSnapshot } from '../../components/cell/cell-snapshot/closed-cell-snapshot';
 import { OpendEmptyCellSnapshot } from '../../components/cell/cell-snapshot/opend-empty-cell-snapshot';
 import { OpendMineCellSnapshot } from '../../components/cell/cell-snapshot/opend-mine-cell-snapshot';
 import { OpendNumberCellSnapshot } from '../../components/cell/cell-snapshot/opend-number-cell-snapshot';
+import { GridCellCollection } from '../cell-collection/grid-cell-collection';
+import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { CellState } from '../cell-state/cell-state.enum';
 import { CellType } from '../cell-type/cell-type.abstract';
 import { MineCellType } from '../cell-type/mine-cell-type';
@@ -81,6 +83,14 @@ export class GridCell extends Cell {
     if (this.isMine()) return OpendMineCellSnapshot.of(this, this._position);
     if (this.isNumber()) return OpendNumberCellSnapshot.of(this, this._position);
     return OpendEmptyCellSnapshot.of(this._position);
+  }
+
+  override getContent(): ReactNode {
+    return this.getSnapshot().getContent();
+  }
+
+  override getClassname(): string {
+    return this.getSnapshot().getClassname();
   }
 
   getAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): number {

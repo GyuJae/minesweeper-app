@@ -4,6 +4,7 @@ import { cn } from '@/libs/utils';
 
 import { CellPosition } from '../../../models/cell-position/cell-position.abstract';
 import { CellSnapshot } from './cell-snapshot.interface';
+import { DefaultCellSnapshot } from './default-cell-snapshot';
 
 export class ClosedCellSnapshot implements CellSnapshot {
   private constructor(private readonly _position: CellPosition) {}
@@ -12,8 +13,12 @@ export class ClosedCellSnapshot implements CellSnapshot {
     return new ClosedCellSnapshot(position);
   }
 
+  private _getDefaultCellSnapshot(): DefaultCellSnapshot {
+    return DefaultCellSnapshot.of();
+  }
+
   getClassname(): string {
-    return cn('size-full text-5xl font-semibold', {
+    return cn(this._getDefaultCellSnapshot().getClassname(), {
       'bg-green-500': this._isOddPosition(),
       'bg-green-400': !this._isOddPosition(),
     });
@@ -24,6 +29,6 @@ export class ClosedCellSnapshot implements CellSnapshot {
   }
 
   private _isOddPosition(): boolean {
-    return this._position.getColumn() % 2 !== 0;
+    return (this._position.getColumn() + this._position.getRow()) % 2 !== 0;
   }
 }
