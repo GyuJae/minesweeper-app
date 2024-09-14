@@ -16,6 +16,7 @@
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "unicorn/no-array-callback-reference": "off",
-    "unicorn/consistent-function-scoping": "off"
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/no-null": "off"
   }
 }

@@ -29,7 +29,7 @@ const Board: FC<Properties> = ({ defaultBoard }) => {
             <tr key={row[0].getPosition().getRow()} className='grid grid-cols-4'>
               {row.map((cell) => (
                 <td key={cell.getPosition().toString()} className='p-0'>
-                  <Cell cell={cell} onClick={() => onClickCell(cell)} role='button' />
+                  <Cell cell={cell} onClick={() => onClickCell(cell)} />
                 </td>
               ))}
             </tr>
