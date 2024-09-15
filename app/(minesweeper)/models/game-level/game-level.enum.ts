@@ -8,13 +8,18 @@ export class GameLevel extends EnumType<GameLevel>() {
   static readonly HARD = new GameLevel('어려움', 16, 30, 99);
 
   constructor(
-    private readonly name: string,
+    public readonly name: string,
     private readonly _rowSize: number,
     private readonly _columnSize: number,
     private readonly _mineCount: number,
   ) {
     super();
   }
+
+  equals(other: GameLevel): boolean {
+    return this === other;
+  }
+
   getMineCount(): number {
     return this._mineCount;
   }
@@ -27,7 +32,15 @@ export class GameLevel extends EnumType<GameLevel>() {
     return this._columnSize;
   }
 
-  equals(other: GameLevel): boolean {
-    return this === other;
+  getName(): string {
+    return this.name;
+  }
+
+  static findDefaultLevel(): GameLevel {
+    return GameLevel.NORMAL;
+  }
+
+  static findAllLevels(): GameLevel[] {
+    return [GameLevel.VERY_EASY, GameLevel.EASY, GameLevel.NORMAL, GameLevel.HARD];
   }
 }

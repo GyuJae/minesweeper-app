@@ -21,6 +21,6 @@ export class OpendMineCellSnapshot implements CellSnapshot {
   }
 
   getContent(): ReactNode {
-    return <div>💣</div>;
+    return <div className='m-auto size-1/3 rounded-full bg-black/70' />;
   }
 }

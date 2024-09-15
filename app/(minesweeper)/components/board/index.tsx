@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 import { cn } from '@/libs/utils';
 
@@ -10,17 +10,11 @@ import { GameLevel } from '../../models/game-level/game-level.enum';
 import Cell from '../cell';
 
 interface Properties {
-  defaultBoard: BoardModel;
+  board: BoardModel;
+  onClickCell: (_cell: CellModel) => void;
 }
 
-const Board: FC<Properties> = ({ defaultBoard }) => {
-  const [board, setBoard] = useState(defaultBoard);
-
-  const onClickCell = (cell: CellModel) => {
-    const newBoard = board.openCell(cell.getPosition());
-    setBoard(newBoard);
-  };
-
+const Board: FC<Properties> = ({ board, onClickCell }) => {
   return (
     <table>
       <tbody

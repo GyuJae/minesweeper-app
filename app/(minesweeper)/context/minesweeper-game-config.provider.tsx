@@ -12,8 +12,14 @@ interface MinesweeperGameConfigValue {
 
 const MinesweeperGameConfig = createContext<MinesweeperGameConfigValue | undefined>(undefined);
 
-export const MinesweeperGameConfigProvider = ({ children }: { children: ReactNode }) => {
-  const [gameLevel, setGameLevel] = useState<GameLevel>(GameLevel.HARD);
+export const MinesweeperGameConfigProvider = ({
+  children,
+  gameLevel: defaultGameLevel,
+}: {
+  children: ReactNode;
+  gameLevel?: GameLevel;
+}) => {
+  const [gameLevel, setGameLevel] = useState<GameLevel>(defaultGameLevel ?? GameLevel.NORMAL);
   const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.READY);
 
   const value: MinesweeperGameConfigValue = {
