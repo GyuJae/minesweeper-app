@@ -27,10 +27,7 @@ export const MinesweeperGameConfigProvider = ({
   const timer = useTimer();
 
   useEffect(() => {
-    if (gameStatus.equals(GameStatus.PLAYING)) timer.start();
-    else if (gameStatus.equals(GameStatus.END)) timer.stop();
-    else if (gameStatus.equals(GameStatus.READY)) timer.reset();
-    else if (gameStatus.equals(GameStatus.PAUSED)) timer.stop();
+    gameStatus.timerExecute(timer);
   }, [gameStatus, timer]);
 
   const value: MinesweeperGameConfigValue = {
