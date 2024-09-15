@@ -25,7 +25,10 @@ export default function Minesweeper() {
         gameConfigContext.setGameStatus(GameStatus.PLAYING);
       })
       .ifGameOver(() => {
-        gameConfigContext.setGameStatus(GameStatus.END);
+        gameConfigContext.setGameStatus(GameStatus.GAME_OVER);
+      })
+      .ifGameClear(() => {
+        gameConfigContext.setGameStatus(GameStatus.CLEAR);
       });
   };
 
@@ -36,7 +39,7 @@ export default function Minesweeper() {
   return (
     <div className='flex h-screen items-center justify-center'>
       <div>
-        {gameConfigContext.gameStatus.getName()} {gameConfigContext.overseconds}
+        {gameConfigContext.gameStatus.getName()} {gameConfigContext.overSeconds}
       </div>
       <div>
         <GameLevelSelect

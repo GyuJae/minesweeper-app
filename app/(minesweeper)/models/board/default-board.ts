@@ -63,15 +63,15 @@ export class DefaultBoard extends Board {
   }
 
   override toggleFlag(position: GridCellPosition): DefaultBoard {
-    return this.findCellByPosition(position).isFlagged() ? this._unflag(position) : this._flag(position);
+    return this.findCellByPosition(position).isFlagged() ? this._unFlag(position) : this._flag(position);
   }
 
   private _flag(position: GridCellPosition): DefaultBoard {
     return DefaultBoard.of(this._gameLevel, this._cells.flag(position));
   }
 
-  private _unflag(position: GridCellPosition): DefaultBoard {
-    return DefaultBoard.of(this._gameLevel, this._cells.unflag(position));
+  private _unFlag(position: GridCellPosition): DefaultBoard {
+    return DefaultBoard.of(this._gameLevel, this._cells.unFlag(position));
   }
 
   override getRemainingFlagCount(): number {
@@ -89,6 +89,11 @@ export class DefaultBoard extends Board {
 
   override ifGameOver(callback: () => void): DefaultBoard {
     if (this.isGameOver()) callback();
+    return this;
+  }
+
+  override ifGameClear(callback: () => void): DefaultBoard {
+    if (this.isGameClear()) callback();
     return this;
   }
 }

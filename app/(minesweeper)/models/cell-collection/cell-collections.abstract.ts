@@ -5,7 +5,7 @@ import { CellPositionCollection } from '../cell-position-collection/cell-positio
 
 export abstract class CellCollection {
   abstract getFlagCount(): number;
-  abstract unflag(_position: GridCellPosition): CellCollection;
+  abstract unFlag(_position: GridCellPosition): CellCollection;
   abstract flag(_position: GridCellPosition): CellCollection;
   abstract find(_predicate: (_cell: Cell) => boolean): Cell | undefined;
   abstract findCellByPosition(_cellPosition: CellPosition): Cell;

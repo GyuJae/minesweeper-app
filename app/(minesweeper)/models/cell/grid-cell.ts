@@ -71,7 +71,7 @@ export class GridCell extends Cell {
     return GridCell.of(CellState.FLAGGED, this._cellType, this._position);
   }
 
-  override unflag(): GridCell {
+  override unFlag(): GridCell {
     return GridCell.of(CellState.CLOSED, this._cellType, this._position);
   }
 

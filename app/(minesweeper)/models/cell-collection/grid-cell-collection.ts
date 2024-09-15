@@ -14,7 +14,7 @@ export class GridCellCollection extends CellCollection {
   private constructor(
     private readonly _gameLevel: GameLevel,
     private readonly _cells: GridCell[][],
-    private readonly _firstCellOpend: boolean = false,
+    private readonly _firstCellOpened: boolean = false,
   ) {
     super();
   }
@@ -26,9 +26,9 @@ export class GridCellCollection extends CellCollection {
         GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(row, col)),
       ),
     ),
-    firstCellOpend: boolean = false,
+    firstCellOpened: boolean = false,
   ): GridCellCollection {
-    return new GridCellCollection(gameLevel, cells, firstCellOpend);
+    return new GridCellCollection(gameLevel, cells, firstCellOpened);
   }
 
   override getRows(): GridCell[][] {
@@ -44,7 +44,7 @@ export class GridCellCollection extends CellCollection {
   }
 
   override openCell(position: GridCellPosition): GridCellCollection {
-    let newFirstCellOpened = this._firstCellOpend;
+    let newFirstCellOpened = this._firstCellOpened;
 
     if (this.isAllClosed()) {
       newFirstCellOpened = true;
@@ -110,13 +110,13 @@ export class GridCellCollection extends CellCollection {
     return GridCellCollection._updatedCellByPosition(this, position, updatedCell);
   }
 
-  override unflag(position: GridCellPosition): GridCellCollection {
+  override unFlag(position: GridCellPosition): GridCellCollection {
     const cell = this.findCellByPosition(position);
     if (!cell.isFlagged()) {
       throw GameException.of('깃발이 꽂힌 셀이 아닙니다.');
     }
 
-    return GridCellCollection._updatedCellByPosition(this, position, cell.unflag());
+    return GridCellCollection._updatedCellByPosition(this, position, cell.unFlag());
   }
   override areAllSafeCellsOpened(): boolean {
     return this.filter((cell) => cell.isSafeCell())._every((cell) => cell.isOpened());
@@ -127,7 +127,7 @@ export class GridCellCollection extends CellCollection {
   }
 
   override isFirstOpenedCell(): boolean {
-    return this._firstCellOpend;
+    return this._firstCellOpened;
   }
 
   private _getSize(): number {

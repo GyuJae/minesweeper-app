@@ -16,7 +16,7 @@ export abstract class Cell {
   abstract isClosed(): boolean;
   abstract updatedToMine(): Cell;
   abstract flag(): Cell;
-  abstract unflag(): Cell;
+  abstract unFlag(): Cell;
   abstract getSnapshot(): CellSnapshot;
 
   abstract getContent(): ReactNode;

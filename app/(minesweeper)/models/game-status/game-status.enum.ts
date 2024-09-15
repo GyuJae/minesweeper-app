@@ -12,7 +12,8 @@ export class GameStatus extends EnumType<GameStatus>() {
   static readonly READY = new GameStatus('게임 시작 전', ResetTimerCommand.of());
   static readonly PLAYING = new GameStatus('진행 중', StartTimerCommand.of());
   static readonly PAUSED = new GameStatus('일시 정지', StopTimerCommand.of());
-  static readonly END = new GameStatus('게임 종료', StopTimerCommand.of());
+  static readonly GAME_OVER = new GameStatus('게임 종료', StopTimerCommand.of());
+  static readonly CLEAR = new GameStatus('게임 클리어', StopTimerCommand.of());
 
   private constructor(public readonly name: string, private readonly _timerCommand: TimerCommand) {
     super();

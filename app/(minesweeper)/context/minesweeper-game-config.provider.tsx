@@ -10,7 +10,7 @@ interface MinesweeperGameConfigValue {
   setGameLevel: (_gameLevel: GameLevel) => void;
   gameStatus: GameStatus;
   setGameStatus: (_gameStatus: GameStatus) => void;
-  overseconds: number;
+  overSeconds: number;
 }
 
 const MinesweeperGameConfig = createContext<MinesweeperGameConfigValue | undefined>(undefined);
@@ -35,7 +35,7 @@ export const MinesweeperGameConfigProvider = ({
     setGameLevel,
     gameStatus,
     setGameStatus,
-    overseconds: timer.seconds,
+    overSeconds: timer.seconds,
   };
 
   return <MinesweeperGameConfig.Provider value={value}>{children}</MinesweeperGameConfig.Provider>;
