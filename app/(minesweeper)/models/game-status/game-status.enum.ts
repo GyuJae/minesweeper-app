@@ -7,7 +7,11 @@ export class GameStatus extends EnumType<GameStatus>() {
   static readonly PAUSED = new GameStatus('일시 정지');
   static readonly END = new GameStatus('게임 종료');
 
-  private constructor(private readonly name: string) {
+  private constructor(public readonly name: string) {
     super();
+  }
+
+  getName(): string {
+    return this.name;
   }
 }

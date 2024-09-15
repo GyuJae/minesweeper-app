@@ -82,4 +82,9 @@ export class DefaultBoard extends Board {
     if (this._cells.isFirstOpenedCell()) callback();
     return this;
   }
+
+  override ifGameOver(callback: () => void): DefaultBoard {
+    if (this.isGameOver()) callback();
+    return this;
+  }
 }

@@ -21,4 +21,5 @@ export abstract class Board {
   abstract getRemainingFlagCount(): number;
   abstract getGameLevel(): GameLevel;
   abstract ifFirstOpenedCell(_callback: () => void): Board;
+  abstract ifGameOver(_callback: () => void): Board;
 }

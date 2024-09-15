@@ -6,7 +6,7 @@ import { useMinesweeperBoard } from './context/minesweeper-board.provider';
 import { useMinesweeperGameConfig } from './context/minesweeper-game-config.provider';
 import { Cell } from './models/cell/cell.abstract';
 import { GameLevel } from './models/game-level/game-level.enum';
-import { GameStatus } from './models/game-status/game-phase.enum';
+import { GameStatus } from './models/game-status/game-status.enum';
 
 export default function Minesweeper() {
   const gameConfigContext = useMinesweeperGameConfig();
@@ -19,13 +19,19 @@ export default function Minesweeper() {
   };
 
   const onClickCell = (cell: Cell) => {
-    boardContext.openCell(cell.getPosition()).ifFirstOpenedCell(() => {
-      gameConfigContext.setGameStatus(GameStatus.PLAYING);
-    });
+    boardContext
+      .openCell(cell.getPosition())
+      .ifFirstOpenedCell(() => {
+        gameConfigContext.setGameStatus(GameStatus.PLAYING);
+      })
+      .ifGameOver(() => {
+        gameConfigContext.setGameStatus(GameStatus.END);
+      });
   };
 
   return (
     <div className='flex h-screen items-center justify-center'>
+      <div>{gameConfigContext.gameStatus.getName()}</div>
       <div>
         <GameLevelSelect options={GameLevel.findAllLevels()} onChangeLevel={onChangeGameLevel} />
       </div>

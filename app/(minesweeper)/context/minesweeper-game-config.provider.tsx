@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 import { GameLevel } from '../models/game-level/game-level.enum';
-import { GameStatus } from '../models/game-status/game-phase.enum';
+import { GameStatus } from '../models/game-status/game-status.enum';
 
 interface MinesweeperGameConfigValue {
   gameLevel: GameLevel;
