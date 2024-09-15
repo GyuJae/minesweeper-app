@@ -39,8 +39,14 @@ export class GridCellCollection extends CellCollection {
   }
 
   override openCell(position: GridCellPosition): GridCellCollection {
-    if (this.isAllClosed()) return GridCellCollection._updateInitialMineCells(this, position)._openCell(position);
+    if (this.isAllClosed() && this._isNoMineCell()) {
+      return GridCellCollection._updateInitialMineCells(this, position)._openCell(position);
+    }
     return this._openCell(position);
+  }
+
+  private _isNoMineCell(): boolean {
+    return this._every((cell) => !cell.isMine());
   }
 
   private static _updateInitialMineCells(cells: GridCellCollection, position: GridCellPosition): GridCellCollection {
@@ -107,6 +113,7 @@ export class GridCellCollection extends CellCollection {
     return this.filter((cell) => cell.isFlagged())._getSize();
   }
 
+  // TODO 수정이 필요한 메서드 꼭 처음에는 하나만 열린다는 보장이 없음
   override isFirstOpenedCell(): boolean {
     return this.filter((cell) => cell.isOpened())._getSize() === 1;
   }
