@@ -1,17 +1,17 @@
 import { Cell } from '../cell/cell.abstract';
 import { CellCollection } from '../cell-collection/cell-collections.abstract';
-import { CellPosition } from '../cell-position/cell-position.abstract';
+import { GridCellCollection } from '../cell-collection/grid-cell-collection';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { GameLevel } from '../game-level/game-level.enum';
 import { Board } from './board.abstract';
 
 export class DefaultBoard extends Board {
-  private constructor(private readonly _gameLevel: GameLevel, private readonly _cells: CellCollection) {
+  private constructor(private readonly _gameLevel: GameLevel, private readonly _cells: GridCellCollection) {
     super();
   }
 
-  static of(gameLevel: GameLevel, cells: CellCollection): DefaultBoard {
-    return new DefaultBoard(gameLevel, cells);
+  static of(gameLevel: GameLevel, cells?: GridCellCollection): DefaultBoard {
+    return new DefaultBoard(gameLevel, cells ?? GridCellCollection.of(gameLevel));
   }
 
   override getCandidateMineCount(): number {
@@ -34,11 +34,11 @@ export class DefaultBoard extends Board {
     return this._cells.hasUnopenedMines();
   }
 
-  override openCell(position: CellPosition): Board {
+  override openCell(position: GridCellPosition): Board {
     return DefaultBoard.of(this._gameLevel, this._cells.openCell(position));
   }
 
-  override isOpenedCell(position: CellPosition): boolean {
+  override isOpenedCell(position: GridCellPosition): boolean {
     return this._cells.isOpenedCell(position);
   }
 
@@ -46,7 +46,7 @@ export class DefaultBoard extends Board {
     return this._cells.getUnOpenedMineCount();
   }
 
-  override findCellByPosition(cellPosition: CellPosition): Cell {
+  override findCellByPosition(cellPosition: GridCellPosition): Cell {
     return this._cells.findCellByPosition(cellPosition);
   }
 
@@ -72,5 +72,9 @@ export class DefaultBoard extends Board {
 
   override getRemainingFlagCount(): number {
     return this._gameLevel.getMineCount() - this._cells.getFlagCount();
+  }
+
+  override getGameLevel(): GameLevel {
+    return this._gameLevel;
   }
 }

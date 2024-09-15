@@ -16,7 +16,7 @@ describe('지뢰찾기 게임 규칙', () => {
     const gameLevel = GameLevel.EASY;
 
     // when
-    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+    const board = DefaultBoard.of(gameLevel);
 
     // then
     expect(board.getRowSize()).toBe(gameLevel.getRowSize());
@@ -28,7 +28,7 @@ describe('지뢰찾기 게임 규칙', () => {
     const gameLevel = GameLevel.EASY;
 
     // when
-    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+    const board = DefaultBoard.of(gameLevel);
 
     // then
     for (const cell of board.getCells()) {
@@ -41,7 +41,7 @@ describe('지뢰찾기 게임 규칙', () => {
     const gameLevel = GameLevel.EASY;
 
     // when
-    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+    const board = DefaultBoard.of(gameLevel);
 
     // then
     for (const cell of board.getCells()) {
@@ -53,7 +53,7 @@ describe('지뢰찾기 게임 규칙', () => {
   test('처음 셸이 열리는 경우에 지뢰가 무작위로 배치됩니다.', () => {
     // given
     const gameLevel = GameLevel.EASY;
-    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+    const board = DefaultBoard.of(gameLevel);
     const position = GridCellPosition.of(0, 0);
 
     // when
@@ -69,7 +69,7 @@ describe('지뢰찾기 게임 규칙', () => {
   test('지뢰가 무작위로 배치된 이후 규칙에 따라 숫자 셸이 배치됩니다.', () => {
     // given
     const gameLevel = GameLevel.EASY;
-    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
+    const board = DefaultBoard.of(gameLevel);
     const position = GridCellPosition.of(0, 0);
 
     // when

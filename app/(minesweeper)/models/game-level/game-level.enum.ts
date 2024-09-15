@@ -26,4 +26,8 @@ export class GameLevel extends EnumType<GameLevel>() {
   getColumnSize(): number {
     return this._columnSize;
   }
+
+  equals(other: GameLevel): boolean {
+    return this === other;
+  }
 }

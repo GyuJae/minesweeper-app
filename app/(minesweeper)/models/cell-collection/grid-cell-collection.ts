@@ -38,7 +38,7 @@ export class GridCellCollection extends CellCollection {
     return this._cells.flat().some((cell) => cell.isMine() && cell.isClosed());
   }
 
-  override openCell(position: GridCellPosition): CellCollection {
+  override openCell(position: GridCellPosition): GridCellCollection {
     if (this.isAllClosed()) return GridCellCollection._updateInitialMineCells(this, position)._openCell(position);
     return this._openCell(position);
   }

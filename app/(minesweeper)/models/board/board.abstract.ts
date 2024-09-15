@@ -1,6 +1,7 @@
 import { Cell } from '../cell/cell.abstract';
 import { CellCollection } from '../cell-collection/cell-collections.abstract';
 import { CellPosition } from '../cell-position/cell-position.abstract';
+import { GameLevel } from '../game-level/game-level.enum';
 
 export abstract class Board {
   abstract findCellByPosition(_cellPosition: CellPosition): Cell;
@@ -18,4 +19,5 @@ export abstract class Board {
   abstract flag(_position: CellPosition): Board;
   abstract unflag(_position: CellPosition): Board;
   abstract getRemainingFlagCount(): number;
+  abstract getGameLevel(): GameLevel;
 }

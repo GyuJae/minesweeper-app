@@ -8,7 +8,7 @@ export class DefaultCellSnapshot implements CellSnapshot {
   }
 
   getClassname(): string {
-    return 'size-full text-5xl font-semibold';
+    return '';
   }
 
   getContent(): ReactNode {
