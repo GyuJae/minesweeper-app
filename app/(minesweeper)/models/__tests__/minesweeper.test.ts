@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@/libs/test';
+import { describe, expect, test, vi } from '@/libs/test';
 
 import { DefaultBoard } from '../board/default-board';
 import { GridCell } from '../cell/grid-cell';
@@ -516,7 +516,7 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(newBoard.getRemainingFlagCount()).toBe(gameLevel.getMineCount() - 2);
   });
 
-  test('처음 숫자 셸을 클릭하여 열린 경우 처음 열린 경우로 인식됩니다.', () => {
+  test('모든 셸이 닫힌 상태에서 처음 숫자 셸을 클릭하여 열린 경우 처음 열린 경우로 확인할 수 있습니다.', () => {
     // given
     const board = DefaultBoard.of(
       GameLevel.VERY_EASY,
@@ -547,10 +547,13 @@ describe('지뢰찾기 게임 규칙', () => {
         ],
       ]),
     );
+    const newBoard = board.openCell(GridCellPosition.of(0, 0));
+    const mockCallback = vi.fn();
 
     // when
+    newBoard.ifFirstOpenedCell(mockCallback);
 
     // then
-    expect(board.isGameClear()).toBeFalsy();
+    expect(mockCallback).toHaveBeenCalled();
   });
 });
