@@ -173,6 +173,7 @@ export class GridCellCollection extends CellCollection {
     const cell = this.findCellByPosition(position);
     if (cell.isOpened()) return this;
     if (cell.isMine()) return this._updatedMineCellAllOpened();
+    if (cell.isFlagged()) throw GameException.of('깃발이 꽂힌 셀은 열 수 없습니다.');
 
     const openedCell = cell.open();
     let updatedCollection = GridCellCollection._updatedCellByPosition(this, position, openedCell);
