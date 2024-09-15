@@ -186,6 +186,7 @@ export class GridCellCollection extends CellCollection {
       const adjacentCell = this.findCellByPosition(adjacentPosition);
       if (adjacentCell.isMine()) continue;
       if (adjacentCell.isOpened()) continue;
+      if (adjacentCell.isFlagged()) continue;
 
       updatedCollection = updatedCollection._openCell(adjacentPosition);
     }

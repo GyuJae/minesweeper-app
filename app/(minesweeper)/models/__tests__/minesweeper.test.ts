@@ -661,6 +661,6 @@ describe('지뢰찾기 게임 규칙', () => {
     const newBoard = board.openCell(GridCellPosition.of(3, 3));
 
     // then
-    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 2)).isClosed()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 2)).isFlagged()).toBeTruthy();
   });
 });

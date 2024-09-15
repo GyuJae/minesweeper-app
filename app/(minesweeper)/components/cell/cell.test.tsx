@@ -14,9 +14,10 @@ describe('Cell 컴포넌트 테스트', () => {
     // when
     render(
       <Cell
-        onClick={() => {}}
         gameLevel={GameLevel.EASY}
         cell={GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(0, 0))}
+        onClick={() => {}}
+        onContextMenu={() => {}}
       />,
     );
 
