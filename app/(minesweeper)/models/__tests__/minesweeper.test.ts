@@ -65,6 +65,63 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(newBoard.getUnOpenedMineCount()).toBe(gameLevel.getMineCount());
   });
 
+  test('처음 셸이 열리는 경우에도 지뢰가 이미 배치되어 있다면 지뢰는 다시 배치되지 않습니다.', () => {
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // when
+    const newBoard = board.openCell(GridCellPosition.of(0, 0));
+
+    // then
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isOpened()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).getNearbyMineCount()).toBe(1);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isMine()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 2)).isMine()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 3)).getNearbyMineCount()).toBe(1);
+
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 0)).getNearbyMineCount()).toBe(1);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 1)).getNearbyMineCount()).toBe(2);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 2)).getNearbyMineCount()).toBe(2);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(1, 3)).getNearbyMineCount()).toBe(1);
+
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 0)).getNearbyMineCount()).toBe(1);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 1)).getNearbyMineCount()).toBe(1);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 2)).getNearbyMineCount()).toBe(1);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(2, 3)).getNearbyMineCount()).toBe(0);
+
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 0)).getNearbyMineCount()).toBe(1);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isMine()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 2)).getNearbyMineCount()).toBe(1);
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 3)).getNearbyMineCount()).toBe(0);
+  });
+
   // TODO 테스트 수정 필요
   test('지뢰가 무작위로 배치된 이후 규칙에 따라 숫자 셸이 배치됩니다.', () => {
     // given
@@ -457,5 +514,43 @@ describe('지뢰찾기 게임 규칙', () => {
 
     // then
     expect(newBoard.getRemainingFlagCount()).toBe(gameLevel.getMineCount() - 2);
+  });
+
+  test('처음 숫자 셸을 클릭하여 열린 경우 처음 열린 경우로 인식됩니다.', () => {
+    // given
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // when
+
+    // then
+    expect(board.isGameClear()).toBeFalsy();
   });
 });
