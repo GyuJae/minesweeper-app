@@ -31,9 +31,15 @@ export default function Minesweeper() {
 
   return (
     <div className='flex h-screen items-center justify-center'>
-      <div>{gameConfigContext.gameStatus.getName()}</div>
       <div>
-        <GameLevelSelect options={GameLevel.findAllLevels()} onChangeLevel={onChangeGameLevel} />
+        {gameConfigContext.gameStatus.getName()} {gameConfigContext.overseconds}
+      </div>
+      <div>
+        <GameLevelSelect
+          options={GameLevel.findAllLevels()}
+          onChangeLevel={onChangeGameLevel}
+          selectedOption={gameConfigContext.gameLevel}
+        />
       </div>
       <Board board={boardContext.board} onClickCell={onClickCell} />
     </div>

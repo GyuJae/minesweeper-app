@@ -14,4 +14,8 @@ export class GameStatus extends EnumType<GameStatus>() {
   getName(): string {
     return this.name;
   }
+
+  equals(other: GameStatus): boolean {
+    return this === other;
+  }
 }
