@@ -11,7 +11,11 @@ import { GameLevel } from '../game-level/game-level.enum';
 import { CellCollection } from './cell-collections.abstract';
 
 export class GridCellCollection extends CellCollection {
-  private constructor(private readonly _gameLevel: GameLevel, private readonly _cells: GridCell[][]) {
+  private constructor(
+    private readonly _gameLevel: GameLevel,
+    private readonly _cells: GridCell[][],
+    private readonly _firstCellOpend: boolean = false,
+  ) {
     super();
   }
 
@@ -22,8 +26,9 @@ export class GridCellCollection extends CellCollection {
         GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(row, col)),
       ),
     ),
+    firstCellOpend: boolean = false,
   ): GridCellCollection {
-    return new GridCellCollection(gameLevel, cells);
+    return new GridCellCollection(gameLevel, cells, firstCellOpend);
   }
 
   override getRows(): GridCell[][] {
@@ -39,10 +44,18 @@ export class GridCellCollection extends CellCollection {
   }
 
   override openCell(position: GridCellPosition): GridCellCollection {
-    if (this.isAllClosed() && this._isNoMineCell()) {
-      return GridCellCollection._updateInitialMineCells(this, position)._openCell(position);
+    let newFirstCellOpened = this._firstCellOpend;
+
+    if (this.isAllClosed()) {
+      newFirstCellOpened = true;
     }
-    return this._openCell(position);
+
+    if (this.isAllClosed() && this._isNoMineCell()) {
+      return GridCellCollection._updateInitialMineCells(this, position)
+        ._openCell(position)
+        ._copyWithFirstCellOpened(newFirstCellOpened);
+    }
+    return this._openCell(position)._copyWithFirstCellOpened(newFirstCellOpened);
   }
 
   private _isNoMineCell(): boolean {
@@ -113,9 +126,8 @@ export class GridCellCollection extends CellCollection {
     return this.filter((cell) => cell.isFlagged())._getSize();
   }
 
-  // TODO 수정이 필요한 메서드 꼭 처음에는 하나만 열린다는 보장이 없음
   override isFirstOpenedCell(): boolean {
-    return this.filter((cell) => cell.isOpened())._getSize() === 1;
+    return this._firstCellOpend;
   }
 
   private _getSize(): number {
@@ -192,6 +204,10 @@ export class GridCellCollection extends CellCollection {
       this._gameLevel,
       this._cells.map((row) => row.map(mapper)),
     );
+  }
+
+  private _copyWithFirstCellOpened(firstCellOpened: boolean): GridCellCollection {
+    return new GridCellCollection(this._gameLevel, this._cells, firstCellOpened);
   }
 
   override filter(_predicate: (_cell: Cell) => boolean): GridCellCollection {
