@@ -107,6 +107,10 @@ export class GridCellCollection extends CellCollection {
     return this.filter((cell) => cell.isFlagged())._getSize();
   }
 
+  override isFirstOpenedCell(): boolean {
+    return this.filter((cell) => cell.isOpened())._getSize() === 1;
+  }
+
   private _getSize(): number {
     return this._cells.flat().length;
   }

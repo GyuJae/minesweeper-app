@@ -20,4 +20,5 @@ export abstract class Board {
   abstract unflag(_position: CellPosition): Board;
   abstract getRemainingFlagCount(): number;
   abstract getGameLevel(): GameLevel;
+  abstract ifFirstOpenedCell(_callback: () => void): Board;
 }

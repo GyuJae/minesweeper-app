@@ -8,7 +8,7 @@ import { GameLevel } from '../models/game-level/game-level.enum';
 interface MinesweeperBoardValue {
   board: Board;
   resetByGameLevel: (_gameLevel: GameLevel) => void;
-  openCell: (_position: CellPosition) => void;
+  openCell: (_position: CellPosition) => Board;
 }
 
 const MinesweeperBoard = createContext<MinesweeperBoardValue | undefined>(undefined);
@@ -19,6 +19,7 @@ const MinesweeperBoardProvider = ({ children, gameLevel }: { children: ReactNode
   const openCell = (position: CellPosition) => {
     const newBoard = board.openCell(position);
     setBoard(newBoard);
+    return newBoard;
   };
 
   const resetByGameLevel = (level: GameLevel) => {

@@ -77,4 +77,9 @@ export class DefaultBoard extends Board {
   override getGameLevel(): GameLevel {
     return this._gameLevel;
   }
+
+  override ifFirstOpenedCell(callback: () => void): DefaultBoard {
+    if (this._cells.isFirstOpenedCell()) callback();
+    return this;
+  }
 }
