@@ -29,6 +29,10 @@ export default function Minesweeper() {
       });
   };
 
+  const onContextMenuCell = (cell: Cell) => {
+    boardContext.toggleFlag(cell.getPosition());
+  };
+
   return (
     <div className='flex h-screen items-center justify-center'>
       <div>
@@ -41,7 +45,7 @@ export default function Minesweeper() {
           selectedOption={gameConfigContext.gameLevel}
         />
       </div>
-      <Board board={boardContext.board} onClickCell={onClickCell} />
+      <Board board={boardContext.board} onClickCell={onClickCell} onContextMenuCell={onContextMenuCell} />
     </div>
   );
 }

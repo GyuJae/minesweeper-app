@@ -62,11 +62,15 @@ export class DefaultBoard extends Board {
     return this._cells.areAllSafeCellsOpened();
   }
 
-  override flag(position: GridCellPosition): DefaultBoard {
+  override toggleFlag(position: GridCellPosition): DefaultBoard {
+    return this.findCellByPosition(position).isFlagged() ? this._unflag(position) : this._flag(position);
+  }
+
+  private _flag(position: GridCellPosition): DefaultBoard {
     return DefaultBoard.of(this._gameLevel, this._cells.flag(position));
   }
 
-  override unflag(position: GridCellPosition): DefaultBoard {
+  private _unflag(position: GridCellPosition): DefaultBoard {
     return DefaultBoard.of(this._gameLevel, this._cells.unflag(position));
   }
 

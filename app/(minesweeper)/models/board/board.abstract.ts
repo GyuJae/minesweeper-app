@@ -4,6 +4,7 @@ import { CellPosition } from '../cell-position/cell-position.abstract';
 import { GameLevel } from '../game-level/game-level.enum';
 
 export abstract class Board {
+  abstract toggleFlag(_position: CellPosition): Board;
   abstract findCellByPosition(_cellPosition: CellPosition): Cell;
   abstract isOpenedCell(_position: CellPosition): boolean;
   abstract openCell(_position: CellPosition): Board;
@@ -16,8 +17,7 @@ export abstract class Board {
   abstract getCells(): CellCollection;
   abstract isGameOver(): boolean;
   abstract isGameClear(): boolean;
-  abstract flag(_position: CellPosition): Board;
-  abstract unflag(_position: CellPosition): Board;
+
   abstract getRemainingFlagCount(): number;
   abstract getGameLevel(): GameLevel;
   abstract ifFirstOpenedCell(_callback: () => void): Board;

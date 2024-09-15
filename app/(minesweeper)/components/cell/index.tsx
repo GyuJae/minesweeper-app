@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
 import { cn } from '@/libs/utils';
 
@@ -10,14 +10,16 @@ import { GameLevel } from '../../models/game-level/game-level.enum';
 interface Properties {
   cell: CellModel;
   gameLevel: GameLevel;
-  onClick: React.HTMLAttributes<HTMLButtonElement>['onClick'];
+  onClick: MouseEventHandler<HTMLButtonElement>;
+  onContextMenu: MouseEventHandler<HTMLButtonElement>;
 }
 
-const Cell = ({ cell, gameLevel, onClick }: Properties) => {
+const Cell = ({ cell, gameLevel, onClick, onContextMenu }: Properties) => {
   return (
     <motion.button
       role='button'
       onClick={onClick}
+      onContextMenu={onContextMenu}
       whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
       whileTap={{ scale: 1 }}
       className={cn(cell.getClassname(), 'min-h-full min-w-full font-semibold transition-colors duration-100', {

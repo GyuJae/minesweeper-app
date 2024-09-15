@@ -12,9 +12,10 @@ import Cell from '../cell';
 interface Properties {
   board: BoardModel;
   onClickCell: (_cell: CellModel) => void;
+  onContextMenuCell: (_cell: CellModel) => void;
 }
 
-const Board: FC<Properties> = ({ board, onClickCell }) => {
+const Board: FC<Properties> = ({ board, onClickCell, onContextMenuCell }) => {
   return (
     <table>
       <tbody
@@ -40,7 +41,15 @@ const Board: FC<Properties> = ({ board, onClickCell }) => {
             >
               {row.map((cell) => (
                 <td key={cell.getPosition().toString()} className='p-0'>
-                  <Cell cell={cell} gameLevel={board.getGameLevel()} onClick={() => onClickCell(cell)} />
+                  <Cell
+                    cell={cell}
+                    gameLevel={board.getGameLevel()}
+                    onClick={() => onClickCell(cell)}
+                    onContextMenu={(event) => {
+                      event.preventDefault();
+                      onContextMenuCell(cell);
+                    }}
+                  />
                 </td>
               ))}
             </tr>

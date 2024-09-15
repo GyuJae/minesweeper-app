@@ -11,7 +11,11 @@ describe('Board Component', () => {
     // given
     // when
     render(
-      <Board board={DefaultBoard.of(GameLevel.EASY, GridCellCollection.of(GameLevel.EASY))} onClickCell={() => {}} />,
+      <Board
+        board={DefaultBoard.of(GameLevel.EASY, GridCellCollection.of(GameLevel.EASY))}
+        onClickCell={() => {}}
+        onContextMenuCell={() => {}}
+      />,
     );
 
     // then
