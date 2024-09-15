@@ -10,7 +10,9 @@ describe('Board Component', () => {
   test('난이도에 맞는 보드를 생성할 수 있습니다.', () => {
     // given
     // when
-    render(<Board defaultBoard={DefaultBoard.of(GameLevel.EASY, GridCellCollection.of(GameLevel.EASY))} />);
+    render(
+      <Board board={DefaultBoard.of(GameLevel.EASY, GridCellCollection.of(GameLevel.EASY))} onClickCell={() => {}} />,
+    );
 
     // then
     const cells = screen.getAllByRole('button', {
