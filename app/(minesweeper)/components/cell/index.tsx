@@ -22,7 +22,7 @@ const Cell = ({ cell, gameLevel, onClick, onContextMenu }: Properties) => {
       onContextMenu={onContextMenu}
       whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
       whileTap={{ scale: 1 }}
-      className={cn(cell.getClassname(), 'min-h-full min-w-full font-semibold transition-colors duration-100', {
+      className={cn(cell.getClassName(), 'min-h-full min-w-full font-semibold transition-colors duration-100', {
         'size-24 text-3xl': GameLevel.VERY_EASY.equals(gameLevel),
         'size-16 text-2xl': GameLevel.EASY.equals(gameLevel),
         'size-12 text-xl': GameLevel.NORMAL.equals(gameLevel),

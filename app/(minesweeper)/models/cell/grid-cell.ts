@@ -91,7 +91,7 @@ export class GridCell extends Cell {
     return this.getSnapshot().getContent();
   }
 
-  override getClassname(): string {
+  override getClassName(): string {
     return this.getSnapshot().getClassName();
   }
 

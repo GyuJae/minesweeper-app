@@ -21,7 +21,7 @@ export abstract class Cell {
 
   abstract getContent(): ReactNode;
 
-  abstract getClassname(): string;
+  abstract getClassName(): string;
 
   abstract toString(): string;
 
