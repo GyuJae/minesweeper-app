@@ -18,6 +18,11 @@ export default function Minesweeper() {
     gameConfigContext.setGameStatus(GameStatus.READY);
   };
 
+  const onResetBoard = () => {
+    boardContext.resetByGameLevel(gameConfigContext.gameLevel);
+    gameConfigContext.setGameStatus(GameStatus.READY);
+  };
+
   const onClickCell = (cell: Cell) => {
     if (cell.isCellOpeningDisabled()) return;
     if (gameConfigContext.gameStatus.isDisabledClickCell()) return;
@@ -38,6 +43,13 @@ export default function Minesweeper() {
     <div className='flex h-screen items-center justify-center'>
       <div>
         {gameConfigContext.gameStatus.getName()} {gameConfigContext.overSeconds}
+      </div>
+      <div>
+        {gameConfigContext.gameStatus.showResetButton() && (
+          <button type='button' onClick={onResetBoard}>
+            Reset
+          </button>
+        )}
       </div>
       <div>
         <GameLevelSelect
