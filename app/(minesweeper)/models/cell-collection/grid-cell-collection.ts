@@ -44,37 +44,52 @@ export class GridCellCollection extends CellCollection {
   }
 
   override openCell(position: GridCellPosition): GridCellCollection {
-    if (this.findCellByPosition(position).isOpened()) throw GameException.of('열려 있는 셀을 다시 열 수 없습니다.');
+    let updatedCells = this._copy();
 
-    let newFirstCellOpened = this._firstCellOpened;
-    let updatedCell = this._copy();
+    if (updatedCells._isOpenedCell(position)) {
+      throw GameException.of('열려 있는 셀을 다시 열 수 없습니다.');
+    }
 
-    if (this.isAllClosed()) {
-      newFirstCellOpened = true;
+    let isFirstCellOpening = false;
 
-      if (this._hasFlaggedCells()) {
-        for (const cell of this) {
-          if (cell.isFlagged()) {
-            updatedCell = updatedCell.unFlag(cell.getPosition());
-          }
-        }
+    if (updatedCells.isAllClosed()) {
+      isFirstCellOpening = true;
+      updatedCells = updatedCells._clearFlags();
+    }
+
+    if (updatedCells._hasMineCell()) {
+      return this._openCell(position)._copyWithFirstCellOpened(isFirstCellOpening);
+    }
+
+    if (isFirstCellOpening) {
+      updatedCells = GridCellCollection._updateInitialMineCells(updatedCells, position);
+    }
+
+    return updatedCells._openCell(position)._copyWithFirstCellOpened(isFirstCellOpening);
+  }
+
+  private _isOpenedCell(position: GridCellPosition): boolean {
+    return this.findCellByPosition(position).isOpened();
+  }
+
+  private _clearFlags() {
+    let copyCells = this._copy();
+
+    for (const cell of copyCells) {
+      if (cell.isFlagged()) {
+        copyCells = copyCells.unFlag(cell.getPosition());
       }
     }
 
-    if (this.isAllClosed() && this._isNoMineCell()) {
-      return GridCellCollection._updateInitialMineCells(updatedCell, position)
-        ._openCell(position)
-        ._copyWithFirstCellOpened(newFirstCellOpened);
-    }
-
-    return this._openCell(position)._copyWithFirstCellOpened(newFirstCellOpened);
-  }
-  private _hasFlaggedCells(): boolean {
-    return this._cells.flat().some((cell) => cell.isFlagged());
+    return copyCells;
   }
 
-  private _isNoMineCell(): boolean {
-    return this._every((cell) => !cell.isMine());
+  private _hasMineCell(): boolean {
+    return this._some((cell) => cell.isMine());
+  }
+
+  private _some(predicate: (_cell: GridCell) => boolean): boolean {
+    return this._cells.some((row) => row.some(predicate));
   }
 
   private static _updateInitialMineCells(cells: GridCellCollection, position: GridCellPosition): GridCellCollection {
@@ -131,6 +146,7 @@ export class GridCellCollection extends CellCollection {
 
     return GridCellCollection._updatedCellByPosition(this, position, cell.unFlag());
   }
+
   override areAllSafeCellsOpened(): boolean {
     return this.filter((cell) => cell.isSafeCell())._every((cell) => cell.isOpened());
   }
@@ -167,13 +183,14 @@ export class GridCellCollection extends CellCollection {
   ): GridCellCollection {
     const newCells = cells._cells.map((row) => [...row]);
     newCells[position.getRow()][position.getColumn()] = newCell;
-    return new GridCellCollection(cells._gameLevel, newCells);
+    return new GridCellCollection(cells._gameLevel, newCells, cells._firstCellOpened); // _firstCellOpened 유지
   }
 
   private _updatedMineCellsByPositions(positions: GridCellPositionCollection): GridCellCollection {
     let updatedCells = new GridCellCollection(
       this._gameLevel,
       this._cells.map((row) => [...row]),
+      this._firstCellOpened,
     );
     for (const position of positions) {
       const cell = this.findCellByPosition(position);
@@ -218,6 +235,7 @@ export class GridCellCollection extends CellCollection {
     return GridCellCollection.of(
       this._gameLevel,
       this._cells.map((row) => row.map(mapper)),
+      this._firstCellOpened,
     );
   }
 
@@ -233,6 +251,7 @@ export class GridCellCollection extends CellCollection {
     return GridCellCollection.of(
       this._gameLevel,
       this._cells.map((row) => row.filter(_predicate)),
+      this._firstCellOpened,
     );
   }
 
