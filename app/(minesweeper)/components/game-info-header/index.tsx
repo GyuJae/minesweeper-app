@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 
 import { useMinesweeperBoard } from '../../context/minesweeper-board.provider';
 import { useMinesweeperGameConfig } from '../../context/minesweeper-game-config.provider';
@@ -16,13 +16,13 @@ const GameInfoHeader = () => {
     gameConfigContext.setGameStatus(GameStatus.READY);
   };
 
-  const onResetBoard: MouseEventHandler<HTMLButtonElement> = () => {
-    boardContext.resetByGameLevel(gameConfigContext.gameLevel);
-    gameConfigContext.setGameStatus(GameStatus.READY);
-  };
+  // const onResetBoard: MouseEventHandler<HTMLButtonElement> = () => {
+  //   boardContext.resetByGameLevel(gameConfigContext.gameLevel);
+  //   gameConfigContext.setGameStatus(GameStatus.READY);
+  // };
 
   return (
-    <header>
+    <header className='flex w-full items-center justify-between py-4'>
       <nav>
         <GameLevelSelect
           options={GameLevel.findAllLevels()}
@@ -31,15 +31,11 @@ const GameInfoHeader = () => {
         />
       </nav>
       <section>
-        <p>
-          {gameConfigContext.gameStatus.getName()} {gameConfigContext.overSeconds}
-        </p>
-        {gameConfigContext.gameStatus.showResetButton() && (
-          <button type='button' onClick={onResetBoard}>
-            Reset
-          </button>
-        )}
-        <p>남은 깃발 수: {boardContext.board.getRemainingFlagCount()}</p>
+        <p className='text-5xl'>{gameConfigContext.gameStatus.getEmoji()}</p>
+      </section>
+      <section className='flex gap-4 text-lg'>
+        <p>🕰️ {gameConfigContext.overSeconds}</p>
+        <p>🚩 {boardContext.board.getRemainingFlagCount()}</p>
       </section>
     </header>
   );

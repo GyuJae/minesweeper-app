@@ -28,7 +28,7 @@ export default function Minesweeper() {
   };
 
   return (
-    <div className='flex h-screen flex-col items-center justify-center'>
+    <div className='m-auto flex max-w-max flex-col py-24'>
       <GameInfoHeader />
       <Board board={boardContext.board} onClickCell={onClickCell} onContextMenuCell={onContextMenuCell} />
     </div>
