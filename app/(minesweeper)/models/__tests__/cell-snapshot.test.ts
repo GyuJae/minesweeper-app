@@ -83,4 +83,22 @@ describe('Cell - CellSnapshot', () => {
     // then
     expect(cell.isCellOpeningDisabled()).toBeTruthy();
   });
+
+  test('열려 있는 셸에 깃발을 꽂을 수 없습니다.', () => {
+    // given
+    const cell = GridCell.of(CellState.OPENED, EmptyCellType.of(), GridCellPosition.of(0, 0));
+
+    // when
+    // then
+    expect(cell.isFlaggingDisabled()).toBeTruthy();
+  });
+
+  test('닫혀 있는 셸은 깃발을 꽂을 수 있습니다.', () => {
+    // given
+    const cell = GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(0, 0));
+
+    // when
+    // then
+    expect(cell.isFlaggingDisabled()).toBeFalsy();
+  });
 });
