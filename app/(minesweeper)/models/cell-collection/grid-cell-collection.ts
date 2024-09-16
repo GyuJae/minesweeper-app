@@ -36,7 +36,7 @@ export class GridCellCollection extends CellCollection {
   }
 
   override isAllClosed(): boolean {
-    return this._cells.every((row) => row.every((cell) => cell.isClosed()));
+    return this._cells.every((row) => row.every((cell) => !cell.isOpened()));
   }
 
   override hasUnopenedMines(): boolean {
@@ -47,18 +47,30 @@ export class GridCellCollection extends CellCollection {
     if (this.findCellByPosition(position).isOpened()) throw GameException.of('열려 있는 셀을 다시 열 수 없습니다.');
 
     let newFirstCellOpened = this._firstCellOpened;
+    let updatedCell = this._copy();
 
     if (this.isAllClosed()) {
       newFirstCellOpened = true;
+
+      if (this._hasFlaggedCells()) {
+        for (const cell of this) {
+          if (cell.isFlagged()) {
+            updatedCell = updatedCell.unFlag(cell.getPosition());
+          }
+        }
+      }
     }
 
     if (this.isAllClosed() && this._isNoMineCell()) {
-      return GridCellCollection._updateInitialMineCells(this, position)
+      return GridCellCollection._updateInitialMineCells(updatedCell, position)
         ._openCell(position)
         ._copyWithFirstCellOpened(newFirstCellOpened);
     }
 
     return this._openCell(position)._copyWithFirstCellOpened(newFirstCellOpened);
+  }
+  private _hasFlaggedCells(): boolean {
+    return this._cells.flat().some((cell) => cell.isFlagged());
   }
 
   private _isNoMineCell(): boolean {
@@ -77,7 +89,7 @@ export class GridCellCollection extends CellCollection {
   }
 
   override getUnOpenedMineCount(): number {
-    return this._cells.flat().filter((cell) => cell.isMine() && cell.isClosed()).length;
+    return this._cells.flat().filter((cell) => cell.isMine() && (cell.isClosed() || cell.isFlagged())).length;
   }
 
   override getNumberPositions(): CellPositionCollection {
@@ -115,9 +127,7 @@ export class GridCellCollection extends CellCollection {
 
   override unFlag(position: GridCellPosition): GridCellCollection {
     const cell = this.findCellByPosition(position);
-    if (!cell.isFlagged()) {
-      throw GameException.of('깃발이 꽂힌 셀이 아닙니다.');
-    }
+    if (!cell.isFlagged()) throw GameException.of('깃발이 꽂힌 셀이 아닙니다.');
 
     return GridCellCollection._updatedCellByPosition(this, position, cell.unFlag());
   }
@@ -213,6 +223,10 @@ export class GridCellCollection extends CellCollection {
 
   private _copyWithFirstCellOpened(firstCellOpened: boolean): GridCellCollection {
     return new GridCellCollection(this._gameLevel, this._cells, firstCellOpened);
+  }
+
+  private _copy(): GridCellCollection {
+    return new GridCellCollection(this._gameLevel, this._cells, this._firstCellOpened);
   }
 
   override filter(_predicate: (_cell: Cell) => boolean): GridCellCollection {

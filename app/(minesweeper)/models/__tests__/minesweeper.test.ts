@@ -852,7 +852,7 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(mockCallback).not.toHaveBeenCalled();
   });
 
-  test('처음 모두 닫혀 있는 보드에 깃발을 꽂은 후, 셸 하나 열였을 때 모든 깃발은 제거가 됩니다.', () => {
+  test('처음 모두 닫혀 있는 보드에 깃발을 꽂은 후, 셸 하나 열였을 때 깃발은 제거가 됩니다.', () => {
     // given
     const board = DefaultBoard.of(GameLevel.VERY_EASY);
     const newBoard = board.toggleFlag(GridCellPosition.of(0, 0));
@@ -861,8 +861,26 @@ describe('지뢰찾기 게임 규칙', () => {
     const openedBoard = newBoard.openCell(GridCellPosition.of(0, 1));
 
     // then
-    expect(openedBoard.getUnOpenedMineCount()).toBe(10);
-    expect(board.findCellByPosition(GridCellPosition.of(0, 1)).isOpened()).toBeTruthy();
+    expect(openedBoard.getUnOpenedMineCount()).toBe(GameLevel.VERY_EASY.getMineCount());
+    expect(openedBoard.findCellByPosition(GridCellPosition.of(0, 1)).isOpened()).toBeTruthy();
     expect(openedBoard.findCellByPosition(GridCellPosition.of(0, 0)).isFlagged()).toBeFalsy();
+  });
+
+  test('처음 열려 있는 셸이 없는 경우에 여러개 깃발을 꽂아도 셸 하나를 열면 모든 깃발은 제거가 됩니다.', () => {
+    // given
+    const board = DefaultBoard.of(GameLevel.VERY_EASY);
+    const newBoard = board
+      .toggleFlag(GridCellPosition.of(0, 0))
+      .toggleFlag(GridCellPosition.of(0, 1))
+      .toggleFlag(GridCellPosition.of(0, 2));
+
+    // when
+    const openedBoard = newBoard.openCell(GridCellPosition.of(0, 3));
+
+    // then
+    expect(openedBoard.getUnOpenedMineCount()).toBe(GameLevel.VERY_EASY.getMineCount());
+    expect(openedBoard.findCellByPosition(GridCellPosition.of(0, 0)).isFlagged()).toBeFalsy();
+    expect(openedBoard.findCellByPosition(GridCellPosition.of(0, 1)).isFlagged()).toBeFalsy();
+    expect(openedBoard.findCellByPosition(GridCellPosition.of(0, 2)).isFlagged()).toBeFalsy();
   });
 });
