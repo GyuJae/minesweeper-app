@@ -4,4 +4,5 @@ export interface CellSnapshot {
   // TODO REMOVE
   getClassName(): string;
   getContent(): ReactNode;
+  isDisabledOpenCell(): boolean;
 }

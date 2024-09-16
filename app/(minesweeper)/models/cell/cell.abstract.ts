@@ -25,6 +25,10 @@ export abstract class Cell {
 
   abstract toString(): string;
 
+  isDisabledOpenCell(): boolean {
+    return this.getSnapshot().isDisabledOpenCell();
+  }
+
   isSafeCell(): boolean {
     return !this.isMine();
   }

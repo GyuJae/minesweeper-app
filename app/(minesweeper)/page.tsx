@@ -19,17 +19,12 @@ export default function Minesweeper() {
   };
 
   const onClickCell = (cell: Cell) => {
+    if (cell.isDisabledOpenCell()) return;
     boardContext
       .openCell(cell.getPosition())
-      .ifFirstOpenedCell(() => {
-        gameConfigContext.setGameStatus(GameStatus.PLAYING);
-      })
-      .ifGameOver(() => {
-        gameConfigContext.setGameStatus(GameStatus.GAME_OVER);
-      })
-      .ifGameClear(() => {
-        gameConfigContext.setGameStatus(GameStatus.CLEAR);
-      });
+      .ifFirstOpenedCell(() => gameConfigContext.setGameStatus(GameStatus.PLAYING))
+      .ifGameOver(() => gameConfigContext.setGameStatus(GameStatus.GAME_OVER))
+      .ifGameClear(() => gameConfigContext.setGameStatus(GameStatus.CLEAR));
   };
 
   const onContextMenuCell = (cell: Cell) => {

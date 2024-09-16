@@ -14,4 +14,8 @@ export class DefaultCellSnapshot implements CellSnapshot {
   getContent(): ReactNode {
     return null;
   }
+
+  isDisabledOpenCell(): boolean {
+    return false;
+  }
 }
