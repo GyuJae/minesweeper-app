@@ -883,4 +883,49 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(openedBoard.findCellByPosition(GridCellPosition.of(0, 1)).isFlagged()).toBeFalsy();
     expect(openedBoard.findCellByPosition(GridCellPosition.of(0, 2)).isFlagged()).toBeFalsy();
   });
+
+  test('첫 번째 셀이 열릴 때 콜백이 호출됩니다.', () => {
+    // given
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+    const mockCallback = vi.fn();
+
+    // when
+    board
+      .openCell(GridCellPosition.of(0, 0))
+      .ifFirstOpenedCell(mockCallback)
+      .openCell(GridCellPosition.of(3, 3))
+      .ifFirstOpenedCell(mockCallback);
+
+    // then
+    expect(mockCallback).toHaveBeenCalled();
+    expect(mockCallback).toHaveBeenCalledTimes(1);
+  });
 });
