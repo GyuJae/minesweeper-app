@@ -1,3 +1,4 @@
+import { GameException } from '../../exceptions/game-exception';
 import { Cell } from '../cell/cell.abstract';
 import { CellCollection } from '../cell-collection/cell-collections.abstract';
 import { GridCellCollection } from '../cell-collection/grid-cell-collection';
@@ -67,6 +68,7 @@ export class DefaultBoard extends Board {
   }
 
   private _flag(position: GridCellPosition): DefaultBoard {
+    if (this.getRemainingFlagCount() <= 0) throw GameException.of('지뢰 수 초과하여 깃발을 꽂을 수 없습니다.');
     return DefaultBoard.of(this._gameLevel, this._cells.flag(position));
   }
 
