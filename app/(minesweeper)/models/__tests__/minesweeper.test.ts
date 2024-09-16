@@ -286,10 +286,9 @@ describe('지뢰찾기 게임 규칙', () => {
 
   test('셀을 클릭 시 인접 지뢰가 없을 경우, 빈 셀이 모두 열리고 숫자 셀을 만날 때까지 자동으로 열림.', () => {
     // given
-    const gameLevel = GameLevel.VERY_EASY;
     const board = DefaultBoard.of(
-      gameLevel,
-      GridCellCollection.of(gameLevel, [
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
         [
           GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
           GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
@@ -662,5 +661,41 @@ describe('지뢰찾기 게임 규칙', () => {
 
     // then
     expect(newBoard.findCellByPosition(GridCellPosition.of(3, 2)).isFlagged()).toBeTruthy();
+  });
+
+  test('지뢰 수 초과하여 깃발을 꽂을 수 없습니다.', () => {
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.FLAGGED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.FLAGGED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.FLAGGED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // when
+    // then
+    expect(() => board.toggleFlag(GridCellPosition.of(0, 3))).toThrowError();
   });
 });
