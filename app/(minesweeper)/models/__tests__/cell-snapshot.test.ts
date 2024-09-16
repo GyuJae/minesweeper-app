@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'vitest';
 
-import { ClosedCellSnapshot } from '../../components/cell/cell-snapshot/closed-cell-snapshot';
-import { OpendEmptyCellSnapshot } from '../../components/cell/cell-snapshot/opend-empty-cell-snapshot';
-import { OpendMineCellSnapshot } from '../../components/cell/cell-snapshot/opend-mine-cell-snapshot';
-import { OpendNumberCellSnapshot } from '../../components/cell/cell-snapshot/opend-number-cell-snapshot';
 import { GridCell } from '../cell/grid-cell';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
+import { ClosedCellSnapshot } from '../cell-snapshot/closed-cell-snapshot';
+import { OpenedEmptyCellSnapshot } from '../cell-snapshot/opened-empty-cell-snapshot';
+import { OpenedMineCellSnapshot } from '../cell-snapshot/opened-mine-cell-snapshot';
+import { OpenedNumberCellSnapshot } from '../cell-snapshot/opened-number-cell-snapshot';
 import { CellState } from '../cell-state/cell-state.enum';
 import { EmptyCellType } from '../cell-type/empty-cell-type';
 import { MineCellType } from '../cell-type/mine-cell-type';
@@ -31,7 +31,7 @@ describe('Cell - CellSnapshot', () => {
     const snapshot = cell.getSnapshot();
 
     // then
-    expect(snapshot).toBeInstanceOf(OpendMineCellSnapshot);
+    expect(snapshot).toBeInstanceOf(OpenedMineCellSnapshot);
   });
 
   test('열린 셀은 주변 지뢰 개수를 표시한다.', () => {
@@ -42,7 +42,7 @@ describe('Cell - CellSnapshot', () => {
     const snapshot = cell.getSnapshot();
 
     // then
-    expect(snapshot).toBeInstanceOf(OpendNumberCellSnapshot);
+    expect(snapshot).toBeInstanceOf(OpenedNumberCellSnapshot);
   });
 
   test('주변에 지뢰가 없는 열린 셀은 비어 있는 상태로 표시된다.', () => {
@@ -53,6 +53,6 @@ describe('Cell - CellSnapshot', () => {
     const snapshot = cell.getSnapshot();
 
     // then
-    expect(snapshot).toBeInstanceOf(OpendEmptyCellSnapshot);
+    expect(snapshot).toBeInstanceOf(OpenedEmptyCellSnapshot);
   });
 });
