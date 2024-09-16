@@ -14,7 +14,7 @@ export class FlaggedCellSnapshot implements CellSnapshot {
     return '🚩';
   }
 
-  isDisabledOpenCell(): boolean {
+  isCellOpeningDisabled(): boolean {
     return true;
   }
 }

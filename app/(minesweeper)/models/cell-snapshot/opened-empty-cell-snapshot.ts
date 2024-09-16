@@ -21,7 +21,7 @@ export class OpenedEmptyCellSnapshot implements CellSnapshot {
     return '';
   }
 
-  isDisabledOpenCell(): boolean {
-    return this._defaultOpenedSnapshot.isDisabledOpenCell();
+  isCellOpeningDisabled(): boolean {
+    return this._defaultOpenedSnapshot.isCellOpeningDisabled();
   }
 }

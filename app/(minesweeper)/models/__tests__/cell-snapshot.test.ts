@@ -54,7 +54,7 @@ describe('Cell - CellSnapshot', () => {
 
     // when
     // then
-    expect(cell.isDisabledOpenCell()).toBeTruthy();
+    expect(cell.isCellOpeningDisabled()).toBeTruthy();
   });
 
   test('깃발이 꽂힌 셀은 열 수 없습니다.', () => {
@@ -63,7 +63,7 @@ describe('Cell - CellSnapshot', () => {
 
     // when
     // then
-    expect(cell.isDisabledOpenCell()).toBeTruthy();
+    expect(cell.isCellOpeningDisabled()).toBeTruthy();
   });
 
   test('닫힌 셸은 열 수 있습니다.', () => {
@@ -72,7 +72,7 @@ describe('Cell - CellSnapshot', () => {
 
     // when
     // then
-    expect(cell.isDisabledOpenCell()).toBeFalsy();
+    expect(cell.isCellOpeningDisabled()).toBeFalsy();
   });
 
   test('지뢰가 있는 열린 셸은 열 수 없습니다.', () => {
@@ -81,6 +81,6 @@ describe('Cell - CellSnapshot', () => {
 
     // when
     // then
-    expect(cell.isDisabledOpenCell()).toBeTruthy();
+    expect(cell.isCellOpeningDisabled()).toBeTruthy();
   });
 });

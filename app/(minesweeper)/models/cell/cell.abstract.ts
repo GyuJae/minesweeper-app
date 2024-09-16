@@ -25,8 +25,8 @@ export abstract class Cell {
 
   abstract toString(): string;
 
-  isDisabledOpenCell(): boolean {
-    return this.getSnapshot().isDisabledOpenCell();
+  isCellOpeningDisabled(): boolean {
+    return this.getSnapshot().isCellOpeningDisabled();
   }
 
   isSafeCell(): boolean {

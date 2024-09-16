@@ -20,8 +20,8 @@ export class OpenedMineCellSnapshot implements CellSnapshot {
     return <div className='m-auto size-1/3 rounded-full bg-black/70' />;
   }
 
-  isDisabledOpenCell(): boolean {
-    return this._defaultOpenedSnapshot.isDisabledOpenCell();
+  isCellOpeningDisabled(): boolean {
+    return this._defaultOpenedSnapshot.isCellOpeningDisabled();
   }
 
   private get _defaultOpenedSnapshot(): CellSnapshot {

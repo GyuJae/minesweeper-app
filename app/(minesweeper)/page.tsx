@@ -19,7 +19,7 @@ export default function Minesweeper() {
   };
 
   const onClickCell = (cell: Cell) => {
-    if (cell.isDisabledOpenCell()) return;
+    if (cell.isCellOpeningDisabled()) return;
     boardContext
       .openCell(cell.getPosition())
       .ifFirstOpenedCell(() => gameConfigContext.setGameStatus(GameStatus.PLAYING))

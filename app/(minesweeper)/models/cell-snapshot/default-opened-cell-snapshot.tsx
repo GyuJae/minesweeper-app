@@ -28,7 +28,7 @@ export class DefaultOpenedCellSnapshot implements CellSnapshot {
     return null;
   }
 
-  isDisabledOpenCell(): boolean {
+  isCellOpeningDisabled(): boolean {
     return true;
   }
 
