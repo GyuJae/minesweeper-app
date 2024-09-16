@@ -44,6 +44,8 @@ export class GridCellCollection extends CellCollection {
   }
 
   override openCell(position: GridCellPosition): GridCellCollection {
+    if (this.findCellByPosition(position).isOpened()) throw GameException.of('열려 있는 셀을 다시 열 수 없습니다.');
+
     let newFirstCellOpened = this._firstCellOpened;
 
     if (this.isAllClosed()) {
@@ -55,6 +57,7 @@ export class GridCellCollection extends CellCollection {
         ._openCell(position)
         ._copyWithFirstCellOpened(newFirstCellOpened);
     }
+
     return this._openCell(position)._copyWithFirstCellOpened(newFirstCellOpened);
   }
 
