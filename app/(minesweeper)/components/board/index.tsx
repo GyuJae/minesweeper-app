@@ -17,7 +17,7 @@ interface Properties {
 
 const Board: FC<Properties> = ({ board, onClickCell, onContextMenuCell }) => {
   return (
-    <table>
+    <table className='border-collapse border'>
       <tbody
         className={cn('grid', {
           'grid-rows-4': GameLevel.VERY_EASY.equals(board.getGameLevel()),
@@ -40,7 +40,7 @@ const Board: FC<Properties> = ({ board, onClickCell, onContextMenuCell }) => {
               })}
             >
               {row.map((cell) => (
-                <td key={cell.getPosition().toString()} className='p-0'>
+                <td key={cell.getPosition().toString()} className='border'>
                   <Cell
                     cell={cell}
                     gameLevel={board.getGameLevel()}

@@ -80,19 +80,15 @@ export class GridCell extends Cell {
   }
 
   override getSnapshot(): CellSnapshot {
-    if (this.isFlagged()) return FlaggedCellSnapshot.of(this._position);
-    if (this.isClosed()) return ClosedCellSnapshot.of(this._position);
-    if (this.isMine()) return OpenedMineCellSnapshot.of(this, this._position);
-    if (this.isNumber()) return OpenedNumberCellSnapshot.of(this, this._position);
-    return OpenedEmptyCellSnapshot.of(this._position);
+    if (this.isFlagged()) return FlaggedCellSnapshot.of();
+    if (this.isClosed()) return ClosedCellSnapshot.of();
+    if (this.isMine()) return OpenedMineCellSnapshot.of();
+    if (this.isNumber()) return OpenedNumberCellSnapshot.of(this);
+    return OpenedEmptyCellSnapshot.of();
   }
 
   override getContent(): ReactNode {
     return this.getSnapshot().getContent();
-  }
-
-  override getClassName(): string {
-    return this.getSnapshot().getClassName();
   }
 
   override isFlaggingDisabled(): boolean {

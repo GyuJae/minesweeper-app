@@ -19,7 +19,6 @@ export abstract class Cell {
   abstract unFlag(): Cell;
   abstract getSnapshot(): CellSnapshot;
   abstract getContent(): ReactNode;
-  abstract getClassName(): string;
   abstract toString(): string;
   abstract isFlaggingDisabled(): boolean;
 
