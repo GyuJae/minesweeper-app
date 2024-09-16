@@ -18,16 +18,12 @@ export abstract class Cell {
   abstract flag(): Cell;
   abstract unFlag(): Cell;
   abstract getSnapshot(): CellSnapshot;
-
   abstract getContent(): ReactNode;
-
   abstract getClassName(): string;
-
   abstract toString(): string;
+  abstract isFlaggingDisabled(): boolean;
 
-  isCellOpeningDisabled(): boolean {
-    return this.getSnapshot().isCellOpeningDisabled();
-  }
+  abstract isCellOpeningDisabled(): boolean;
 
   isSafeCell(): boolean {
     return !this.isMine();

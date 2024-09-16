@@ -95,6 +95,14 @@ export class GridCell extends Cell {
     return this.getSnapshot().getClassName();
   }
 
+  override isFlaggingDisabled(): boolean {
+    return this.isOpened();
+  }
+
+  override isCellOpeningDisabled(): boolean {
+    return this.isOpened() || this.isFlagged();
+  }
+
   getAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): number {
     return this._position
       .getAdjacentPositions(gameLevel)
