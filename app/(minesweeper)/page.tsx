@@ -28,6 +28,7 @@ export default function Minesweeper() {
   };
 
   const onContextMenuCell = (cell: Cell) => {
+    if (cell.isFlaggingDisabled()) return;
     boardContext.toggleFlag(cell.getPosition());
   };
 
