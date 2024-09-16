@@ -22,4 +22,5 @@ export abstract class Board {
   abstract ifFirstOpenedCell(_callback: () => void): Board;
   abstract ifGameOver(_callback: () => void): Board;
   abstract ifGameClear(_callback: () => void): Board;
+  abstract hasNoFlagsLeft(): boolean;
 }

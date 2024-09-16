@@ -67,15 +67,6 @@ export class DefaultBoard extends Board {
     return this.findCellByPosition(position).isFlagged() ? this._unFlag(position) : this._flag(position);
   }
 
-  private _flag(position: GridCellPosition): DefaultBoard {
-    if (this.getRemainingFlagCount() <= 0) throw GameException.of('지뢰 수 초과하여 깃발을 꽂을 수 없습니다.');
-    return DefaultBoard.of(this._gameLevel, this._cells.flag(position));
-  }
-
-  private _unFlag(position: GridCellPosition): DefaultBoard {
-    return DefaultBoard.of(this._gameLevel, this._cells.unFlag(position));
-  }
-
   override getRemainingFlagCount(): number {
     return this._gameLevel.getMineCount() - this._cells.getFlagCount();
   }
@@ -97,5 +88,17 @@ export class DefaultBoard extends Board {
   override ifGameClear(callback: () => void): DefaultBoard {
     if (this.isGameClear()) callback();
     return this;
+  }
+
+  override hasNoFlagsLeft(): boolean {
+    return this.getRemainingFlagCount() <= 0;
+  }
+  private _flag(position: GridCellPosition): DefaultBoard {
+    if (this.hasNoFlagsLeft()) throw GameException.of('지뢰 수 초과하여 깃발을 꽂을 수 없습니다.');
+    return DefaultBoard.of(this._gameLevel, this._cells.flag(position));
+  }
+
+  private _unFlag(position: GridCellPosition): DefaultBoard {
+    return DefaultBoard.of(this._gameLevel, this._cells.unFlag(position));
   }
 }

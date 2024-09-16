@@ -26,6 +26,7 @@ export default function Minesweeper() {
   const onClickCell = (cell: Cell) => {
     if (cell.isCellOpeningDisabled()) return;
     if (gameConfigContext.gameStatus.isDisabledClickCell()) return;
+
     boardContext
       .openCell(cell.getPosition())
       .ifFirstOpenedCell(() => gameConfigContext.setGameStatus(GameStatus.PLAYING))
@@ -36,6 +37,7 @@ export default function Minesweeper() {
   const onContextMenuCell = (cell: Cell) => {
     if (cell.isFlaggingDisabled()) return;
     if (gameConfigContext.gameStatus.isDisabledClickCell()) return;
+    if (boardContext.board.hasNoFlagsLeft()) return;
     boardContext.toggleFlag(cell.getPosition());
   };
 
