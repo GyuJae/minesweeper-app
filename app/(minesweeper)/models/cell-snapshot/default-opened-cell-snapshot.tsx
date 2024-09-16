@@ -2,25 +2,25 @@ import { ReactNode } from 'react';
 
 import { cn } from '@/libs/utils';
 
-import { CellPosition } from '../../../models/cell-position/cell-position.abstract';
+import { CellPosition } from '../cell-position/cell-position.abstract';
 import { CellSnapshot } from './cell-snapshot.interface';
 import { DefaultCellSnapshot } from './default-cell-snapshot';
 
-export class ClosedCellSnapshot implements CellSnapshot {
+export class DefaultOpenedCellSnapshot implements CellSnapshot {
   private constructor(private readonly _position: CellPosition) {}
 
-  static of(position: CellPosition): ClosedCellSnapshot {
-    return new ClosedCellSnapshot(position);
+  static of(position: CellPosition): DefaultOpenedCellSnapshot {
+    return new DefaultOpenedCellSnapshot(position);
   }
 
   private _getDefaultCellSnapshot(): DefaultCellSnapshot {
     return DefaultCellSnapshot.of();
   }
 
-  getClassname(): string {
-    return cn(this._getDefaultCellSnapshot().getClassname(), {
-      'bg-green-500': this._isOddPosition(),
-      'bg-green-400': !this._isOddPosition(),
+  getClassName(): string {
+    return cn(this._getDefaultCellSnapshot().getClassName(), {
+      'bg-amber-50': this._isOddPosition(),
+      'bg-amber-100': !this._isOddPosition(),
     });
   }
 

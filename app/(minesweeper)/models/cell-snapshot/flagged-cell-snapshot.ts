@@ -7,7 +7,7 @@ export class FlaggedCellSnapshot implements CellSnapshot {
     return new FlaggedCellSnapshot();
   }
 
-  getClassname(): string {
+  getClassName(): string {
     return '';
   }
   getContent(): ReactNode {

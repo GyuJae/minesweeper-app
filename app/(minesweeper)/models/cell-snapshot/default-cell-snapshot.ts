@@ -7,7 +7,7 @@ export class DefaultCellSnapshot implements CellSnapshot {
     return new DefaultCellSnapshot();
   }
 
-  getClassname(): string {
+  getClassName(): string {
     return '';
   }
 
