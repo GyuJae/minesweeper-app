@@ -32,7 +32,7 @@ const Board: FC<Properties> = ({ board, onClickCell, onContextMenuCell }) => {
           .map((row) => (
             <tr
               key={row[0].getPosition().getRow()}
-              className={cn('grid grid-cols-', {
+              className={cn('grid', {
                 'grid-cols-4': GameLevel.VERY_EASY.equals(board.getGameLevel()),
                 'grid-cols-9': GameLevel.EASY.equals(board.getGameLevel()),
                 'grid-cols-16': GameLevel.NORMAL.equals(board.getGameLevel()),
