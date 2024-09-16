@@ -28,10 +28,6 @@ export class ClosedCellSnapshot implements CellSnapshot {
     return null;
   }
 
-  isCellOpeningDisabled(): boolean {
-    return false;
-  }
-
   private _isOddPosition(): boolean {
     return (this._position.getColumn() + this._position.getRow()) % 2 !== 0;
   }

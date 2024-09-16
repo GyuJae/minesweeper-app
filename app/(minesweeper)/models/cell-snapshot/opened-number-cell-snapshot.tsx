@@ -27,10 +27,6 @@ export class OpenedNumberCellSnapshot implements CellSnapshot {
     return this._cell.getNearbyMineCount();
   }
 
-  isCellOpeningDisabled(): boolean {
-    return this._defaultOpenedSnapshot.isCellOpeningDisabled();
-  }
-
   private get _defaultOpenedSnapshot(): CellSnapshot {
     return DefaultOpenedCellSnapshot.of(this._position);
   }

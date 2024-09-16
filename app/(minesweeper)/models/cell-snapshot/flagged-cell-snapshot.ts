@@ -13,8 +13,4 @@ export class FlaggedCellSnapshot implements CellSnapshot {
   getContent(): ReactNode {
     return '🚩';
   }
-
-  isCellOpeningDisabled(): boolean {
-    return true;
-  }
 }

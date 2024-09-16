@@ -20,8 +20,4 @@ export class OpenedEmptyCellSnapshot implements CellSnapshot {
   getContent(): string {
     return '';
   }
-
-  isCellOpeningDisabled(): boolean {
-    return this._defaultOpenedSnapshot.isCellOpeningDisabled();
-  }
 }
