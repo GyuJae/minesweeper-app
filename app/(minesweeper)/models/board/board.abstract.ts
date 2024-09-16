@@ -1,3 +1,4 @@
+import { GameException } from '../../exceptions/game-exception';
 import { Cell } from '../cell/cell.abstract';
 import { CellCollection } from '../cell-collection/cell-collections.abstract';
 import { CellPosition } from '../cell-position/cell-position.abstract';
@@ -22,5 +23,6 @@ export abstract class Board {
   abstract ifFirstOpenedCell(_callback: () => void): Board;
   abstract ifGameOver(_callback: () => void): Board;
   abstract ifGameClear(_callback: () => void): Board;
+  abstract ifThrowGameException(_callback: (_exception: GameException) => void): Board;
   abstract hasNoFlagsLeft(): boolean;
 }

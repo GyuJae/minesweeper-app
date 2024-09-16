@@ -471,13 +471,42 @@ describe('지뢰찾기 게임 규칙', () => {
 
   test('열려 있는 셀에 깃발을 꽂을 수 없습니다.', () => {
     // given
-    const gameLevel = GameLevel.VERY_EASY;
-    const board = DefaultBoard.of(gameLevel, GridCellCollection.of(gameLevel));
-    const openedBoard = board.openCell(GridCellPosition.of(0, 0));
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+    const mockCallback = vi.fn();
 
     // when
+    board.toggleFlag(GridCellPosition.of(0, 0)).ifThrowGameException(mockCallback);
+
     // then
-    expect(() => openedBoard.toggleFlag(GridCellPosition.of(0, 0))).toThrowError();
+    expect(mockCallback).toHaveBeenCalled();
   });
 
   test('깃발을 꽂은 셸의 깃발을 다시 제거하고 닫혀 있는 상태로 복구됩니다.', () => {
@@ -618,10 +647,13 @@ describe('지뢰찾기 게임 규칙', () => {
         ],
       ]),
     );
+    const mockCallback = vi.fn();
 
     // when
+    board.openCell(GridCellPosition.of(0, 0)).ifThrowGameException(mockCallback);
+
     // then
-    expect(() => board.openCell(GridCellPosition.of(0, 0))).toThrowError();
+    expect(mockCallback).toHaveBeenCalled();
   });
 
   test('깃발이 꽂혀 있는 셸은 주변 셸을 클릭해도 해당 셸은 열리지 않습니다.', () => {
@@ -693,9 +725,50 @@ describe('지뢰찾기 게임 규칙', () => {
         ],
       ]),
     );
+    const mockCallback = vi.fn();
 
     // when
+    board.toggleFlag(GridCellPosition.of(0, 3)).ifThrowGameException(mockCallback);
+
     // then
-    expect(() => board.toggleFlag(GridCellPosition.of(0, 3))).toThrowError();
+    expect(mockCallback).toHaveBeenCalled();
+  });
+
+  test('지뢰 수에 맞게 모든 깃발을 꽂고 깃발이 꽂혀 있는 셸을 제거 할 수 있습니다.', () => {
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.FLAGGED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.FLAGGED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.FLAGGED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // when
+    const newBoard = board.toggleFlag(GridCellPosition.of(0, 0));
+
+    // then
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isFlagged()).toBeFalsy();
   });
 });

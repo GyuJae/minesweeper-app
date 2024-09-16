@@ -1,6 +1,7 @@
 'use client';
 
 import Board from './components/board';
+import GameInfoHeader from './components/game-info-header';
 import GameLevelSelect from './components/game-level-select';
 import { useMinesweeperBoard } from './context/minesweeper-board.provider';
 import { useMinesweeperGameConfig } from './context/minesweeper-game-config.provider';
@@ -18,11 +19,6 @@ export default function Minesweeper() {
     gameConfigContext.setGameStatus(GameStatus.READY);
   };
 
-  const onResetBoard = () => {
-    boardContext.resetByGameLevel(gameConfigContext.gameLevel);
-    gameConfigContext.setGameStatus(GameStatus.READY);
-  };
-
   const onClickCell = (cell: Cell) => {
     if (cell.isCellOpeningDisabled()) return;
     if (gameConfigContext.gameStatus.isDisabledClickCell()) return;
@@ -37,23 +33,12 @@ export default function Minesweeper() {
   const onContextMenuCell = (cell: Cell) => {
     if (cell.isFlaggingDisabled()) return;
     if (gameConfigContext.gameStatus.isDisabledClickCell()) return;
-    if (boardContext.board.hasNoFlagsLeft()) return;
     boardContext.toggleFlag(cell.getPosition());
   };
 
   return (
-    <div className='flex h-screen items-center justify-center'>
-      <div>
-        {gameConfigContext.gameStatus.getName()} {gameConfigContext.overSeconds}
-      </div>
-      <div>
-        {gameConfigContext.gameStatus.showResetButton() && (
-          <button type='button' onClick={onResetBoard}>
-            Reset
-          </button>
-        )}
-      </div>
-      <div>남은 깃발 수: {boardContext.board.getRemainingFlagCount()}</div>
+    <div className='flex h-screen flex-col items-center justify-center'>
+      <GameInfoHeader />
       <div>
         <GameLevelSelect
           options={GameLevel.findAllLevels()}

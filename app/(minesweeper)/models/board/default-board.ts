@@ -7,12 +7,16 @@ import { GameLevel } from '../game-level/game-level.enum';
 import { Board } from './board.abstract';
 
 export class DefaultBoard extends Board {
-  private constructor(private readonly _gameLevel: GameLevel, private readonly _cells: GridCellCollection) {
+  private constructor(
+    private readonly _gameLevel: GameLevel,
+    private readonly _cells: GridCellCollection,
+    private readonly _gameException?: GameException,
+  ) {
     super();
   }
 
-  static of(gameLevel: GameLevel, cells?: GridCellCollection): DefaultBoard {
-    return new DefaultBoard(gameLevel, cells ?? GridCellCollection.of(gameLevel));
+  static of(gameLevel: GameLevel, cells?: GridCellCollection, gameException?: GameException): DefaultBoard {
+    return new DefaultBoard(gameLevel, cells ?? GridCellCollection.of(gameLevel), gameException ?? undefined);
   }
 
   override getCandidateMineCount(): number {
@@ -36,7 +40,12 @@ export class DefaultBoard extends Board {
   }
 
   override openCell(position: GridCellPosition): Board {
-    return DefaultBoard.of(this._gameLevel, this._cells.openCell(position));
+    try {
+      return DefaultBoard.of(this._gameLevel, this._cells.openCell(position));
+    } catch (error) {
+      if (error instanceof GameException) return this._copyWithGameException(error);
+      throw error;
+    }
   }
 
   override isOpenedCell(position: GridCellPosition): boolean {
@@ -64,7 +73,12 @@ export class DefaultBoard extends Board {
   }
 
   override toggleFlag(position: GridCellPosition): DefaultBoard {
-    return this.findCellByPosition(position).isFlagged() ? this._unFlag(position) : this._flag(position);
+    try {
+      return this.findCellByPosition(position).isFlagged() ? this._unFlag(position) : this._flag(position);
+    } catch (error) {
+      if (error instanceof GameException) return this._copyWithGameException(error);
+      throw error;
+    }
   }
 
   override getRemainingFlagCount(): number {
@@ -90,6 +104,11 @@ export class DefaultBoard extends Board {
     return this;
   }
 
+  override ifThrowGameException(callback: (_exception: GameException) => void): DefaultBoard {
+    if (this._gameException) callback(this._gameException);
+    return this;
+  }
+
   override hasNoFlagsLeft(): boolean {
     return this.getRemainingFlagCount() <= 0;
   }
@@ -100,5 +119,9 @@ export class DefaultBoard extends Board {
 
   private _unFlag(position: GridCellPosition): DefaultBoard {
     return DefaultBoard.of(this._gameLevel, this._cells.unFlag(position));
+  }
+
+  private _copyWithGameException(gameException: GameException): DefaultBoard {
+    return DefaultBoard.of(this._gameLevel, this._cells, gameException);
   }
 }
