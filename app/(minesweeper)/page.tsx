@@ -51,6 +51,7 @@ export default function Minesweeper() {
           </button>
         )}
       </div>
+      <div>남은 깃발 수: {boardContext.board.getRemainingFlagCount()}</div>
       <div>
         <GameLevelSelect
           options={GameLevel.findAllLevels()}
