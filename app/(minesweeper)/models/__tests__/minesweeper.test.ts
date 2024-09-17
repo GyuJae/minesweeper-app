@@ -1040,4 +1040,43 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(mockCallback).toHaveBeenCalled();
     expect(mockCallback).toHaveBeenCalledTimes(1);
   });
+
+  test('닫혀 있는 지뢰셸에 깃발을 꽂았을 때 해당 셸을 클릭해도 열 수 없습니다.', () => {
+    // given
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.FLAGGED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // when
+    const newBoard = board.openCell(GridCellPosition.of(0, 1));
+
+    // then
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isFlagged()).toBeTruthy();
+  });
 });
