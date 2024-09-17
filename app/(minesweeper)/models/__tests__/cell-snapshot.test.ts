@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 import { GridCell } from '../cell/grid-cell';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { ClosedCellSnapshot } from '../cell-snapshot/closed-cell-snapshot';
+import { FlowerCellSnapshot } from '../cell-snapshot/flower-cell-snapshot';
 import { OpenedEmptyCellSnapshot } from '../cell-snapshot/opened-empty-cell-snapshot';
 import { OpenedMineCellSnapshot } from '../cell-snapshot/opened-mine-cell-snapshot';
 import { OpenedNumberCellSnapshot } from '../cell-snapshot/opened-number-cell-snapshot';
@@ -100,5 +101,16 @@ describe('Cell - CellSnapshot', () => {
     // when
     // then
     expect(cell.isFlaggingDisabled()).toBeFalsy();
+  });
+
+  test('셸 상태를 꽃표시로 바꿀 수 있습니다.', () => {
+    // given
+    const cell = GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 0));
+
+    // when
+    cell.markAsFlower();
+
+    // then
+    expect(cell.getSnapshot()).toBeInstanceOf(FlowerCellSnapshot);
   });
 });
