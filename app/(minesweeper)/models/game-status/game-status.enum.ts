@@ -49,4 +49,16 @@ export class GameStatus extends EnumType<GameStatus>() {
   showResetButton(): boolean {
     return this._showResetButton;
   }
+
+  isPlaying(): boolean {
+    return this.equals(GameStatus.PLAYING);
+  }
+
+  isPaused(): boolean {
+    return this.equals(GameStatus.PAUSED);
+  }
+
+  isReady() {
+    return this.equals(GameStatus.READY);
+  }
 }

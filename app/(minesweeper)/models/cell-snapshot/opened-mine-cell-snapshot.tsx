@@ -10,7 +10,7 @@ export class OpenedMineCellSnapshot implements CellSnapshot {
   }
 
   getContent(): ReactNode {
-    return <div className='m-auto size-1/3 rounded-full bg-black/70' />;
+    return '💣';
   }
 
   getButtonVariant(): 'secondary' {
