@@ -26,7 +26,7 @@ export class FlaggedCellSnapshot implements CellSnapshot {
 
     return {
       [CellSnapshot.VARIANT_INITIAL]: {
-        y: -20,
+        y: -5,
         opacity: 0,
       },
       [CellSnapshot.VARIANT_ANIMATE]: {

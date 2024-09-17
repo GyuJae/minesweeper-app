@@ -31,7 +31,7 @@ const Cell = ({ cell, gameLevel, onClick, onContextMenu }: Properties) => {
         'text-blue-600': cell.isSafeCell() && cell.getNearbyMineCount() === 1,
         'text-green-600': cell.isSafeCell() && cell.getNearbyMineCount() === 2,
         'text-red-600': cell.isSafeCell() && cell.getNearbyMineCount() === 3,
-        'text-slate-700': cell.isSafeCell() && cell.getNearbyMineCount() >= 4,
+        'text-pink-600': cell.isSafeCell() && cell.getNearbyMineCount() >= 4,
       })}
       aria-label={CellModel.name}
     >
