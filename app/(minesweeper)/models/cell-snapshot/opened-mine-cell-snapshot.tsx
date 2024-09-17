@@ -13,7 +13,7 @@ export class OpenedMineCellSnapshot implements CellSnapshot {
     return '💣';
   }
 
-  getButtonVariant(): 'secondary' {
-    return 'secondary';
+  getButtonVariant(): 'ghost' {
+    return 'ghost';
   }
 }

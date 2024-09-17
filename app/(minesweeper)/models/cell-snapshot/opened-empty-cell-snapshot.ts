@@ -11,7 +11,7 @@ export class OpenedEmptyCellSnapshot implements CellSnapshot {
     return '';
   }
 
-  getButtonVariant(): 'secondary' {
-    return 'secondary';
+  getButtonVariant(): 'ghost' {
+    return 'ghost';
   }
 }

@@ -14,7 +14,7 @@ export class OpenedNumberCellSnapshot implements CellSnapshot {
     return this._cell.getNearbyMineCount();
   }
 
-  getButtonVariant(): 'secondary' {
-    return 'secondary';
+  getButtonVariant(): 'ghost' {
+    return 'ghost';
   }
 }

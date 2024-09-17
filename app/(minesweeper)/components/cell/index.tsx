@@ -7,6 +7,7 @@ import { cn } from '@/libs/utils';
 
 import { Cell as CellModel } from '../../models/cell/cell.abstract';
 import { GameLevel } from '../../models/game-level/game-level.enum';
+
 interface Properties {
   cell: CellModel;
   gameLevel: GameLevel;
@@ -17,11 +18,10 @@ interface Properties {
 const Cell = ({ cell, gameLevel, onClick, onContextMenu }: Properties) => {
   return (
     <Button
-      role='button'
       variant={cell.getSnapshot().getButtonVariant()}
       onClick={onClick}
       onContextMenu={onContextMenu}
-      className={cn('min-h-full min-w-full font-semibold transition-colors duration-100 rounded-none', {
+      className={cn('min-h-full min-w-full font-semibold rounded-none', {
         'size-24 text-3xl': GameLevel.VERY_EASY.equals(gameLevel),
         'size-16 text-2xl': GameLevel.EASY.equals(gameLevel),
         'size-12 text-xl': GameLevel.NORMAL.equals(gameLevel),
