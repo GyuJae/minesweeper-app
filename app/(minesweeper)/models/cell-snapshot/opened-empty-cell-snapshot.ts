@@ -1,3 +1,5 @@
+import { Variants } from 'framer-motion';
+
 import { CellSnapshot } from './cell-snapshot.interface';
 
 export class OpenedEmptyCellSnapshot implements CellSnapshot {
@@ -17,5 +19,13 @@ export class OpenedEmptyCellSnapshot implements CellSnapshot {
 
   getName(): string {
     return OpenedEmptyCellSnapshot.name;
+  }
+
+  getAnimationVariant(): Variants {
+    return {
+      [CellSnapshot.VARIANT_INITIAL]: {},
+      [CellSnapshot.VARIANT_ANIMATE]: {},
+      [CellSnapshot.VARIANT_EXIT]: {},
+    };
   }
 }

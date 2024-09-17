@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/libs/utils';
 
 import { Cell as CellModel } from '../../models/cell/cell.abstract';
+import { CellSnapshot } from '../../models/cell-snapshot/cell-snapshot.interface';
 import { GameLevel } from '../../models/game-level/game-level.enum';
 
 interface Properties {
@@ -37,10 +38,11 @@ const Cell = ({ cell, gameLevel, onClick, onContextMenu }: Properties) => {
       <AnimatePresence>
         <motion.div
           key={cell.getSnapshotKey()}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 3 }}
+          variants={cell.getSnapshot().getAnimationVariant()}
+          initial={CellSnapshot.VARIANT_INITIAL}
+          animate={CellSnapshot.VARIANT_ANIMATE}
+          exit={CellSnapshot.VARIANT_EXIT}
+          transition={{ duration: 0.3 }}
         >
           {cell.getContent()}
         </motion.div>

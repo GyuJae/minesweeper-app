@@ -1,3 +1,4 @@
+import { Variants } from 'framer-motion';
 import { ReactNode } from 'react';
 
 import { Cell } from '../cell/cell.abstract';
@@ -20,5 +21,13 @@ export class OpenedNumberCellSnapshot implements CellSnapshot {
 
   getName(): string {
     return OpenedNumberCellSnapshot.name;
+  }
+
+  getAnimationVariant(): Variants {
+    return {
+      [CellSnapshot.VARIANT_INITIAL]: {},
+      [CellSnapshot.VARIANT_ANIMATE]: {},
+      [CellSnapshot.VARIANT_EXIT]: {},
+    };
   }
 }
