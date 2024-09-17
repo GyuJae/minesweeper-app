@@ -46,6 +46,10 @@ export class GridCellCollection extends CellCollection {
   override openCell(position: GridCellPosition): GridCellCollection {
     let updatedCells = this._copy();
 
+    if (updatedCells._isFlaggedCell(position)) {
+      throw GameException.of('깃발이 꽂힌 셀을 열 수 없습니다.');
+    }
+
     if (updatedCells._isOpenedCell(position)) {
       throw GameException.of('열려 있는 셀을 다시 열 수 없습니다.');
     }
@@ -66,6 +70,9 @@ export class GridCellCollection extends CellCollection {
     }
 
     return updatedCells._openCell(position)._copyWithFirstCellOpened(isFirstCellOpening);
+  }
+  private _isFlaggedCell(position: GridCellPosition): boolean {
+    return this.findCellByPosition(position).isFlagged();
   }
 
   private _isOpenedCell(position: GridCellPosition): boolean {
