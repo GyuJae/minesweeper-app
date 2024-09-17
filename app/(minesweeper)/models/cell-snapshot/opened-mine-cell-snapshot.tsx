@@ -16,4 +16,8 @@ export class OpenedMineCellSnapshot implements CellSnapshot {
   getButtonVariant(): 'ghost' {
     return 'ghost';
   }
+
+  getName(): string {
+    return OpenedMineCellSnapshot.name;
+  }
 }

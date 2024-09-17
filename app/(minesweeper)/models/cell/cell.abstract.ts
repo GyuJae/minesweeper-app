@@ -21,8 +21,10 @@ export abstract class Cell {
   abstract getContent(): ReactNode;
   abstract toString(): string;
   abstract isFlaggingDisabled(): boolean;
-
   abstract isCellOpeningDisabled(): boolean;
+  abstract getSnapshotKey(): string;
+  // TODO REMOVE
+  abstract getAdjacentMineCount(..._arguments: any): number;
 
   isSafeCell(): boolean {
     return !this.isMine();

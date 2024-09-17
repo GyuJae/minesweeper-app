@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { MouseEventHandler } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -33,7 +34,17 @@ const Cell = ({ cell, gameLevel, onClick, onContextMenu }: Properties) => {
       })}
       aria-label={CellModel.name}
     >
-      {cell.getContent()}
+      <AnimatePresence>
+        <motion.div
+          key={cell.getSnapshotKey()}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 3 }}
+        >
+          {cell.getContent()}
+        </motion.div>
+      </AnimatePresence>
     </Button>
   );
 };

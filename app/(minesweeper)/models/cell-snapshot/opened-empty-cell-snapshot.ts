@@ -14,4 +14,8 @@ export class OpenedEmptyCellSnapshot implements CellSnapshot {
   getButtonVariant(): 'ghost' {
     return 'ghost';
   }
+
+  getName(): string {
+    return OpenedEmptyCellSnapshot.name;
+  }
 }

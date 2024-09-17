@@ -99,7 +99,11 @@ export class GridCell extends Cell {
     return this.isOpened() || this.isFlagged();
   }
 
-  getAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): number {
+  override getSnapshotKey(): string {
+    return this.getSnapshot().getName();
+  }
+
+  override getAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): number {
     return this._position
       .getAdjacentPositions(gameLevel)
       .filter((p) => cells.findCellByPosition(p).isMine())

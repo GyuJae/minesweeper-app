@@ -14,4 +14,8 @@ export class ClosedCellSnapshot implements CellSnapshot {
   getButtonVariant(): 'secondary' {
     return 'secondary';
   }
+
+  getName(): string {
+    return ClosedCellSnapshot.name;
+  }
 }
