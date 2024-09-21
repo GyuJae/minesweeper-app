@@ -6,6 +6,10 @@ import { CellSnapshot } from './cell-snapshot.interface';
 export class FlowerCellSnapshot implements CellSnapshot {
   private static FLORAL_EMOJIS = ['🌸', '🌼', '🌻', '🌺', '🌹', '🌷', '💐'];
 
+  static of(): FlowerCellSnapshot {
+    return new FlowerCellSnapshot();
+  }
+
   getContent(): ReactNode {
     return FlowerCellSnapshot.FLORAL_EMOJIS[Math.floor(Math.random() * FlowerCellSnapshot.FLORAL_EMOJIS.length)];
   }

@@ -20,4 +20,8 @@ export class EmptyCellType extends CellType {
   override getNearbyMineCount(): number {
     return 0;
   }
+
+  override isFlower(): boolean {
+    return false;
+  }
 }

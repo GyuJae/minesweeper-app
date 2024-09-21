@@ -5,11 +5,13 @@ import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { CellSnapshot } from '../cell-snapshot/cell-snapshot.interface';
 import { ClosedCellSnapshot } from '../cell-snapshot/closed-cell-snapshot';
 import { FlaggedCellSnapshot } from '../cell-snapshot/flagged-cell-snapshot';
+import { FlowerCellSnapshot } from '../cell-snapshot/flower-cell-snapshot';
 import { OpenedEmptyCellSnapshot } from '../cell-snapshot/opened-empty-cell-snapshot';
 import { OpenedMineCellSnapshot } from '../cell-snapshot/opened-mine-cell-snapshot';
 import { OpenedNumberCellSnapshot } from '../cell-snapshot/opened-number-cell-snapshot';
 import { CellState } from '../cell-state/cell-state.enum';
 import { CellType } from '../cell-type/cell-type.abstract';
+import { FlowerCellType } from '../cell-type/flower-cell-type';
 import { MineCellType } from '../cell-type/mine-cell-type';
 import { GameLevel } from '../game-level/game-level.enum';
 import { Cell } from './cell.abstract';
@@ -80,11 +82,15 @@ export class GridCell extends Cell {
   }
 
   override getSnapshot(): CellSnapshot {
+    if (this._isFlower()) return FlowerCellSnapshot.of();
     if (this.isFlagged()) return FlaggedCellSnapshot.of();
     if (this.isClosed()) return ClosedCellSnapshot.of();
     if (this.isMine()) return OpenedMineCellSnapshot.of();
     if (this.isNumber()) return OpenedNumberCellSnapshot.of(this);
     return OpenedEmptyCellSnapshot.of();
+  }
+  private _isFlower(): boolean {
+    return this._cellType.isFlower();
   }
 
   override getContent(): ReactNode {
@@ -108,5 +114,9 @@ export class GridCell extends Cell {
       .getAdjacentPositions(gameLevel)
       .filter((p) => cells.findCellByPosition(p).isMine())
       .getSize();
+  }
+
+  override markAsFlower(): GridCell {
+    return GridCell.of(this._cellState, FlowerCellType.of(), this._position);
   }
 }

@@ -24,4 +24,8 @@ export class NumberCellType extends CellType {
   override isEmpty(): boolean {
     return false;
   }
+
+  override isFlower(): boolean {
+    return false;
+  }
 }

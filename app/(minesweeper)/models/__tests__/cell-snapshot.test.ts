@@ -108,9 +108,9 @@ describe('Cell - CellSnapshot', () => {
     const cell = GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 0));
 
     // when
-    cell.markAsFlower();
+    const newCell = cell.markAsFlower();
 
     // then
-    expect(cell.getSnapshot()).toBeInstanceOf(FlowerCellSnapshot);
+    expect(newCell.getSnapshot()).toBeInstanceOf(FlowerCellSnapshot);
   });
 });

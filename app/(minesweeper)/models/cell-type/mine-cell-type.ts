@@ -25,4 +25,8 @@ export class MineCellType extends CellType {
   override getNearbyMineCount(): number {
     throw GameException.of('지뢰 타입은 주변 지뢰 개수를 가지고 있지 않습니다.');
   }
+
+  override isFlower(): boolean {
+    return false;
+  }
 }

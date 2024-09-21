@@ -25,7 +25,7 @@ export abstract class Cell {
   abstract getSnapshotKey(): string;
   // TODO REMOVE
   abstract getAdjacentMineCount(..._arguments: any): number;
-
+  abstract markAsFlower(): Cell;
   isSafeCell(): boolean {
     return !this.isMine();
   }
