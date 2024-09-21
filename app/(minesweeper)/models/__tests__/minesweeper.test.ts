@@ -1164,13 +1164,61 @@ describe('지뢰찾기 게임 규칙', () => {
     const flagSoundSpy = vi.spyOn(FlagSound.prototype, 'play').mockImplementation(() => {});
 
     // when
-    board.openCell(GridCellPosition.of(0, 3)).playSound(GridCellPosition.of(0, 3));
+    board.playSound(GridCellPosition.of(0, 3));
 
     // then
     expect(clickSoundSpy).toHaveBeenCalled();
     expect(errorSoundSpy).not.toHaveBeenCalled();
     expect(successSoundSpy).not.toHaveBeenCalled();
     expect(explosionSoundSpy).not.toHaveBeenCalled();
+    expect(flagSoundSpy).not.toHaveBeenCalled();
+  });
+
+  test('지뢰셸을 클릭 시 폭발 소리가 납니다.', () => {
+    // given
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+    const clickSoundSpy = vi.spyOn(ClickSound.prototype, 'play').mockImplementation(() => {});
+    const errorSoundSpy = vi.spyOn(ErrorSound.prototype, 'play').mockImplementation(() => {});
+    const successSoundSpy = vi.spyOn(SuccessSound.prototype, 'play').mockImplementation(() => {});
+    const explosionSoundSpy = vi.spyOn(ExplosionSound.prototype, 'play').mockImplementation(() => {});
+    const flagSoundSpy = vi.spyOn(FlagSound.prototype, 'play').mockImplementation(() => {});
+
+    // when
+    board.playSound(GridCellPosition.of(0, 1));
+
+    // then
+    expect(clickSoundSpy).not.toHaveBeenCalled();
+    expect(errorSoundSpy).not.toHaveBeenCalled();
+    expect(successSoundSpy).not.toHaveBeenCalled();
+    expect(explosionSoundSpy).toHaveBeenCalled();
     expect(flagSoundSpy).not.toHaveBeenCalled();
   });
 });
