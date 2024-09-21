@@ -10,6 +10,10 @@ import { MineCellType } from '../cell-type/mine-cell-type';
 import { NumberCellType } from '../cell-type/number-cell-type';
 import { GameLevel } from '../game-level/game-level.enum';
 import { ClickSound } from '../game-sound/click-sound';
+import { ErrorSound } from '../game-sound/error-sound';
+import { ExplosionSound } from '../game-sound/explosion-sound';
+import { FlagSound } from '../game-sound/flag-sound';
+import { SuccessSound } from '../game-sound/success-sound';
 
 describe('지뢰찾기 게임 규칙', () => {
   test('게임 시작 시 설정한 난이도에 맞게 보드 크기가 정해집니다.', () => {
@@ -1122,7 +1126,7 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isFlower()).toBeTruthy();
   });
 
-  test('지뢰가 아닌 게임 규칙에 위반되지 않은 셸을 클릭 시 클릭 소리가 납니다.', () => {
+  test('지뢰가 아니며 게임 규칙에 위반되지 않은 셸을 클릭 시 클릭 소리가 납니다.', () => {
     // given
     const board = DefaultBoard.of(
       GameLevel.VERY_EASY,
@@ -1154,11 +1158,19 @@ describe('지뢰찾기 게임 규칙', () => {
       ]),
     );
     const clickSoundSpy = vi.spyOn(ClickSound.prototype, 'play').mockImplementation(() => {});
+    const errorSoundSpy = vi.spyOn(ErrorSound.prototype, 'play').mockImplementation(() => {});
+    const successSoundSpy = vi.spyOn(SuccessSound.prototype, 'play').mockImplementation(() => {});
+    const explosionSoundSpy = vi.spyOn(ExplosionSound.prototype, 'play').mockImplementation(() => {});
+    const flagSoundSpy = vi.spyOn(FlagSound.prototype, 'play').mockImplementation(() => {});
 
     // when
     board.openCell(GridCellPosition.of(0, 3)).playSound(GridCellPosition.of(0, 3));
 
     // then
     expect(clickSoundSpy).toHaveBeenCalled();
+    expect(errorSoundSpy).not.toHaveBeenCalled();
+    expect(successSoundSpy).not.toHaveBeenCalled();
+    expect(explosionSoundSpy).not.toHaveBeenCalled();
+    expect(flagSoundSpy).not.toHaveBeenCalled();
   });
 });

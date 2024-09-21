@@ -14,6 +14,7 @@ import { CellType } from '../cell-type/cell-type.abstract';
 import { FlowerCellType } from '../cell-type/flower-cell-type';
 import { MineCellType } from '../cell-type/mine-cell-type';
 import { GameLevel } from '../game-level/game-level.enum';
+import { ClickSound } from '../game-sound/click-sound';
 import { Cell } from './cell.abstract';
 
 export class GridCell extends Cell {
@@ -89,6 +90,13 @@ export class GridCell extends Cell {
     if (this.isNumber()) return OpenedNumberCellSnapshot.of(this);
     return OpenedEmptyCellSnapshot.of();
   }
+
+  override playSound(): void {
+    if (this.isSafeCell()) {
+      ClickSound.of().play();
+    }
+  }
+
   override isFlower(): boolean {
     return this._cellType.isFlower();
   }

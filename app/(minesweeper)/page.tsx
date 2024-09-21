@@ -25,7 +25,8 @@ export default function Minesweeper() {
       .ifGameOver(() => gameConfigContext.setGameStatus(GameStatus.GAME_OVER))
       .ifGameClear(() => {
         gameConfigContext.setGameStatus(GameStatus.CLEAR);
-        boardContext.changeAllMineCellsToFlowers();
+        // ! 마지막 열린 셸이 표시가 안됨
+        // boardContext.changeAllMineCellsToFlowers();
       });
   };
 

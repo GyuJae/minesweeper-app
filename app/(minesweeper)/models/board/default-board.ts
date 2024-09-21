@@ -116,6 +116,13 @@ export class DefaultBoard extends Board {
   override hasNoFlagsLeft(): boolean {
     return this.getRemainingFlagCount() <= 0;
   }
+
+  override playSound(position: GridCellPosition): DefaultBoard {
+    const cell = this.findCellByPosition(position);
+    cell.playSound();
+    return this;
+  }
+
   private _flag(position: GridCellPosition): DefaultBoard {
     if (this.hasNoFlagsLeft()) throw GameException.of('지뢰 수 초과하여 깃발을 꽂을 수 없습니다.');
     return DefaultBoard.of(this._gameLevel, this._cells.flag(position));

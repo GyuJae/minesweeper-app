@@ -26,4 +26,5 @@ export abstract class Board {
   abstract ifThrowGameException(_callback: (_exception: GameException) => void): Board;
   abstract hasNoFlagsLeft(): boolean;
   abstract changeAllMineCellsToFlowers(): Board;
+  abstract playSound(_cellPosition: CellPosition): Board;
 }
