@@ -103,8 +103,8 @@ export class DefaultBoard extends Board {
     return this;
   }
 
-  override ifGameClear(callback: () => void): DefaultBoard {
-    if (this.isGameClear()) callback();
+  override ifGameClear(callback: (_board: DefaultBoard) => void): DefaultBoard {
+    if (this.isGameClear()) callback(this);
     return this;
   }
 

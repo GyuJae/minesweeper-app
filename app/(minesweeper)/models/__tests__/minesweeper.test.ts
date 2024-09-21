@@ -349,10 +349,9 @@ describe('지뢰찾기 게임 규칙', () => {
   test('사용자가 지뢰가 아닌 모든 셸을 열면 게임에서 승리합니다.', () => {
     // given
     // when
-    const gameLevel = GameLevel.VERY_EASY;
     const board = DefaultBoard.of(
-      gameLevel,
-      GridCellCollection.of(gameLevel, [
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
         [
           GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
           GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
@@ -1121,6 +1120,48 @@ describe('지뢰찾기 게임 규칙', () => {
     const newBoard = board.changeAllMineCellsToFlowers();
 
     // then
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isFlower()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 2)).isFlower()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isFlower()).toBeTruthy();
+  });
+
+  test("게임 클리어 시 모든 셸이 열리며, 지뢰셸은 '꽃'으로 변경됩니다.", () => {
+    // given
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.OPENED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // when
+    const newBoard = board.openCell(GridCellPosition.of(0, 0)).changeAllMineCellsToFlowers();
+
+    // then
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 0)).isOpened()).toBeTruthy();
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isFlower()).toBeTruthy();
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 2)).isFlower()).toBeTruthy();
     expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isFlower()).toBeTruthy();

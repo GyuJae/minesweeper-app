@@ -22,7 +22,7 @@ export abstract class Board {
   abstract getGameLevel(): GameLevel;
   abstract ifFirstOpenedCell(_callback: () => void): Board;
   abstract ifGameOver(_callback: () => void): Board;
-  abstract ifGameClear(_callback: () => void): Board;
+  abstract ifGameClear(_callback: (_newBoard: Board) => void): Board;
   abstract ifThrowGameException(_callback: (_exception: GameException) => void): Board;
   abstract hasNoFlagsLeft(): boolean;
   abstract changeAllMineCellsToFlowers(): Board;
