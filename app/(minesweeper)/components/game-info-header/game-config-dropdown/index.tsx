@@ -48,7 +48,7 @@ const GameConfigDropdown = () => {
           <MenuIcon className='size-4' />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent align='start'>
         <DropdownMenuItem disabled={gameConfigContext.gameStatus.isReady()} onClick={onResetGame}>
           처음부터
         </DropdownMenuItem>
