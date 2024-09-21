@@ -15,6 +15,7 @@ import { FlowerCellType } from '../cell-type/flower-cell-type';
 import { MineCellType } from '../cell-type/mine-cell-type';
 import { GameLevel } from '../game-level/game-level.enum';
 import { ClickSound } from '../game-sound/click-sound';
+import { ExplosionSound } from '../game-sound/explosion-sound';
 import { Cell } from './cell.abstract';
 
 export class GridCell extends Cell {
@@ -94,6 +95,8 @@ export class GridCell extends Cell {
   override playSound(): void {
     if (this.isSafeCell()) {
       ClickSound.of().play();
+    } else if (this.isMine()) {
+      ExplosionSound.of().play();
     }
   }
 
