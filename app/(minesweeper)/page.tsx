@@ -23,7 +23,10 @@ export default function Minesweeper() {
       .ifThrowGameException((exception) => console.log(exception.message)) // TODO 알림음 추가
       .ifFirstOpenedCell(() => gameConfigContext.setGameStatus(GameStatus.PLAYING))
       .ifGameOver(() => gameConfigContext.setGameStatus(GameStatus.GAME_OVER))
-      .ifGameClear(() => gameConfigContext.setGameStatus(GameStatus.CLEAR));
+      .ifGameClear(() => {
+        gameConfigContext.setGameStatus(GameStatus.CLEAR);
+        boardContext.changeAllMineCellsToFlowers();
+      });
   };
 
   const onContextMenuCell = (cell: Cell) => {

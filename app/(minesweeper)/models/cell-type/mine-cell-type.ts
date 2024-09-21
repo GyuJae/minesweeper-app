@@ -1,4 +1,3 @@
-import { GameException } from '../../exceptions/game-exception';
 import { CellType } from './cell-type.abstract';
 
 export class MineCellType extends CellType {
@@ -23,7 +22,8 @@ export class MineCellType extends CellType {
   }
 
   override getNearbyMineCount(): number {
-    throw GameException.of('지뢰 타입은 주변 지뢰 개수를 가지고 있지 않습니다.');
+    // TODO 수정 필요
+    return 0;
   }
 
   override isFlower(): boolean {

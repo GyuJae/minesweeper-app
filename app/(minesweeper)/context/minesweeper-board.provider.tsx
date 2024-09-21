@@ -9,8 +9,8 @@ interface MinesweeperBoardValue {
   board: Board;
   resetByGameLevel: (_gameLevel: GameLevel) => Board;
   openCell: (_position: CellPosition) => Board;
-
   toggleFlag: (_position: CellPosition) => Board;
+  changeAllMineCellsToFlowers: () => Board;
 }
 
 const MinesweeperBoard = createContext<MinesweeperBoardValue | undefined>(undefined);
@@ -36,11 +36,18 @@ const MinesweeperBoardProvider = ({ children, gameLevel }: { children: ReactNode
     return newBoard;
   };
 
+  const changeAllMineCellsToFlowers = () => {
+    const newBoard = board.changeAllMineCellsToFlowers();
+    setBoard(newBoard);
+    return newBoard;
+  };
+
   const value: MinesweeperBoardValue = {
     board,
     openCell,
     resetByGameLevel,
     toggleFlag,
+    changeAllMineCellsToFlowers,
   };
 
   return <MinesweeperBoard.Provider value={value}>{children}</MinesweeperBoard.Provider>;
