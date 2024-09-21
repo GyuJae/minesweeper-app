@@ -20,13 +20,13 @@ const GameInfoHeader = () => {
         </Button>
       </article>
       <article className='flex items-center justify-between'>
-        <section className='w-16 text-lg'>
+        <section className='w-20 text-lg'>
           <p>⏰ {gameConfigContext.overSeconds}</p>
         </section>
         <section>
           <p className='text-4xl'>{gameConfigContext.gameStatus.getEmoji()}</p>
         </section>
-        <section className='w-16 text-right text-lg'>
+        <section className='w-20 text-right text-lg'>
           <p>🚩 {boardContext.board.getRemainingFlagCount()}</p>
         </section>
       </article>

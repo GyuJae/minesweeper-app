@@ -1,11 +1,15 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+
 import Board from './components/board';
 import GameInfoHeader from './components/game-info-header';
 import { useMinesweeperBoard } from './context/minesweeper-board.provider';
 import { useMinesweeperGameConfig } from './context/minesweeper-game-config.provider';
 import { Cell } from './models/cell/cell.abstract';
 import { GameStatus } from './models/game-status/game-status.enum';
+
+const ParticleLottie = dynamic(() => import('./components/particle-lottie'), { ssr: false });
 
 export default function Minesweeper() {
   const gameConfigContext = useMinesweeperGameConfig();
@@ -28,9 +32,12 @@ export default function Minesweeper() {
   };
 
   return (
-    <div className='m-auto flex max-w-max flex-col py-24'>
+    <div className='relative m-auto flex max-w-max flex-col py-24'>
       <GameInfoHeader />
       <Board board={boardContext.board} onClickCell={onClickCell} onContextMenuCell={onContextMenuCell} />
+      {gameConfigContext.gameStatus.isClear() && (
+        <ParticleLottie loop={false} className='pointer-events-none absolute inset-0' />
+      )}
     </div>
   );
 }

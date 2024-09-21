@@ -61,4 +61,8 @@ export class GameStatus extends EnumType<GameStatus>() {
   isReady() {
     return this.equals(GameStatus.READY);
   }
+
+  isClear() {
+    return this.equals(GameStatus.CLEAR);
+  }
 }
