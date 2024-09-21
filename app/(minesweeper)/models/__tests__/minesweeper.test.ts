@@ -1079,4 +1079,45 @@ describe('지뢰찾기 게임 규칙', () => {
     // then
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isFlagged()).toBeTruthy();
   });
+
+  test('보드의 모든 지뢰셸을 꽃 셸로 바꿀 수 있습니다.', () => {
+    // given
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.FLAGGED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.FLAGGED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.FLAGGED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.OPENED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+
+    // when
+    const newBoard = board.changeAllMineCellsToFlagged();
+
+    // then
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isFlower()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(0, 2)).isFlower()).toBeTruthy();
+    expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isFlower()).toBeTruthy();
+  });
 });
