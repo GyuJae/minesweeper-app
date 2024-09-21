@@ -6,7 +6,11 @@ import Board from './components/board';
 import GameInfoHeader from './components/game-info-header';
 import { useMinesweeperBoard } from './context/minesweeper-board.provider';
 import { useMinesweeperGameConfig } from './context/minesweeper-game-config.provider';
+import { Board as BoardModel } from './models/board/board.abstract';
 import { Cell } from './models/cell/cell.abstract';
+import { ExplosionSound } from './models/game-sound/explosion-sound';
+import { FlagSound } from './models/game-sound/flag-sound';
+import { SuccessSound } from './models/game-sound/success-sound';
 import { GameStatus } from './models/game-status/game-status.enum';
 
 const ParticleLottie = dynamic(() => import('./components/particle-lottie'), { ssr: false });
@@ -18,21 +22,27 @@ export default function Minesweeper() {
   const onClickCell = (cell: Cell) => {
     if (gameConfigContext.gameStatus.isDisabledClickCell()) return;
 
-    boardContext
+    const newBoard = boardContext.board
       .openCell(cell.getPosition())
-      .ifThrowGameException((exception) => console.log(exception.message)) // TODO 알림음 추가
+      .ifThrowGameException(() => ExplosionSound.of().play())
+      .ifNotThrowGameException(() => cell.playSound())
       .ifFirstOpenedCell(() => gameConfigContext.setGameStatus(GameStatus.PLAYING))
       .ifGameOver(() => gameConfigContext.setGameStatus(GameStatus.GAME_OVER))
-      .ifGameClear(() => {
+      .ifGameClear((board: BoardModel) => {
+        SuccessSound.of().play();
         gameConfigContext.setGameStatus(GameStatus.CLEAR);
-        // ! 마지막 열린 셸이 표시가 안됨
-        // boardContext.changeAllMineCellsToFlowers();
+        return board.changeAllMineCellsToFlowers();
       });
+    boardContext.setBoard(newBoard);
   };
 
   const onContextMenuCell = (cell: Cell) => {
     if (gameConfigContext.gameStatus.isDisabledClickCell()) return;
-    boardContext.toggleFlag(cell.getPosition()).ifThrowGameException((exception) => console.log(exception.message)); // TODO 알림음 추가
+
+    boardContext
+      .toggleFlag(cell.getPosition())
+      .ifThrowGameException(() => ExplosionSound.of().play())
+      .ifNotThrowGameException(() => FlagSound.of().play());
   };
 
   return (

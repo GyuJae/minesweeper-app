@@ -103,13 +103,18 @@ export class DefaultBoard extends Board {
     return this;
   }
 
-  override ifGameClear(callback: (_board: DefaultBoard) => void): DefaultBoard {
-    if (this.isGameClear()) callback(this);
+  override ifGameClear(callback: (_board: DefaultBoard) => DefaultBoard): DefaultBoard {
+    if (this.isGameClear()) return callback(this);
     return this;
   }
 
   override ifThrowGameException(callback: (_exception: GameException) => void): DefaultBoard {
     if (this._gameException) callback(this._gameException);
+    return this;
+  }
+
+  override ifNotThrowGameException(callback: () => void): DefaultBoard {
+    if (!this._gameException) callback();
     return this;
   }
 
