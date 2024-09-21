@@ -9,6 +9,7 @@ import { EmptyCellType } from '../cell-type/empty-cell-type';
 import { MineCellType } from '../cell-type/mine-cell-type';
 import { NumberCellType } from '../cell-type/number-cell-type';
 import { GameLevel } from '../game-level/game-level.enum';
+import { ClickSound } from '../game-sound/click-sound';
 
 describe('지뢰찾기 게임 규칙', () => {
   test('게임 시작 시 설정한 난이도에 맞게 보드 크기가 정해집니다.', () => {
@@ -1119,5 +1120,45 @@ describe('지뢰찾기 게임 규칙', () => {
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isFlower()).toBeTruthy();
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 2)).isFlower()).toBeTruthy();
     expect(newBoard.findCellByPosition(GridCellPosition.of(3, 1)).isFlower()).toBeTruthy();
+  });
+
+  test('지뢰가 아닌 게임 규칙에 위반되지 않은 셸을 클릭 시 클릭 소리가 납니다.', () => {
+    // given
+    const board = DefaultBoard.of(
+      GameLevel.VERY_EASY,
+      GridCellCollection.of(GameLevel.VERY_EASY, [
+        [
+          GridCell.of(CellState.OPENED, NumberCellType.of(1), GridCellPosition.of(0, 0)),
+          GridCell.of(CellState.FLAGGED, MineCellType.of(), GridCellPosition.of(0, 1)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(0, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(0, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(2), GridCellPosition.of(1, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(1, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 0)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 2)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(2, 3)),
+        ],
+        [
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 0)),
+          GridCell.of(CellState.CLOSED, MineCellType.of(), GridCellPosition.of(3, 1)),
+          GridCell.of(CellState.CLOSED, NumberCellType.of(1), GridCellPosition.of(3, 2)),
+          GridCell.of(CellState.CLOSED, EmptyCellType.of(), GridCellPosition.of(3, 3)),
+        ],
+      ]),
+    );
+    const clickSoundSpy = vi.spyOn(ClickSound.prototype, 'play').mockImplementation(() => {});
+
+    // when
+    board.openCell(GridCellPosition.of(0, 3)).playSound(GridCellPosition.of(0, 3));
+
+    // then
+    expect(clickSoundSpy).toHaveBeenCalled();
   });
 });
