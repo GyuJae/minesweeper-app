@@ -25,4 +25,5 @@ export abstract class Board {
   abstract ifGameClear(_callback: () => void): Board;
   abstract ifThrowGameException(_callback: (_exception: GameException) => void): Board;
   abstract hasNoFlagsLeft(): boolean;
+  abstract changeAllMineCellsToFlowers(): Board;
 }

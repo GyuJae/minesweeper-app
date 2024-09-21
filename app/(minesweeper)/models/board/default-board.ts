@@ -81,6 +81,10 @@ export class DefaultBoard extends Board {
     }
   }
 
+  override changeAllMineCellsToFlowers(): DefaultBoard {
+    return DefaultBoard.of(this._gameLevel, this._cells.changeAllMineCellsToFlowers());
+  }
+
   override getRemainingFlagCount(): number {
     return this._gameLevel.getMineCount() - this._cells.getFlagCount();
   }

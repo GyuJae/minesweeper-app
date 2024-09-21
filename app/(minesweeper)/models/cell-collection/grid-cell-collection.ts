@@ -43,6 +43,13 @@ export class GridCellCollection extends CellCollection {
     return this._cells.flat().some((cell) => cell.isMine() && cell.isClosed());
   }
 
+  override changeAllMineCellsToFlowers(): GridCellCollection {
+    return this._map((cell) => {
+      if (cell.isMine()) return cell.markAsFlower();
+      return cell;
+    });
+  }
+
   override openCell(position: GridCellPosition): GridCellCollection {
     let updatedCells = this._copy();
 

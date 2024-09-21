@@ -14,6 +14,7 @@ export abstract class Cell {
   abstract open(): Cell;
   abstract isMine(): boolean;
   abstract isClosed(): boolean;
+  abstract isFlower(): boolean;
   abstract updatedToMine(): Cell;
   abstract flag(): Cell;
   abstract unFlag(): Cell;

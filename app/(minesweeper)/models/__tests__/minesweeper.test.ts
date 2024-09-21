@@ -1113,7 +1113,7 @@ describe('지뢰찾기 게임 규칙', () => {
     );
 
     // when
-    const newBoard = board.changeAllMineCellsToFlagged();
+    const newBoard = board.changeAllMineCellsToFlowers();
 
     // then
     expect(newBoard.findCellByPosition(GridCellPosition.of(0, 1)).isFlower()).toBeTruthy();

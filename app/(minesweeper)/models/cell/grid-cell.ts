@@ -82,14 +82,14 @@ export class GridCell extends Cell {
   }
 
   override getSnapshot(): CellSnapshot {
-    if (this._isFlower()) return FlowerCellSnapshot.of();
+    if (this.isFlower()) return FlowerCellSnapshot.of();
     if (this.isFlagged()) return FlaggedCellSnapshot.of();
     if (this.isClosed()) return ClosedCellSnapshot.of();
     if (this.isMine()) return OpenedMineCellSnapshot.of();
     if (this.isNumber()) return OpenedNumberCellSnapshot.of(this);
     return OpenedEmptyCellSnapshot.of();
   }
-  private _isFlower(): boolean {
+  override isFlower(): boolean {
     return this._cellType.isFlower();
   }
 

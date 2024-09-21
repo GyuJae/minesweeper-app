@@ -22,6 +22,7 @@ export abstract class CellCollection {
   abstract areAllSafeCellsOpened(): boolean;
   abstract getRows(): Cell[][];
   abstract isFirstOpenedCell(): boolean;
+  abstract changeAllMineCellsToFlowers(): CellCollection;
 
   abstract [Symbol.iterator](): Iterator<Cell>;
 }
