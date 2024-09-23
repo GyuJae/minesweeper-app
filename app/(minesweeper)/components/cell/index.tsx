@@ -33,7 +33,7 @@ const Cell = ({ cell, gameLevel, onClick, onContextMenu }: Properties) => {
         'text-red-600': cell.isSafeCell() && cell.getNearbyMineCount() === 3,
         'text-pink-600': cell.isSafeCell() && cell.getNearbyMineCount() >= 4,
       })}
-      aria-label={CellModel.name}
+      aria-label={`cell-${cell.getPosition().toString()}`}
     >
       <AnimatePresence>
         <motion.div

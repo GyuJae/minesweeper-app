@@ -14,8 +14,14 @@ interface MinesweeperBoardValue {
 
 const MinesweeperBoard = createContext<MinesweeperBoardValue | undefined>(undefined);
 
-const MinesweeperBoardProvider = ({ children, gameLevel }: { children: ReactNode; gameLevel: GameLevel }) => {
-  const [board, setBoard] = useState<Board>(DefaultBoard.of(gameLevel));
+interface ProviderProperties {
+  children: ReactNode;
+  gameLevel: GameLevel;
+  defaultBoard?: Board;
+}
+
+const MinesweeperBoardProvider = ({ children, gameLevel, defaultBoard }: ProviderProperties) => {
+  const [board, setBoard] = useState<Board>(defaultBoard ?? DefaultBoard.of(gameLevel));
 
   const resetByGameLevel = (level: GameLevel): Board => {
     const newBoard = DefaultBoard.of(level);
