@@ -2,7 +2,6 @@ import { GameException } from '../../exceptions/game-exception';
 import { Cell } from '../cell/cell.abstract';
 import { GridCell } from '../cell/grid-cell';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
-import { CellPositionCollection } from '../cell-position-collection/cell-position-collection.abstract';
 import { GridCellPositionCollection } from '../cell-position-collection/grid-cell-position-collection';
 import { CellState } from '../cell-state/cell-state.enum';
 import { EmptyCellType } from '../cell-type/empty-cell-type';
@@ -119,11 +118,6 @@ export class GridCellCollection extends CellCollection {
 
   override getUnOpenedMineCount(): number {
     return this._cells.flat().filter((cell) => cell.isMine() && (cell.isClosed() || cell.isFlagged())).length;
-  }
-
-  override getNumberPositions(): CellPositionCollection {
-    const allPositions = GridCellPositionCollection.gameLevelOf(this._gameLevel);
-    return allPositions.filter((position) => this.findCellByPosition(position).isNumber());
   }
 
   override getRowSize(): number {

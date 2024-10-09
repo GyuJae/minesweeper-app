@@ -1,9 +1,11 @@
+import { FX } from '@/libs';
+
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { GameLevel } from '../game-level/game-level.enum';
 import { CellPositionCollection } from './cell-position-collection.abstract';
 
 export class GridCellPositionCollection extends CellPositionCollection {
-  private constructor(private readonly _positions: GridCellPosition[]) {
+  private constructor(private readonly _positions: Iterable<GridCellPosition>) {
     super();
   }
 
@@ -37,33 +39,17 @@ export class GridCellPositionCollection extends CellPositionCollection {
     return GridCellPositionCollection.of(gridPositions.flat());
   }
 
-  override add(position: GridCellPosition): GridCellPositionCollection {
-    return GridCellPositionCollection.of([...this._positions, position as GridCellPosition]);
-  }
-
-  override has(position: GridCellPosition): boolean {
-    return this._positions.some((p) => p.equals(position));
-  }
-
   override getSize(): number {
-    return this._positions.length;
+    return FX.size(this._positions);
   }
 
   filter(predicate: (_position: GridCellPosition) => boolean): GridCellPositionCollection {
-    return GridCellPositionCollection.of(this._positions.filter((position) => predicate(position)));
+    return FX.pipe(this._positions, FX.filter(predicate), FX.toArray, GridCellPositionCollection.of);
   }
 
-  [Symbol.iterator](): Iterator<GridCellPosition> {
-    let index = 0;
-
-    return {
-      next: () => {
-        if (index < this._positions.length) {
-          return { value: this._positions[index++], done: false };
-        }
-
-        return { value: undefined, done: true };
-      },
-    };
+  *[Symbol.iterator](): Iterator<GridCellPosition> {
+    for (const position of this._positions) {
+      yield position;
+    }
   }
 }
