@@ -15,6 +15,8 @@ export abstract class Board {
   abstract isAllClosed(): boolean;
   abstract hasUnopenedMines(): boolean;
   abstract getCells(): CellCollection;
+  abstract getRows(): Array<Array<Cell>>;
+
   abstract isGameOver(): boolean;
   abstract isGameClear(): boolean;
   abstract getRemainingFlagCount(): number;

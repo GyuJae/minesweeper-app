@@ -19,6 +19,10 @@ export class DefaultBoard extends Board {
     return new DefaultBoard(gameLevel, cells ?? GridCellCollection.of(gameLevel), gameException ?? undefined);
   }
 
+  override getRows(): Array<Array<Cell>> {
+    return this._cells.getRows();
+  }
+
   override getCandidateMineCount(): number {
     return this._gameLevel.getMineCount();
   }

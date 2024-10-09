@@ -20,11 +20,9 @@ export abstract class Cell {
   abstract unFlag(): Cell;
   abstract getSnapshot(): CellSnapshot;
   abstract getContent(): ReactNode;
-  abstract toString(): string;
   abstract isFlaggingDisabled(): boolean;
   abstract isCellOpeningDisabled(): boolean;
   abstract getSnapshotKey(): string;
-  // TODO REMOVE
   abstract getAdjacentMineCount(..._arguments: any): number;
   abstract markAsFlower(): Cell;
   abstract playSound(): void;

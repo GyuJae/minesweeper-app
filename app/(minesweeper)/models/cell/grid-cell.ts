@@ -81,10 +81,6 @@ export class GridCell extends Cell {
     return GridCell.of(CellState.CLOSED, this._cellType, this._position);
   }
 
-  override toString(): string {
-    return this.isNumber() ? this.getNearbyMineCount().toString() : '';
-  }
-
   override getSnapshot(): CellSnapshot {
     if (this.isFlower()) return FlowerCellSnapshot.of();
     if (this.isFlagged()) return FlaggedCellSnapshot.of();

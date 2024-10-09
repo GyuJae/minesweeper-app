@@ -26,34 +26,31 @@ const Board: FC<Properties> = ({ board, onClickCell, onContextMenuCell }) => {
           'gird-rows-16': GameLevel.HARD.equals(board.getGameLevel()),
         })}
       >
-        {board
-          .getCells()
-          .getRows()
-          .map((row) => (
-            <tr
-              key={row[0].getPosition().getRow()}
-              className={cn('grid', {
-                'grid-cols-4': GameLevel.VERY_EASY.equals(board.getGameLevel()),
-                'grid-cols-9': GameLevel.EASY.equals(board.getGameLevel()),
-                'grid-cols-16': GameLevel.NORMAL.equals(board.getGameLevel()),
-                'grid-cols-30': GameLevel.HARD.equals(board.getGameLevel()),
-              })}
-            >
-              {row.map((cell) => (
-                <td key={cell.getPosition().toString()} className='border'>
-                  <Cell
-                    cell={cell}
-                    gameLevel={board.getGameLevel()}
-                    onClick={() => onClickCell(cell)}
-                    onContextMenu={(event) => {
-                      event.preventDefault();
-                      onContextMenuCell(cell);
-                    }}
-                  />
-                </td>
-              ))}
-            </tr>
-          ))}
+        {board.getRows().map((row) => (
+          <tr
+            key={row[0].getPosition().getRow()}
+            className={cn('grid', {
+              'grid-cols-4': GameLevel.VERY_EASY.equals(board.getGameLevel()),
+              'grid-cols-9': GameLevel.EASY.equals(board.getGameLevel()),
+              'grid-cols-16': GameLevel.NORMAL.equals(board.getGameLevel()),
+              'grid-cols-30': GameLevel.HARD.equals(board.getGameLevel()),
+            })}
+          >
+            {row.map((cell) => (
+              <td key={cell.getPosition().toString()} className='border'>
+                <Cell
+                  cell={cell}
+                  gameLevel={board.getGameLevel()}
+                  onClick={() => onClickCell(cell)}
+                  onContextMenu={(event) => {
+                    event.preventDefault();
+                    onContextMenuCell(cell);
+                  }}
+                />
+              </td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
