@@ -6,13 +6,11 @@ export abstract class CellCollection {
   abstract getFlagCount(): number;
   abstract unFlag(_position: GridCellPosition): CellCollection;
   abstract flag(_position: GridCellPosition): CellCollection;
-  abstract find(_predicate: (_cell: Cell) => boolean): Cell | undefined;
   abstract findCellByPosition(_cellPosition: CellPosition): Cell;
   abstract isOpenedCell(_position: CellPosition): boolean;
   abstract hasUnopenedMines(): boolean;
   abstract isAllClosed(): boolean;
   abstract openCell(_position: CellPosition): CellCollection;
-  abstract getUnOpenedMineCount(): number;
   abstract getRowSize(): number;
   abstract getColumnSize(): number;
   abstract hasOpenedMineCell(): boolean;

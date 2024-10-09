@@ -1,7 +1,6 @@
 import { FX } from '@/libs';
 
 import { GameException } from '../../exceptions/game-exception';
-import { Cell } from '../cell/cell.abstract';
 import { GridCell } from '../cell/grid-cell';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { GridCellPositionCollection } from '../cell-position-collection/grid-cell-position-collection';
@@ -67,6 +66,10 @@ export class GridCellCollection extends CellCollection {
       throw GameException.of('열려 있는 셀을 다시 열 수 없습니다.');
     }
 
+    if (updatedCells._isMineCell(position)) {
+      return updatedCells._updatedMineCellAllOpened();
+    }
+
     let isFirstCellOpening = false;
 
     if (updatedCells.isAllClosed()) {
@@ -75,15 +78,19 @@ export class GridCellCollection extends CellCollection {
     }
 
     if (updatedCells._hasMineCell()) {
-      return this._openCell(position)._copyWithFirstCellOpened(isFirstCellOpening);
+      return this._updateToOpenCellByPosition(position)._copyWithFirstCellOpened(isFirstCellOpening);
     }
 
     if (isFirstCellOpening) {
       updatedCells = GridCellCollection._updateInitialMineCells(updatedCells, position);
     }
 
-    return updatedCells._openCell(position)._copyWithFirstCellOpened(isFirstCellOpening);
+    return updatedCells._updateToOpenCellByPosition(position)._copyWithFirstCellOpened(isFirstCellOpening);
   }
+  private _isMineCell(position: GridCellPosition) {
+    return this.findCellByPosition(position).isMine();
+  }
+
   private _isFlaggedCell(position: GridCellPosition): boolean {
     return this.findCellByPosition(position).isFlagged();
   }
@@ -93,38 +100,36 @@ export class GridCellCollection extends CellCollection {
   }
 
   private _clearFlags() {
-    let copyCells = this._copy();
-
-    for (const cell of copyCells) {
-      if (cell.isFlagged()) {
-        copyCells = copyCells.unFlag(cell.getPosition());
-      }
-    }
-
-    return copyCells;
+    return FX.pipe(
+      this as GridCellCollection,
+      FX.map((cell) => (cell.isFlagged() ? cell.unFlag() : cell)),
+      GridCellCollection._toGridCells,
+      (cells) => GridCellCollection.of(this._gameLevel, cells, this._firstCellOpened),
+    );
   }
 
   private _hasMineCell(): boolean {
-    return this._some((cell) => cell.isMine());
-  }
-
-  private _some(predicate: (_cell: GridCell) => boolean): boolean {
-    return this._cells.some((row) => row.some(predicate));
+    return FX.pipe(
+      this as GridCellCollection,
+      FX.some((cell) => cell.isMine()),
+    );
   }
 
   private static _updateInitialMineCells(cells: GridCellCollection, position: GridCellPosition): GridCellCollection {
-    const updatedToMineCellCollection = cells._updatedMineCellsByPositions(
-      GridCellPositionCollection.initialMinesOf(cells._gameLevel, position),
+    let copyCells = cells._copy();
+    return FX.pipe(
+      GridCellPositionCollection.initialMinesOf(copyCells._gameLevel, position),
+      FX.map((position) => copyCells.findCellByPosition(position)),
+      FX.map((cell) => cell.updatedToMine()),
+      FX.each((cell) => {
+        copyCells = GridCellCollection._updatedCellByPosition(copyCells, cell.getPosition(), cell);
+      }),
+      () => GridCellCollection._updateAdjacentMineCount(copyCells, copyCells._gameLevel),
     );
-    return GridCellCollection._updateAdjacentMineCount(updatedToMineCellCollection, cells._gameLevel);
   }
 
   override isOpenedCell(position: GridCellPosition): boolean {
     return this.findCellByPosition(position).isOpened();
-  }
-
-  override getUnOpenedMineCount(): number {
-    return this._cells.flat().filter((cell) => cell.isMine() && (cell.isClosed() || cell.isFlagged())).length;
   }
 
   override getRowSize(): number {
@@ -141,10 +146,6 @@ export class GridCellCollection extends CellCollection {
 
   override hasOpenedMineCell(): boolean {
     return this._cells.flat().some((cell) => cell.isMine() && cell.isOpened());
-  }
-
-  override find(_predicate: (_cell: Cell) => boolean): Cell | undefined {
-    return this._cells.flat().find(_predicate);
   }
 
   override flag(position: GridCellPosition): GridCellCollection {
@@ -217,42 +218,38 @@ export class GridCellCollection extends CellCollection {
     );
   }
 
-  private _updatedMineCellsByPositions(positions: GridCellPositionCollection): GridCellCollection {
-    let updatedCells = this._copy();
-    FX.pipe(
-      positions,
-      FX.map((position) => this.findCellByPosition(position)),
-      FX.map((cell) => cell.updatedToMine()),
-      FX.each((cell) => {
-        updatedCells = GridCellCollection._updatedCellByPosition(updatedCells, cell.getPosition(), cell);
-      }),
-    );
-    return updatedCells;
+  private _getAdjacentPositionsByCell(cell: GridCell): GridCellPositionCollection {
+    return cell.getPosition().getAdjacentPositions(this._gameLevel);
   }
 
-  private _openCell(position: GridCellPosition): GridCellCollection {
+  private _getAdjacentEnabledClickPositionsByCell(cell: GridCell): GridCellPositionCollection {
+    return FX.pipe(
+      this._getAdjacentPositionsByCell(cell),
+      FX.map((position) => this.findCellByPosition(position)),
+      FX.reject((cell) => cell.disabledOpening()),
+      FX.map((cell) => cell.getPosition()),
+      GridCellPositionCollection.of,
+    );
+  }
+
+  private _updateToOpenCellByPosition(position: GridCellPosition): GridCellCollection {
     const cell = this.findCellByPosition(position);
-    if (cell.isOpened()) return this;
-    if (cell.isMine()) return this._updatedMineCellAllOpened();
-    if (cell.isFlagged()) throw GameException.of('깃발이 꽂힌 셀은 열 수 없습니다.');
 
-    const openedCell = cell.open();
-    let updatedCollection = GridCellCollection._updatedCellByPosition(this, position, openedCell);
-
-    if (openedCell.isNumber()) return updatedCollection;
-
-    const adjacentPositions = cell.getPosition().getAdjacentPositions(this._gameLevel);
-
-    for (const adjacentPosition of adjacentPositions) {
-      const adjacentCell = this.findCellByPosition(adjacentPosition);
-      if (adjacentCell.isMine()) continue;
-      if (adjacentCell.isOpened()) continue;
-      if (adjacentCell.isFlagged()) continue;
-
-      updatedCollection = updatedCollection._openCell(adjacentPosition);
-    }
-
-    return updatedCollection;
+    return FX.pipe(
+      cell,
+      (firstOpenedCell) => {
+        if (cell.isNumber()) return GridCellPositionCollection.emptyOf();
+        return this._getAdjacentEnabledClickPositionsByCell(firstOpenedCell);
+      },
+      (positions) =>
+        FX.reduce(
+          (accumulator, position) => {
+            return accumulator._updateToOpenCellByPosition(position);
+          },
+          GridCellCollection._updatedCellByPosition(this, position, cell.open()),
+          positions,
+        ),
+    );
   }
 
   private _updatedMineCellAllOpened(): GridCellCollection {
@@ -266,6 +263,7 @@ export class GridCellCollection extends CellCollection {
       (cells) => GridCellCollection.of(this._gameLevel, cells, this._firstCellOpened),
     );
   }
+
   private static _toGridCells(cells: IterableIterator<GridCell>): GridCell[][] {
     const gridCells: GridCell[][] = [];
     for (const cell of cells) {

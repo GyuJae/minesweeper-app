@@ -29,4 +29,5 @@ export abstract class Cell {
   abstract markAsFlower(): Cell;
   abstract playSound(): void;
   abstract isSafeCell(): boolean;
+  abstract disabledOpening(): boolean;
 }

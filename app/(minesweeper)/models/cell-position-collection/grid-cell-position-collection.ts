@@ -13,6 +13,10 @@ export class GridCellPositionCollection extends CellPositionCollection {
     return new GridCellPositionCollection(positions);
   }
 
+  static emptyOf(): GridCellPositionCollection {
+    return new GridCellPositionCollection([]);
+  }
+
   static initialMinesOf(gameLevel: GameLevel, firstSelectPosition: GridCellPosition): GridCellPositionCollection {
     const mineCount = gameLevel.getMineCount();
     const rowSize = gameLevel.getRowSize();

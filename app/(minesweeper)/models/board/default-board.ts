@@ -52,10 +52,6 @@ export class DefaultBoard extends Board {
     return this._cells.isOpenedCell(position);
   }
 
-  override getUnOpenedMineCount(): number {
-    return this._cells.getUnOpenedMineCount();
-  }
-
   override findCellByPosition(cellPosition: GridCellPosition): Cell {
     return this._cells.findCellByPosition(cellPosition);
   }

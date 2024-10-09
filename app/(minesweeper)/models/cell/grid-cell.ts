@@ -122,6 +122,10 @@ export class GridCell extends Cell {
     return !this.isMine();
   }
 
+  override disabledOpening(): boolean {
+    return this.isFlagged() || this.isOpened() || this.isFlower() || this.isMine();
+  }
+
   override getSnapshotKey(): string {
     return this.getSnapshot().getName();
   }
