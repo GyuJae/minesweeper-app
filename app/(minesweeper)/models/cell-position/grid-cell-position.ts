@@ -13,6 +13,11 @@ export class GridCellPosition extends CellPosition {
     return new GridCellPosition(row, column);
   }
 
+  static fromString(stringPosition: string): GridCellPosition {
+    const [row, column] = stringPosition.split('-').map(Number);
+    return GridCellPosition.of(row, column);
+  }
+
   override getRow(): number {
     return this._row;
   }
