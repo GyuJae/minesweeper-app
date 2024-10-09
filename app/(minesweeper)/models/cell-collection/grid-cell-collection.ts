@@ -36,11 +36,17 @@ export class GridCellCollection extends CellCollection {
   }
 
   override isAllClosed(): boolean {
-    return this._cells.every((row) => row.every((cell) => !cell.isOpened()));
+    return FX.pipe(
+      this as GridCellCollection,
+      FX.every((cell) => !cell.isOpened()),
+    );
   }
 
   override hasUnopenedMines(): boolean {
-    return this._cells.flat().some((cell) => cell.isMine() && cell.isClosed());
+    return FX.pipe(
+      this as GridCellCollection,
+      FX.some((cell) => cell.isMine() && cell.isClosed()),
+    );
   }
 
   override changeAllMineCellsToFlowers(): GridCellCollection {
@@ -87,6 +93,7 @@ export class GridCellCollection extends CellCollection {
 
     return updatedCells._updateToOpenCellByPosition(position)._copyWithFirstCellOpened(isFirstCellOpening);
   }
+
   private _isMineCell(position: GridCellPosition) {
     return this.findCellByPosition(position).isMine();
   }
