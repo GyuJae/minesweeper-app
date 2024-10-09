@@ -209,21 +209,24 @@ export class GridCellCollection extends CellCollection {
     position: GridCellPosition,
     newCell: GridCell,
   ): GridCellCollection {
-    const newCells = cells._cells.map((row) => [...row]);
-    newCells[position.getRow()][position.getColumn()] = newCell;
-    return new GridCellCollection(cells._gameLevel, newCells, cells._firstCellOpened); // _firstCellOpened 유지
+    return FX.pipe(
+      cells,
+      FX.map((cell) => (cell.getPosition().equals(position) ? newCell : cell)),
+      GridCellCollection._toGridCells,
+      (updatedCells) => GridCellCollection.of(cells._gameLevel, updatedCells, cells._firstCellOpened),
+    );
   }
 
   private _updatedMineCellsByPositions(positions: GridCellPositionCollection): GridCellCollection {
-    let updatedCells = new GridCellCollection(
-      this._gameLevel,
-      this._cells.map((row) => [...row]),
-      this._firstCellOpened,
+    let updatedCells = this._copy();
+    FX.pipe(
+      positions,
+      FX.map((position) => this.findCellByPosition(position)),
+      FX.map((cell) => cell.updatedToMine()),
+      FX.each((cell) => {
+        updatedCells = GridCellCollection._updatedCellByPosition(updatedCells, cell.getPosition(), cell);
+      }),
     );
-    for (const position of positions) {
-      const cell = this.findCellByPosition(position);
-      updatedCells = GridCellCollection._updatedCellByPosition(updatedCells, position, cell.updatedToMine());
-    }
     return updatedCells;
   }
 
