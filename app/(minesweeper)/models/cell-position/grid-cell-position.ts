@@ -29,20 +29,22 @@ export class GridCellPosition extends CellPosition {
     return `${this._row}-${this._column}`;
   }
 
-  getAdjacentPositions(gameLevel: GameLevel): GridCellPositionCollection {
+  override getAdjacentPositions(gameLevel: GameLevel): GridCellPositionCollection {
+    const directions = [
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [0, -1],
+      [0, 1],
+      [1, -1],
+      [1, 0],
+      [1, 1],
+    ];
+
     return FX.pipe(
-      [
-        GridCellPosition.of(this._row - 1, this._column - 1),
-        GridCellPosition.of(this._row - 1, this._column),
-        GridCellPosition.of(this._row - 1, this._column + 1),
-        GridCellPosition.of(this._row, this._column - 1),
-        GridCellPosition.of(this._row, this._column + 1),
-        GridCellPosition.of(this._row + 1, this._column - 1),
-        GridCellPosition.of(this._row + 1, this._column),
-        GridCellPosition.of(this._row + 1, this._column + 1),
-      ],
+      directions,
+      FX.map(([dRow, dCol]) => GridCellPosition.of(this._row + dRow, this._column + dCol)),
       FX.filter((p) => p._isValid(gameLevel)),
-      FX.toArray,
       GridCellPositionCollection.of,
     );
   }

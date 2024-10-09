@@ -290,7 +290,7 @@ export class GridCellCollection extends CellCollection {
     return new GridCellCollection(this._gameLevel, this._cells, this._firstCellOpened);
   }
 
-  override *[Symbol.iterator](): Iterator<GridCell> {
+  *[Symbol.iterator](): Iterator<GridCell> {
     for (const row of this._cells) {
       for (const cell of row) {
         yield cell;

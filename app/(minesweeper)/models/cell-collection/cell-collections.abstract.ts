@@ -18,6 +18,4 @@ export abstract class CellCollection {
   abstract getRows(): Iterable<Iterable<Cell>>;
   abstract isFirstOpenedCell(): boolean;
   abstract changeAllMineCellsToFlowers(): CellCollection;
-
-  abstract [Symbol.iterator](): Iterator<Cell>;
 }
