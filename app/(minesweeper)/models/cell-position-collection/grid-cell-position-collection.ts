@@ -9,7 +9,7 @@ export class GridCellPositionCollection extends CellPositionCollection {
     super();
   }
 
-  static of(positions: GridCellPosition[]): GridCellPositionCollection {
+  static of(positions: Iterable<GridCellPosition>): GridCellPositionCollection {
     return new GridCellPositionCollection(positions);
   }
 
@@ -27,14 +27,6 @@ export class GridCellPositionCollection extends CellPositionCollection {
       FX.toArray,
       GridCellPositionCollection.of,
     );
-  }
-
-  override getSize(): number {
-    return FX.size(this._positions);
-  }
-
-  filter(predicate: (_position: GridCellPosition) => boolean): GridCellPositionCollection {
-    return FX.pipe(this._positions, FX.filter(predicate), FX.toArray, GridCellPositionCollection.of);
   }
 
   *[Symbol.iterator](): Iterator<GridCellPosition> {

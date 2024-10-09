@@ -1,3 +1,1 @@
-export abstract class CellPositionCollection {
-  abstract getSize(): number;
-}
+export abstract class CellPositionCollection {}

@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+import { FX } from '@/libs';
+
 import { GridCellCollection } from '../cell-collection/grid-cell-collection';
 import { GridCellPosition } from '../cell-position/grid-cell-position';
 import { CellSnapshot } from '../cell-snapshot/cell-snapshot.interface';
@@ -121,10 +123,12 @@ export class GridCell extends Cell {
   }
 
   override getAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): number {
-    return this._position
-      .getAdjacentPositions(gameLevel)
-      .filter((p) => cells.findCellByPosition(p).isMine())
-      .getSize();
+    return FX.pipe(
+      this._position.getAdjacentPositions(gameLevel),
+      FX.map((position) => cells.findCellByPosition(position)),
+      FX.filter((cell) => cell.isMine()),
+      FX.size,
+    );
   }
 
   override markAsFlower(): GridCell {
