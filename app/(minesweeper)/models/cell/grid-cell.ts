@@ -118,6 +118,10 @@ export class GridCell extends Cell {
     return this.isOpened() || this.isFlagged();
   }
 
+  override isSafeCell(): boolean {
+    return !this.isMine();
+  }
+
   override getSnapshotKey(): string {
     return this.getSnapshot().getName();
   }

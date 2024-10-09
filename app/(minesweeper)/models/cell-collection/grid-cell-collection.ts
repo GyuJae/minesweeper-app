@@ -1,3 +1,5 @@
+import { FX } from '@/libs';
+
 import { GameException } from '../../exceptions/game-exception';
 import { Cell } from '../cell/cell.abstract';
 import { GridCell } from '../cell/grid-cell';
@@ -12,7 +14,7 @@ import { CellCollection } from './cell-collections.abstract';
 export class GridCellCollection extends CellCollection {
   private constructor(
     private readonly _gameLevel: GameLevel,
-    private readonly _cells: GridCell[][],
+    private readonly _cells: Array<Array<GridCell>>,
     private readonly _firstCellOpened: boolean = false,
   ) {
     super();
@@ -43,10 +45,15 @@ export class GridCellCollection extends CellCollection {
   }
 
   override changeAllMineCellsToFlowers(): GridCellCollection {
-    return this._map((cell) => {
-      if (cell.isMine()) return cell.markAsFlower();
-      return cell;
-    });
+    return FX.pipe(
+      this as GridCellCollection,
+      FX.map((cell) => {
+        if (cell.isMine()) return cell.markAsFlower();
+        return cell;
+      }),
+      GridCellCollection._toGridCells,
+      (cells) => GridCellCollection.of(this._gameLevel, cells, this._firstCellOpened),
+    );
   }
 
   override openCell(position: GridCellPosition): GridCellCollection {
@@ -155,33 +162,46 @@ export class GridCellCollection extends CellCollection {
     return GridCellCollection._updatedCellByPosition(this, position, cell.unFlag());
   }
 
-  override areAllSafeCellsOpened(): boolean {
-    return this.filter((cell) => cell.isSafeCell())._every((cell) => cell.isOpened());
+  override isAllSafeCellsOpened(): boolean {
+    return FX.pipe(
+      this as GridCellCollection,
+      FX.filter((cell) => cell.isSafeCell()),
+      FX.every((cell) => cell.isOpened()),
+    );
   }
 
   override getFlagCount(): number {
-    return this.filter((cell) => cell.isFlagged())._getSize();
+    return FX.pipe(
+      this as GridCellCollection,
+      FX.filter((cell) => cell.isFlagged()),
+      FX.size,
+    );
   }
 
   override isFirstOpenedCell(): boolean {
     return this._firstCellOpened;
   }
 
-  private _getSize(): number {
-    return this._cells.flat().length;
-  }
-
-  private _every(predicate: (_cell: Cell) => boolean): boolean {
-    return this._cells.every((row) => row.every(predicate));
-  }
-
   private static _updateAdjacentMineCount(cells: GridCellCollection, gameLevel: GameLevel): GridCellCollection {
-    return cells._map((cell) => {
-      if (cell.isMine()) return cell;
-      const adjacentMineCount = cell.getAdjacentMineCount(cells, gameLevel);
-      if (adjacentMineCount <= 0) return cell;
-      return GridCell.of(cell.getState(), NumberCellType.of(adjacentMineCount), cell.getPosition());
-    });
+    return FX.pipe(
+      cells as GridCellCollection,
+      FX.map((cell: GridCell) =>
+        cell.isMine() ? cell : GridCellCollection._getUpdatedCellIfNumberCell(cell, cells, gameLevel),
+      ),
+      GridCellCollection._toGridCells,
+      (updatedCells) => GridCellCollection.of(cells._gameLevel, updatedCells, cells._firstCellOpened),
+    );
+  }
+
+  private static _getUpdatedCellIfNumberCell(
+    cell: GridCell,
+    cells: GridCellCollection,
+    gameLevel: GameLevel,
+  ): GridCell {
+    const adjacentMineCount = cell.getAdjacentMineCount(cells, gameLevel);
+    return adjacentMineCount > 0
+      ? GridCell.of(cell.getState(), NumberCellType.of(adjacentMineCount), cell.getPosition())
+      : cell;
   }
 
   private static _updatedCellByPosition(
@@ -233,18 +253,25 @@ export class GridCellCollection extends CellCollection {
   }
 
   private _updatedMineCellAllOpened(): GridCellCollection {
-    return this._map((cell) => {
-      if (cell.isMine()) return cell.open();
-      return cell;
-    });
-  }
-
-  private _map(mapper: (_cell: GridCell) => GridCell): GridCellCollection {
-    return GridCellCollection.of(
-      this._gameLevel,
-      this._cells.map((row) => row.map(mapper)),
-      this._firstCellOpened,
+    return FX.pipe(
+      this as GridCellCollection,
+      FX.map((cell) => {
+        if (cell.isMine()) return cell.open();
+        return cell;
+      }),
+      GridCellCollection._toGridCells,
+      (cells) => GridCellCollection.of(this._gameLevel, cells, this._firstCellOpened),
     );
+  }
+  private static _toGridCells(cells: IterableIterator<GridCell>): GridCell[][] {
+    const gridCells: GridCell[][] = [];
+    for (const cell of cells) {
+      if (gridCells[cell.getPosition().getRow()] === undefined) {
+        gridCells[cell.getPosition().getRow()] = [];
+      }
+      gridCells[cell.getPosition().getRow()][cell.getPosition().getColumn()] = cell;
+    }
+    return gridCells;
   }
 
   private _copyWithFirstCellOpened(firstCellOpened: boolean): GridCellCollection {
@@ -255,15 +282,11 @@ export class GridCellCollection extends CellCollection {
     return new GridCellCollection(this._gameLevel, this._cells, this._firstCellOpened);
   }
 
-  override filter(_predicate: (_cell: Cell) => boolean): GridCellCollection {
-    return GridCellCollection.of(
-      this._gameLevel,
-      this._cells.map((row) => row.filter(_predicate)),
-      this._firstCellOpened,
-    );
-  }
-
   override *[Symbol.iterator](): Iterator<GridCell> {
-    yield* this._cells.flat();
+    for (const row of this._cells) {
+      for (const cell of row) {
+        yield cell;
+      }
+    }
   }
 }

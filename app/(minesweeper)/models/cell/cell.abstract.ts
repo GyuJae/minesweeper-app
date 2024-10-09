@@ -28,7 +28,5 @@ export abstract class Cell {
   abstract getAdjacentMineCount(..._arguments: any): number;
   abstract markAsFlower(): Cell;
   abstract playSound(): void;
-  isSafeCell(): boolean {
-    return !this.isMine();
-  }
+  abstract isSafeCell(): boolean;
 }

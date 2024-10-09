@@ -15,9 +15,8 @@ export abstract class CellCollection {
   abstract getUnOpenedMineCount(): number;
   abstract getRowSize(): number;
   abstract getColumnSize(): number;
-  abstract filter(_predicate: (_cell: Cell) => boolean): CellCollection;
   abstract hasOpenedMineCell(): boolean;
-  abstract areAllSafeCellsOpened(): boolean;
+  abstract isAllSafeCellsOpened(): boolean;
   abstract getRows(): Iterable<Iterable<Cell>>;
   abstract isFirstOpenedCell(): boolean;
   abstract changeAllMineCellsToFlowers(): CellCollection;

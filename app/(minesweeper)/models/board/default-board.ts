@@ -69,7 +69,7 @@ export class DefaultBoard extends Board {
   }
 
   override isGameClear(): boolean {
-    return this._cells.areAllSafeCellsOpened();
+    return this._cells.isAllSafeCellsOpened();
   }
 
   override toggleFlag(position: GridCellPosition): DefaultBoard {
