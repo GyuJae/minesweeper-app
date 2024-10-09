@@ -53,7 +53,7 @@ export class GridCellPositionCollection extends CellPositionCollection {
     return GridCellPositionCollection.of(this._positions.filter((position) => predicate(position)));
   }
 
-  override [Symbol.iterator](): Iterator<GridCellPosition> {
+  [Symbol.iterator](): Iterator<GridCellPosition> {
     let index = 0;
 
     return {

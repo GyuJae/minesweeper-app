@@ -20,7 +20,7 @@ export abstract class CellCollection {
   abstract filter(_predicate: (_cell: Cell) => boolean): CellCollection;
   abstract hasOpenedMineCell(): boolean;
   abstract areAllSafeCellsOpened(): boolean;
-  abstract getRows(): Cell[][];
+  abstract getRows(): Iterable<Iterable<Cell>>;
   abstract isFirstOpenedCell(): boolean;
   abstract changeAllMineCellsToFlowers(): CellCollection;
 
