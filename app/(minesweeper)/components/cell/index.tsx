@@ -35,7 +35,7 @@ const Cell = ({ cell, gameLevel, onClick, onContextMenu }: Properties) => {
       })}
       aria-label={`cell-${cell.getPosition().toString()}`}
     >
-      <AnimatePresence>
+      <AnimatePresence mode='wait'>
         <motion.div
           key={cell.getSnapshotKey()}
           variants={cell.getSnapshot().getAnimationVariant()}
