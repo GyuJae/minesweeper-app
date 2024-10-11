@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mineswepper-app:
     build: .
-    container_name:
+    container_name: mineswepper-app
     ports:
       - '3000:3000'
     environment:
