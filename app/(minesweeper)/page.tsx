@@ -48,7 +48,14 @@ export default function Minesweeper() {
   return (
     <div className='relative m-auto flex max-w-max flex-col py-24'>
       <GameInfoHeader />
-      <Board board={boardContext.board} onClickCell={onClickCell} onContextMenuCell={onContextMenuCell} />
+      <div className='relative'>
+        {gameConfigContext.gameStatus.isPaused() && (
+          <div className='absolute inset-0 flex items-center justify-center bg-black/95'>
+            <span>일시정지</span>
+          </div>
+        )}
+        <Board board={boardContext.board} onClickCell={onClickCell} onContextMenuCell={onContextMenuCell} />
+      </div>
       {gameConfigContext.gameStatus.isClear() && (
         <ParticleLottie loop={false} className='pointer-events-none absolute inset-0' />
       )}
