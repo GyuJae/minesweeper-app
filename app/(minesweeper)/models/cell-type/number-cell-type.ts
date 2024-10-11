@@ -1,7 +1,7 @@
 import { CellType } from './cell-type.abstract';
 
 export class NumberCellType extends CellType {
-  private constructor(private readonly _number: number) {
+  private constructor(private readonly _nearbyMineCount: number) {
     super();
   }
 
@@ -18,7 +18,7 @@ export class NumberCellType extends CellType {
   }
 
   override getNearbyMineCount(): number {
-    return this._number;
+    return this._nearbyMineCount;
   }
 
   override isEmpty(): boolean {
