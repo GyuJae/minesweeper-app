@@ -37,7 +37,7 @@ export class GameLevel extends EnumType<GameLevel>() {
   }
 
   static findDefaultLevel(): GameLevel {
-    return GameLevel.VERY_EASY;
+    return GameLevel.EASY;
   }
 
   static findAllLevels(): GameLevel[] {
