@@ -6,7 +6,7 @@
 
 - 객체 지향
 - TDD, Test Code 작성
-- NextJS app directory 학습
+- NextJS app directory
 - FxTS
 
 ## 실행 방법
@@ -35,16 +35,6 @@ npm run start
 
 ```bash
 npm run test
-```
-
-4. Docker 실행
-
-```bash
-docker build -t tag-name .
-```
-
-```bash
-docker run -p 3000:3000 tag-name
 ```
 
 ## 참고 강의
