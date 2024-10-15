@@ -46,7 +46,7 @@ export default function Minesweeper() {
   };
 
   return (
-    <div className='relative m-auto flex max-w-max flex-col py-24'>
+    <div className='relative m-auto flex max-w-max flex-col gap-8 py-24'>
       <GameInfoHeader />
       <div className='relative'>
         {gameConfigContext.gameStatus.isPaused() && (

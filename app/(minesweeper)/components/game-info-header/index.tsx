@@ -1,7 +1,7 @@
 import React from 'react';
 
 import GameConfigDropdown from './game-config-dropdown';
-import GameStatus from './game-status';
+import GameStatusInfo from './game-status-info';
 import GameTutorialDialog from './game-tutorial-dialog';
 
 const GameInfoHeader = () => {
@@ -11,7 +11,7 @@ const GameInfoHeader = () => {
         <GameConfigDropdown />
         <GameTutorialDialog />
       </article>
-      <GameStatus />
+      <GameStatusInfo />
     </header>
   );
 };
