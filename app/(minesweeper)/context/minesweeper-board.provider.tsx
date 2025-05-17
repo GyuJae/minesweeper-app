@@ -1,9 +1,9 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
-import { Board } from '../models/board/board.abstract';
-import { DefaultBoard } from '../models/board/default-board';
-import { CellPosition } from '../models/cell-position/cell-position.abstract';
-import { GameLevel } from '../models/game-level/game-level.enum';
+import { Board } from '../domains/board/board.abstract';
+import { DefaultBoard } from '../domains/board/default-board';
+import { CellPosition } from '../domains/cell-position/cell-position.abstract';
+import { GameLevel } from '../domains/game-level/game-level.enum';
 
 interface MinesweeperBoardValue {
   board: Board;

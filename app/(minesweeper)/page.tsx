@@ -6,12 +6,12 @@ import Board from './components/board';
 import GameInfoHeader from './components/game-info-header';
 import { useMinesweeperBoard } from './context/minesweeper-board.provider';
 import { useMinesweeperGameConfig } from './context/minesweeper-game-config.provider';
-import { Board as BoardModel } from './models/board/board.abstract';
-import { Cell } from './models/cell/cell.abstract';
-import { ExplosionSound } from './models/game-sound/explosion-sound';
-import { FlagSound } from './models/game-sound/flag-sound';
-import { SuccessSound } from './models/game-sound/success-sound';
-import { GameStatus } from './models/game-status/game-status.enum';
+import { Board as BoardModel } from './domains/board/board.abstract';
+import { Cell } from './domains/cell/cell.abstract';
+import { ExplosionSound } from './domains/game-sound/explosion-sound';
+import { FlagSound } from './domains/game-sound/flag-sound';
+import { SuccessSound } from './domains/game-sound/success-sound';
+import { GameStatus } from './domains/game-status/game-status.enum';
 
 const ParticleLottie = dynamic(() => import('./components/particle-lottie'), { ssr: false });
 

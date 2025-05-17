@@ -4,9 +4,9 @@ import React, { FC } from 'react';
 
 import { cn } from '@/libs/utils';
 
-import { Board as BoardModel } from '../../models/board/board.abstract';
-import { Cell as CellModel } from '../../models/cell/cell.abstract';
-import { GameLevel } from '../../models/game-level/game-level.enum';
+import { Board as BoardModel } from '../../domains/board/board.abstract';
+import { Cell as CellModel } from '../../domains/cell/cell.abstract';
+import { GameLevel } from '../../domains/game-level/game-level.enum';
 import Cell from '../cell';
 
 interface Properties {

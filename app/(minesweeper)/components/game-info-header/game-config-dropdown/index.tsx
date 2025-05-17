@@ -4,8 +4,8 @@ import { CheckIcon, MenuIcon } from 'lucide-react';
 
 import { useMinesweeperBoard } from '@/app/(minesweeper)/context/minesweeper-board.provider';
 import { useMinesweeperGameConfig } from '@/app/(minesweeper)/context/minesweeper-game-config.provider';
-import { GameLevel } from '@/app/(minesweeper)/models/game-level/game-level.enum';
-import { GameStatus } from '@/app/(minesweeper)/models/game-status/game-status.enum';
+import { GameLevel } from '@/app/(minesweeper)/domains/game-level/game-level.enum';
+import { GameStatus } from '@/app/(minesweeper)/domains/game-status/game-status.enum';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,

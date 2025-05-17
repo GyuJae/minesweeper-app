@@ -6,9 +6,9 @@ import React, { MouseEventHandler } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/libs/utils';
 
-import { Cell as CellModel } from '../../models/cell/cell.abstract';
-import { CellSnapshot } from '../../models/cell-snapshot/cell-snapshot.interface';
-import { GameLevel } from '../../models/game-level/game-level.enum';
+import { Cell as CellModel } from '../../domains/cell/cell.abstract';
+import { CellSnapshot } from '../../domains/cell-snapshot/cell-snapshot.interface';
+import { GameLevel } from '../../domains/game-level/game-level.enum';
 
 interface Properties {
   cell: CellModel;

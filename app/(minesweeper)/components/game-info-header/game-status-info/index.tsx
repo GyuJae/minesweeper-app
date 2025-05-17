@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useMinesweeperBoard } from '@/app/(minesweeper)/context/minesweeper-board.provider';
 import { useMinesweeperGameConfig } from '@/app/(minesweeper)/context/minesweeper-game-config.provider';
-import { GameStatus } from '@/app/(minesweeper)/models/game-status/game-status.enum';
+import { GameStatus } from '@/app/(minesweeper)/domains/game-status/game-status.enum';
 
 const GameStatusInfo = () => {
   const gameConfigContext = useMinesweeperGameConfig();

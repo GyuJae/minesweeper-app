@@ -2,16 +2,16 @@ import { afterEach, beforeAll, cleanup, describe, expect, render, screen, test, 
 
 import { MinesweeperBoardProvider } from '../context/minesweeper-board.provider';
 import { MinesweeperGameConfigProvider } from '../context/minesweeper-game-config.provider';
-import { DefaultBoard } from '../models/board/default-board';
-import { GridCell } from '../models/cell/grid-cell';
-import { GridCellCollection } from '../models/cell-collection/grid-cell-collection';
-import { CellPosition } from '../models/cell-position/cell-position.abstract';
-import { GridCellPosition } from '../models/cell-position/grid-cell-position';
-import { CellState } from '../models/cell-state/cell-state.enum';
-import { EmptyCellType } from '../models/cell-type/empty-cell-type';
-import { MineCellType } from '../models/cell-type/mine-cell-type';
-import { NumberCellType } from '../models/cell-type/number-cell-type';
-import { GameLevel } from '../models/game-level/game-level.enum';
+import { DefaultBoard } from '../domains/board/default-board';
+import { GridCell } from '../domains/cell/grid-cell';
+import { GridCellCollection } from '../domains/cell-collection/grid-cell-collection';
+import { CellPosition } from '../domains/cell-position/cell-position.abstract';
+import { GridCellPosition } from '../domains/cell-position/grid-cell-position';
+import { CellState } from '../domains/cell-state/cell-state.enum';
+import { EmptyCellType } from '../domains/cell-type/empty-cell-type';
+import { MineCellType } from '../domains/cell-type/mine-cell-type';
+import { NumberCellType } from '../domains/cell-type/number-cell-type';
+import { GameLevel } from '../domains/game-level/game-level.enum';
 import Minesweeper from '../page';
 
 const testHelper = {

@@ -2,8 +2,8 @@ import React, { createContext, ReactNode, useContext, useEffect, useState } from
 
 import { useTimer } from '@/hooks/use-timer';
 
-import { GameLevel } from '../models/game-level/game-level.enum';
-import { GameStatus } from '../models/game-status/game-status.enum';
+import { GameLevel } from '../domains/game-level/game-level.enum';
+import { GameStatus } from '../domains/game-status/game-status.enum';
 
 interface MinesweeperGameConfigValue {
   gameLevel: GameLevel;
