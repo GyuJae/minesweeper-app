@@ -24,9 +24,24 @@ export class OpenedMineCellSnapshot implements CellSnapshot {
 
   getAnimationVariant(): Variants {
     return {
-      [CellSnapshot.VARIANT_INITIAL]: {},
-      [CellSnapshot.VARIANT_ANIMATE]: {},
-      [CellSnapshot.VARIANT_EXIT]: {},
+      [CellSnapshot.VARIANT_INITIAL]: {
+        scale: 0.5,
+        opacity: 0,
+        rotate: -45,
+      },
+      [CellSnapshot.VARIANT_ANIMATE]: {
+        scale: [1, 1.5, 1],
+        opacity: 1,
+        rotate: 0,
+        transition: {
+          duration: 0.5,
+          times: [0, 0.5, 1],
+        },
+      },
+      [CellSnapshot.VARIANT_EXIT]: {
+        scale: 2,
+        opacity: 0,
+      },
     };
   }
 }

@@ -23,8 +23,11 @@ const Cell = ({ cell, gameLevel, onClick, onContextMenu }: Properties) => {
       variant={cell.getSnapshot().getButtonVariant()}
       onClick={onClick}
       onContextMenu={onContextMenu}
-      className={cn('min-h-full min-w-full font-semibold rounded-none', {
-        'size-24 text-3xl': GameLevel.VERY_EASY.equals(gameLevel),
+      className={cn(
+        'min-h-full min-w-full font-semibold rounded-none transition-all duration-150',
+        cell.isClosed() && 'hover:bg-slate-200 active:scale-95',
+        {
+          'size-24 text-3xl': GameLevel.VERY_EASY.equals(gameLevel),
         'size-16 text-2xl': GameLevel.EASY.equals(gameLevel),
         'size-12 text-xl': GameLevel.NORMAL.equals(gameLevel),
         'size-10 text-lg': GameLevel.HARD.equals(gameLevel),

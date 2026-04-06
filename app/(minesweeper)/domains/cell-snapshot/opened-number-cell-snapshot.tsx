@@ -25,9 +25,23 @@ export class OpenedNumberCellSnapshot implements CellSnapshot {
 
   getAnimationVariant(): Variants {
     return {
-      [CellSnapshot.VARIANT_INITIAL]: {},
-      [CellSnapshot.VARIANT_ANIMATE]: {},
-      [CellSnapshot.VARIANT_EXIT]: {},
+      [CellSnapshot.VARIANT_INITIAL]: {
+        scale: 0.8,
+        opacity: 0,
+      },
+      [CellSnapshot.VARIANT_ANIMATE]: {
+        scale: 1,
+        opacity: 1,
+        transition: {
+          type: 'spring',
+          stiffness: 300,
+          damping: 20,
+        },
+      },
+      [CellSnapshot.VARIANT_EXIT]: {
+        scale: 0.5,
+        opacity: 0,
+      },
     };
   }
 }
