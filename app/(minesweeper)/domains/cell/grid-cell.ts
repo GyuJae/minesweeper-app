@@ -135,6 +135,15 @@ export class GridCell extends Cell {
     );
   }
 
+  override getAdjacentFlagCount(cells: GridCellCollection, gameLevel: GameLevel): number {
+    return FX.pipe(
+      this._position.getAdjacentPositions(gameLevel),
+      FX.map((position) => cells.findCellByPosition(position)),
+      FX.filter((cell) => cell.isFlagged()),
+      FX.size,
+    );
+  }
+
   override markAsFlower(): GridCell {
     return GridCell.of(this._cellState, FlowerCellType.of(), this._position);
   }

@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 
 import Board from './components/board';
@@ -48,14 +49,24 @@ export default function Minesweeper() {
   return (
     <div className='relative m-auto flex max-w-max flex-col gap-8 py-24'>
       <GameInfoHeader />
-      <div className='relative'>
+      <motion.div
+        className='relative'
+        animate={
+          gameConfigContext.gameStatus.equals(GameStatus.GAME_OVER)
+            ? { x: [-10, 10, -10, 10, 0] }
+            : (gameConfigContext.gameStatus.isClear()
+              ? { scale: [1, 1.05, 1], rotate: [0, 1, -1, 0] }
+              : { x: 0, scale: 1, rotate: 0 })
+        }
+        transition={{ duration: 0.4 }}
+      >
         {gameConfigContext.gameStatus.isPaused() && (
-          <div className='absolute inset-0 flex items-center justify-center bg-black/95'>
-            <span>일시정지</span>
+          <div className='absolute inset-0 z-10 flex items-center justify-center bg-black/95'>
+            <span className='text-2xl font-bold text-white'>일시정지</span>
           </div>
         )}
         <Board board={boardContext.board} onClickCell={onClickCell} onContextMenuCell={onContextMenuCell} />
-      </div>
+      </motion.div>
       {gameConfigContext.gameStatus.isClear() && (
         <ParticleLottie loop={false} className='pointer-events-none absolute inset-0' />
       )}

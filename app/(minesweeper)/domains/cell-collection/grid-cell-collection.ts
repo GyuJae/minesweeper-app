@@ -69,6 +69,13 @@ export class GridCellCollection extends CellCollection {
     }
 
     if (updatedCells._isOpenedCell(position)) {
+      const cell = updatedCells.findCellByPosition(position);
+      if (
+        cell.isNumber() &&
+        cell.getAdjacentFlagCount(updatedCells, updatedCells._gameLevel) === cell.getNearbyMineCount()
+      ) {
+        return updatedCells._chord(position);
+      }
       throw GameException.of('열려 있는 셀을 다시 열 수 없습니다.');
     }
 
@@ -237,6 +244,30 @@ export class GridCellCollection extends CellCollection {
       FX.map((cell) => cell.getPosition()),
       GridCellPositionCollection.of,
     );
+  }
+
+  private _chord(position: GridCellPosition): GridCellCollection {
+    const cell = this.findCellByPosition(position);
+    const adjacentPositions = cell.getPosition().getAdjacentPositions(this._gameLevel);
+
+    const targets = FX.pipe(
+      adjacentPositions,
+      FX.map((pos) => this.findCellByPosition(pos)),
+      FX.filter((adjCell) => adjCell.isClosed() && !adjCell.isFlagged()),
+      FX.toArray,
+    );
+
+    if (targets.length === 0) {
+      throw GameException.of('열려 있는 셀을 다시 열 수 없습니다.');
+    }
+
+    let result: GridCellCollection = GridCellCollection.of(this._gameLevel, this._cells, this._firstCellOpened);
+    for (const adjCell of targets) {
+      if (result.hasOpenedMineCell()) break;
+      if (result.isOpenedCell(adjCell.getPosition())) continue;
+      result = result.openCell(adjCell.getPosition());
+    }
+    return result;
   }
 
   private _updateToOpenCellByPosition(position: GridCellPosition): GridCellCollection {

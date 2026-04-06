@@ -24,6 +24,7 @@ export abstract class Cell {
   abstract isCellOpeningDisabled(): boolean;
   abstract getSnapshotKey(): string;
   abstract getAdjacentMineCount(..._arguments: any): number;
+  abstract getAdjacentFlagCount(..._arguments: any): number;
   abstract markAsFlower(): Cell;
   abstract playSound(): void;
   abstract isSafeCell(): boolean;

@@ -23,9 +23,18 @@ export class OpenedEmptyCellSnapshot implements CellSnapshot {
 
   getAnimationVariant(): Variants {
     return {
-      [CellSnapshot.VARIANT_INITIAL]: {},
-      [CellSnapshot.VARIANT_ANIMATE]: {},
-      [CellSnapshot.VARIANT_EXIT]: {},
+      [CellSnapshot.VARIANT_INITIAL]: {
+        scale: 0.8,
+        opacity: 0,
+      },
+      [CellSnapshot.VARIANT_ANIMATE]: {
+        scale: 1,
+        opacity: 1,
+        transition: { duration: 0.1 },
+      },
+      [CellSnapshot.VARIANT_EXIT]: {
+        opacity: 0,
+      },
     };
   }
 }
