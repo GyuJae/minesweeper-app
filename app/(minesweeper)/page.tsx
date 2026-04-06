@@ -54,9 +54,9 @@ export default function Minesweeper() {
         animate={
           gameConfigContext.gameStatus.equals(GameStatus.GAME_OVER)
             ? { x: [-10, 10, -10, 10, 0] }
-            : gameConfigContext.gameStatus.isClear()
+            : (gameConfigContext.gameStatus.isClear()
               ? { scale: [1, 1.05, 1], rotate: [0, 1, -1, 0] }
-              : { x: 0, scale: 1, rotate: 0 }
+              : { x: 0, scale: 1, rotate: 0 })
         }
         transition={{ duration: 0.4 }}
       >

@@ -261,7 +261,7 @@ export class GridCellCollection extends CellCollection {
       throw GameException.of('열려 있는 셀을 다시 열 수 없습니다.');
     }
 
-    let result: GridCellCollection = this;
+    let result: GridCellCollection = GridCellCollection.of(this._gameLevel, this._cells, this._firstCellOpened);
     for (const adjCell of targets) {
       if (result.hasOpenedMineCell()) break;
       if (result.isOpenedCell(adjCell.getPosition())) continue;
